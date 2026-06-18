@@ -1,0 +1,13 @@
+{
+  "name": "psa-rostock",
+  "private": true,
+  "description": "Frontend assets for PSA Rostock Contao site",
+  "scripts": {
+    "build:css": "sass files/tpl/scss/main.scss files/tpl/css/main.css --style=expanded --no-source-map --load-path=node_modules",
+    "build:bundle": "src/Rostock/custom-elements-bundle/public/frontend/scss/compile.sh",
+    "build": "npm run build:css && npm run build:bundle"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}

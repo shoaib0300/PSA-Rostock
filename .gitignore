@@ -28,6 +28,7 @@
 /system/modules/*/.skip
 
 # Custom
+/node_modules/
 .vscode*
 /.idea
 !/files/tpl

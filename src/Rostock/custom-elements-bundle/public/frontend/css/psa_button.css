@@ -21,7 +21,7 @@
   border: 0;
   background: transparent;
   color: #ffffff;
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
   font-size: var(--psa-hero-btn-font);
   line-height: 1;
   text-decoration: none;

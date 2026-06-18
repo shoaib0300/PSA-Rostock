@@ -1,3 +1,20 @@
-@mixin psa-fonts {
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Roboto+Mono:wght@400&display=swap');
+@use 'variables' as *;
+
+$psa-font-file-bundle: '/bundles/customelements/frontend/fonts/AspektaVF.woff2';
+$psa-font-file-files: '/files/tpl/fonts/aspekta/AspektaVF.woff2';
+
+@font-face {
+  font-family: 'Aspekta';
+  src:
+    url($psa-font-file-bundle) format('woff2'),
+    url($psa-font-file-files) format('woff2');
+  font-weight: 50 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@mixin psa-font-base {
+  font-family: $psa-font-sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

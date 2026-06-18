@@ -1,5 +1,9 @@
+@use 'sass:meta';
 @use 'fonts' as *;
 @use 'variables' as *;
-@use 'mixins' as *;
-@use 'components' as *;
-@use 'global' as *;
+
+@import 'bootstrap';
+
+@include meta.load-css('mixins');
+@include meta.load-css('components');
+@include meta.load-css('global');

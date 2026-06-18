@@ -1,7 +1,5 @@
 @use 'psa-shared' as *;
 
-@include psa-fonts;
-
 :root {
   @include psa-header-root-vars;
 }
@@ -168,7 +166,7 @@
     padding: 8px 12px;
     border-radius: 8px;
     color: var(--psa-ink);
-    font-family: $psa-font-mono;
+    font-family: $psa-font-sans;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0;

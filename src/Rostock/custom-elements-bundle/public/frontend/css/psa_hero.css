@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Roboto+Mono:wght@400&display=swap");
+@font-face {
+  font-family: "Aspekta";
+  src: url("/bundles/customelements/frontend/fonts/AspektaVF.woff2") format("woff2"), url("/files/tpl/fonts/aspekta/AspektaVF.woff2") format("woff2");
+  font-weight: 50 1000;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --psa-hero-ink: #222f30;
   --psa-hero-graphite: #4d5757;
@@ -42,7 +48,7 @@ body.has-psa-hero {
   width: 100%;
   max-width: 100%;
   margin-inline: 0;
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
   isolation: isolate;
   overflow-x: clip;
 }

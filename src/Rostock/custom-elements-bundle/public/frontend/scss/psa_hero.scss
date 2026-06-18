@@ -2,8 +2,6 @@
 
 @use 'psa-shared' as *;
 
-@include psa-fonts;
-
 :root {
   @include psa-hero-root-vars;
 }

@@ -9,8 +9,10 @@ $psa-lichen: #c9cbbe;
 $psa-lime: #cef79e;
 
 // —— Typography ——
-$psa-font-sans: 'DM Sans', system-ui, sans-serif;
-$psa-font-mono: 'Roboto Mono', ui-monospace, monospace;
+$psa-font-sans: 'Aspekta', -apple-system, BlinkMacSystemFont, 'avenir next', avenir, 'segoe ui',
+  'helvetica neue', helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+$psa-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+  'Courier New', monospace;
 
 // —— Motion ——
 $psa-ease: cubic-bezier(0.25, 1, 0.5, 1);

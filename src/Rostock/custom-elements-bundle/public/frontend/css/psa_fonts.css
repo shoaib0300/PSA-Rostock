@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Aspekta";
+  src: url("/bundles/customelements/frontend/fonts/AspektaVF.woff2") format("woff2"), url("/files/tpl/fonts/aspekta/AspektaVF.woff2") format("woff2");
+  font-weight: 50 1000;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,60 @@
+@use 'variables' as *;
+@use 'fonts' as f;
+
+html,
+body {
+  @include f.psa-font-base;
+  font-family: $psa-font-sans !important;
+}
+
+#wrapper,
+#container,
+#main,
+#header,
+#footer,
+.mod_article,
+.mod_article .inside,
+.mod_html_header,
+.content-text-double,
+.content-rs-text-image,
+.content-rs-slider,
+.ce_psa_hero,
+.psa-hero,
+.psa-header {
+  font-family: $psa-font-sans !important;
+}
+
+body {
+  color: $psa-ink;
+  background-color: $psa-bone;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+p,
+li,
+label,
+a,
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: $psa-font-mono;
+}

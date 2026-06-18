@@ -1,4 +1,6 @@
 <?php
+$mainCss = \Contao\Controller::addAssetsUrlTo('files/tpl/css/main.css') . '?v=3';
+$fontUrl = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/fonts/AspektaVF.woff2');
 
 $this->rootAttributes = $this
     ->attrs()
@@ -52,10 +54,23 @@ $this->bodyAttributes = $this->bodyAttributes
     <?php endif; ?>
 
     <?= $this->viewport ?>
-    <?= $this->framework ?>
     <?= $this->stylesheets ?>
     <?= $this->mooScripts ?>
     <?= $this->head ?>
+    <link rel="preload" href="<?= $fontUrl ?>" as="font" type="font/woff2" crossorigin>
+    <style>
+      @font-face {
+        font-family: 'Aspekta';
+        src: url('<?= $fontUrl ?>') format('woff2');
+        font-weight: 50 1000;
+        font-style: normal;
+        font-display: swap;
+      }
+      html, body {
+        font-family: 'Aspekta', -apple-system, BlinkMacSystemFont, 'avenir next', avenir, 'segoe ui', 'helvetica neue', helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif !important;
+      }
+    </style>
+    <link rel="stylesheet" href="<?= $mainCss ?>">
   <?php $this->endblock(); ?>
 
 </head>
@@ -128,5 +143,6 @@ $this->bodyAttributes = $this->bodyAttributes
 
   <?= $this->mootools ?>
   <?= $this->jsonLdScripts ?>
+  <script src="/files/tpl/js/bootstrap.bundle.min.js" defer></script>
 </body>
 </html>
