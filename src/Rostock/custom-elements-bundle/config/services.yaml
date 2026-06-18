@@ -7,4 +7,4 @@ services:
 
     Rostock\CustomElementsBundle\:
         resource: ../src
-        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements}
+        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements,Module}

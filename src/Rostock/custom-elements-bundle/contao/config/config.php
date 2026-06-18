@@ -1,9 +1,10 @@
 <?php
 
 use Contao\System;
-use Rostock\CustomElementsBundle\Models\QuickBookerModel;
-use Rostock\CustomElementsBundle\Models\CopyrightModel;
 use Rostock\CustomElementsBundle\Elements\ContentFilesCopyright;
+use Rostock\CustomElementsBundle\Models\CopyrightModel;
+use Rostock\CustomElementsBundle\Models\QuickBookerModel;
+use Rostock\CustomElementsBundle\Module\PsaModuleRegistration;
 
 // Back end modules
 $GLOBALS['BE_MOD']['booking_management']['quickbooker_module'] = [
@@ -23,6 +24,8 @@ $GLOBALS['TL_MODELS']['tl_copyright'] = CopyrightModel::class;
 $GLOBALS['TL_CTE']['includes']['files_copyright'] = ContentFilesCopyright::class;
 
 $GLOBALS['TL_BODY']['quick_booker_custom'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/easepick-custom.js');
+
+$GLOBALS['FE_MOD']['application']['registration'] = PsaModuleRegistration::class;
 
 System::loadLanguageFile('defaults', 'de');
 System::loadLanguageFile('defaults', 'en');

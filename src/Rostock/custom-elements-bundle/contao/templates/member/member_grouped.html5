@@ -1,0 +1,79 @@
+<?php
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_member_forms.css') . '?v=1';
+$assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
+?>
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php
+
+$this->wrapperAttributes = $this
+    ->attrs($this->cssID)
+    ->addClass([$this->class, 'block', 'psa-member-form'])
+    ->addStyle($this->style ?? '')
+    ->mergeWith($this->wrapperAttributes)
+;
+
+?>
+
+<?php $this->block('content'); ?>
+
+<link rel="stylesheet" href="<?= $assetCss ?>">
+<link rel="stylesheet" href="<?= $assetButtonCss ?>">
+
+<section class="psa-member-form__shell">
+    <div class="<?= CeHelpers::psaContainerClass(false) ?>">
+        <?php if ($this->headline && empty($this->hideHeadline)): ?>
+            <?= $this->headline ?>
+        <?php endif; ?>
+
+        <?php if ($this->message): ?>
+            <div class="psa-member-form__message psa-member-form__message--success" role="status">
+                <?= $this->message ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->hasError ?? false): ?>
+            <div class="psa-member-form__message psa-member-form__message--error" role="alert">
+                <?= $this->trans('ERR.form') ?>
+            </div>
+        <?php endif; ?>
+
+        <form id="<?= $this->formId ?>" class="psa-member-form__form" method="post" enctype="<?= $this->enctype ?>">
+            <div class="formbody">
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+
+                <?php foreach ($this->categories as $legend => $category): ?>
+                    <fieldset class="psa-member-form__fieldset">
+                        <?php if ($legend): ?>
+                            <legend class="psa-member-form__legend"><?= $legend ?></legend>
+                            <?php if ($legend === ($this->profileDetails ?? '') || str_contains((string) $legend, 'Community')): ?>
+                                <p class="psa-member-form__hint"><?= $this->profileHint ?? 'Fill in your university or whether you have family in Rostock — you do not need both.' ?></p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <div class="psa-member-form__grid">
+                            <?= implode('', $category) ?>
+                        </div>
+                    </fieldset>
+                <?php endforeach; ?>
+
+                <div class="psa-member-form__actions">
+                    <?= CeHelpers::renderPsaButton($this->slabel ?? 'Submit', [
+                        'type' => 'submit',
+                        'class' => 'psa-member-form__submit',
+                    ]) ?>
+                </div>
+
+                <?php if (str_contains((string) ($this->formId ?? ''), 'tl_registration')): ?>
+                    <div class="psa-member-form__footer">
+                        <a class="psa-member-form__link" href="/login">Already have an account? Log in</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</section>
+
+<?php $this->endblock(); ?>

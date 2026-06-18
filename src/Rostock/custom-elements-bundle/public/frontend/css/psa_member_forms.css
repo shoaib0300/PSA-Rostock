@@ -1,0 +1,251 @@
+@font-face {
+  font-family: "Aspekta";
+  src: url("/bundles/customelements/frontend/fonts/AspektaVF.woff2") format("woff2"), url("/files/tpl/fonts/aspekta/AspektaVF.woff2") format("woff2");
+  font-weight: 50 1000;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --psa-container-max: 1366px;
+  --psa-container-width: 100%;
+  --psa-container-padding-x: 12px;
+  --psa-section-padding-y: clamp(2.5rem, 4vw, 5rem);
+  --psa-section-padding-y-sm: clamp(1.5rem, 3vw, 2.5rem);
+  --psa-container-gutter: 1.5rem;
+  --psa-site-rail: 12px;
+  --psa-site-rail-x: 14px;
+  --psa-site-logo-pad-x: 14px;
+  --psa-site-content-width: calc(100% - 40px);
+  --psa-hero-frame-inset: 8px;
+  --psa-hero-frame-radius: 20px;
+}
+
+@media (min-width: 992px) {
+  :root {
+    --psa-container-padding-x: clamp(12px, 2vw, 32px);
+    --psa-container-width: min(calc(100% - 32px), 1366px);
+    --psa-site-rail: clamp(12px, 2vw, 32px);
+    --psa-site-rail-x: clamp(12px, 2vw, 32px);
+    --psa-site-logo-pad-x: 14px;
+    --psa-site-content-width: min(calc(100% - 32px), 1366px);
+    --psa-hero-frame-inset: 12px;
+    --psa-hero-frame-radius: 24px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1399px) {
+  :root {
+    --psa-site-logo-pad-x: clamp(8px, 0.9vw, 14px);
+  }
+}
+@media (min-width: 1400px) {
+  :root {
+    --psa-container-padding-x: 32px;
+    --psa-container-width: 1366px;
+    --psa-site-rail: 32px;
+    --psa-site-rail-x: 32px;
+    --psa-site-content-width: 1366px;
+  }
+}
+@media (max-width: 991px) {
+  :root {
+    --psa-container-padding-x: 16px;
+    --psa-container-width: calc(100% - 32px);
+    --psa-site-rail: 16px;
+    --psa-site-rail-x: 26px;
+    --psa-site-logo-pad-x: 14px;
+    --psa-site-content-width: calc(100% - 32px);
+  }
+}
+.psa-screen {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-block: var(--psa-section-padding-y);
+}
+.psa-screen--compact {
+  padding-block: var(--psa-section-padding-y-sm);
+}
+.psa-screen--flush {
+  padding-block: 0;
+}
+
+.psa-container {
+  box-sizing: border-box;
+  width: var(--psa-container-width);
+  max-width: var(--psa-container-max);
+  margin-inline: auto;
+  padding-inline: var(--psa-container-padding-x);
+}
+.psa-container--full {
+  width: 100%;
+  max-width: none;
+}
+.psa-container__inner {
+  width: 100%;
+}
+
+.psa-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--psa-container-gutter);
+  width: 100%;
+}
+
+.psa-grid__col {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+@media (min-width: 992px) {
+  .psa-grid__col {
+    flex: 1 1 calc(50% - var(--psa-container-gutter) / 2);
+  }
+}
+
+.mod_registration,
+.mod_personalData,
+.mod_login,
+.psa-member-form {
+  font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+}
+
+.psa-member-form__shell {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+.psa-member-form__legend {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 600;
+  color: #222f30;
+  margin-bottom: 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.psa-member-form__fieldset {
+  border: 0;
+  margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+  padding: 0;
+}
+
+.psa-member-form__hint {
+  margin: -0.25rem 0 1rem;
+  color: #4d5757;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.psa-member-form__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 992px) {
+  .psa-member-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.psa-member-form__grid .widget {
+  min-width: 0;
+}
+
+.psa-member-form__message {
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.psa-member-form__message--success {
+  background: rgba(206, 247, 158, 0.35);
+  color: #222f30;
+}
+.psa-member-form__message--error {
+  background: rgba(220, 53, 69, 0.1);
+  color: #842029;
+}
+
+.psa-member-form__info {
+  margin-bottom: 1rem;
+  color: #4d5757;
+}
+
+.psa-member-form__form {
+  max-width: 720px;
+}
+.psa-member-form__form label,
+.psa-member-form__form .form-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #222f30;
+}
+.psa-member-form__form .form-control,
+.psa-member-form__form .text,
+.psa-member-form__form select,
+.psa-member-form__form textarea,
+.psa-member-form__form input.upload,
+.psa-member-form__form input[type=file] {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid rgba(34, 47, 48, 0.15);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #222f30;
+  font: inherit;
+  box-sizing: border-box;
+}
+.psa-member-form__form .form-control:focus,
+.psa-member-form__form .text:focus,
+.psa-member-form__form select:focus,
+.psa-member-form__form textarea:focus,
+.psa-member-form__form input.upload:focus,
+.psa-member-form__form input[type=file]:focus {
+  outline: none;
+  border-color: #222f30;
+  box-shadow: 0 0 0 3px rgba(206, 247, 158, 0.45);
+}
+.psa-member-form__form .error {
+  color: #842029;
+  font-size: 0.8125rem;
+  margin-top: 0.35rem;
+}
+.psa-member-form__form .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+.psa-member-form__form .form-check-input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.psa-member-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.psa-member-form__footer {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(34, 47, 48, 0.1);
+}
+
+.psa-member-form__link {
+  color: #222f30;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.psa-member-form__link:hover, .psa-member-form__link:focus-visible {
+  color: #4d5757;
+}
+
+.mod_login.logout .psa-member-form__form {
+  max-width: 480px;
+}

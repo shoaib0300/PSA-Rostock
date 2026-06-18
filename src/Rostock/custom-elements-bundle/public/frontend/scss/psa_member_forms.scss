@@ -1,0 +1,156 @@
+@use 'psa-shared' as *;
+
+.mod_registration,
+.mod_personalData,
+.mod_login,
+.psa-member-form {
+  font-family: $psa-font-sans;
+}
+
+.psa-member-form__shell {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+.psa-member-form__legend {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 600;
+  color: $psa-ink;
+  margin-bottom: 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.psa-member-form__fieldset {
+  border: 0;
+  margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+  padding: 0;
+}
+
+.psa-member-form__hint {
+  margin: -0.25rem 0 1rem;
+  color: $psa-graphite;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.psa-member-form__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @include min-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .widget {
+    min-width: 0;
+  }
+}
+
+.psa-member-form__message {
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+
+  &--success {
+    background: rgba($psa-lime, 0.35);
+    color: $psa-ink;
+  }
+
+  &--error {
+    background: rgba(#dc3545, 0.1);
+    color: #842029;
+  }
+}
+
+.psa-member-form__info {
+  margin-bottom: 1rem;
+  color: $psa-graphite;
+}
+
+.psa-member-form__form {
+  max-width: 720px;
+
+  label,
+  .form-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $psa-ink;
+  }
+
+  .form-control,
+  .text,
+  select,
+  textarea,
+  input.upload,
+  input[type='file'] {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid rgba($psa-ink, 0.15);
+    border-radius: 10px;
+    background: $psa-paper;
+    color: $psa-ink;
+    font: inherit;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $psa-ink;
+      box-shadow: 0 0 0 3px rgba($psa-lime, 0.45);
+    }
+  }
+
+  .error {
+    color: #842029;
+    font-size: 0.8125rem;
+    margin-top: 0.35rem;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+  }
+
+  .form-check-input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+  }
+}
+
+.psa-member-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.psa-member-form__footer {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba($psa-ink, 0.1);
+}
+
+.psa-member-form__link {
+  color: $psa-ink;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+
+  @include focus-hover {
+    color: $psa-graphite;
+  }
+}
+
+.mod_login.logout {
+  .psa-member-form__form {
+    max-width: 480px;
+  }
+}

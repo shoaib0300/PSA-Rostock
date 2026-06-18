@@ -1,0 +1,115 @@
+<?php
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_member_forms.css') . '?v=1';
+$assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
+?>
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php
+
+$this->wrapperAttributes = $this
+    ->attrs()
+    ->addClass([$this->logout ? 'logout' : 'login', 'mod_login', 'block', 'psa-member-form'])
+    ->mergeWith($this->wrapperAttributes)
+;
+
+?>
+
+<?php $this->block('content'); ?>
+
+<link rel="stylesheet" href="<?= $assetCss ?>">
+<link rel="stylesheet" href="<?= $assetButtonCss ?>">
+
+<section class="psa-member-form__shell">
+    <div class="<?= CeHelpers::psaContainerClass(false) ?>">
+        <?php if ($this->headline): ?>
+            <?= $this->headline ?>
+        <?php endif; ?>
+
+        <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" class="psa-member-form__form" method="post">
+            <div class="formbody">
+                <?php if ($this->message): ?>
+                    <div class="psa-member-form__message psa-member-form__message--error" role="alert">
+                        <?= $this->message ?>
+                    </div>
+                <?php endif; ?>
+
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+                <input type="hidden" name="_target_path" value="<?= $this->targetPath ?>">
+                <input type="hidden" name="_always_use_target_path" value="<?= $this->forceTargetPath ?>">
+
+                <?php if ($this->remembered): ?>
+                    <input type="hidden" name="username" value="<?= $this->value ?>">
+                    <input type="hidden" name="autologin" value="<?= $this->autologin ? '1' : '' ?>">
+                <?php endif; ?>
+
+                <?php if ($this->logout): ?>
+                    <div class="psa-member-form__info">
+                        <p class="login_info"><?= $this->loggedInAs ?><br><?= $this->lastLogin ?></p>
+                    </div>
+                <?php elseif ($this->twoFactorEnabled): ?>
+                    <h3 class="psa-member-form__legend"><?= $this->twoFactorAuthentication ?></h3>
+                    <div class="widget widget-text mb-3">
+                        <label class="form-label" for="verify"><?= $this->authCode ?></label>
+                        <input type="text" name="verify" id="verify" class="form-control" value="" autocapitalize="off" autocomplete="one-time-code" required>
+                    </div>
+                    <div class="widget widget-checkbox mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="trusted" id="trusted" value="1" class="form-check-input">
+                            <label class="form-check-label" for="trusted"><?= $this->trans('MSC.twoFactorTrustDevice') ?></label>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php if ($this->remembered): ?>
+                        <div class="psa-member-form__info">
+                            <p class="login_info"><?= $this->loggedInAs ?><br><?= $this->reauthenticate ?></p>
+                        </div>
+                    <?php else: ?>
+                        <div class="widget widget-text mb-3">
+                            <label class="form-label" for="username"><?= $this->username ?></label>
+                            <input type="text" name="username" id="username" class="form-control" value="<?= $this->value ?>" autocapitalize="off" autocomplete="username" required>
+                        </div>
+                    <?php endif; ?>
+                    <div class="widget widget-password mb-3">
+                        <label class="form-label" for="password"><?= $this->password ?></label>
+                        <input type="password" name="password" id="password" class="form-control" value="" autocomplete="current-password" required>
+                    </div>
+                    <?php if ($this->autologin && !$this->remembered): ?>
+                        <div class="widget widget-checkbox mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="autologin" id="autologin" value="1" class="form-check-input">
+                                <label class="form-check-label" for="autologin"><?= $this->autoLabel ?></label>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <div class="psa-member-form__actions">
+                    <?= CeHelpers::renderPsaButton($this->slabel ?? 'Login', [
+                        'type' => 'submit',
+                        'class' => 'psa-member-form__submit',
+                    ]) ?>
+                    <?php if ($this->twoFactorEnabled): ?>
+                        <a class="psa-member-form__link" href="<?= $this->route('contao_frontend_logout') ?>"><?= $this->cancel ?> ›</a>
+                    <?php endif; ?>
+                </div>
+
+                <?php if ($this->pwResetUrl): ?>
+                    <div class="psa-member-form__footer">
+                        <a class="psa-member-form__link" href="<?= $this->pwResetUrl ?>"><?= $this->trans('MSC.lostPassword') ?></a>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$this->logout && !$this->twoFactorEnabled): ?>
+                    <div class="psa-member-form__footer">
+                        <a class="psa-member-form__link" href="/register">Create an account</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</section>
+
+<?php $this->endblock(); ?>
