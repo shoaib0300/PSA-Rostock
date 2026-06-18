@@ -1,0 +1,268 @@
+@use 'sass:color';
+@use '../../../../../../files/tpl/scss/variables' as *;
+
+.psa-team {
+  max-width: $psa-container-max;
+  margin: 0 auto;
+  padding: $psa-section-padding-y-sm $psa-container-gutter 3rem;
+  font-family: $psa-font-sans;
+
+  &__title {
+    margin: 0 0 clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: $psa-ink;
+    text-align: center;
+  }
+
+  &__empty {
+    margin: 0;
+    text-align: center;
+    color: $psa-graphite;
+    font-style: italic;
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+}
+
+.psa-team-card {
+  --rotateX: 0deg;
+  --rotateY: 0deg;
+
+  position: relative;
+  width: min(100%, 20rem);
+  min-height: 28rem;
+  aspect-ratio: 5 / 7;
+  color: $psa-paper;
+  perspective: 50rem;
+  transform-style: preserve-3d;
+  cursor: default;
+
+  &__shadow,
+  &__image,
+  &__placeholder {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.35rem;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  &__shadow {
+    opacity: 0.75;
+    box-shadow: 0 -1.5rem 2rem -0.5rem rgba($psa-ink, 0.55);
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 2rem, -2rem);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: blur(1.75rem) saturate(0.85);
+      transform: scale(1.08);
+    }
+  }
+
+  &__image {
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    &--bg {
+      transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 0, 0);
+
+      &::after {
+        background: linear-gradient(
+          to top,
+          rgba($psa-ink, 0.88) 0%,
+          rgba($psa-ink, 0.35) 42%,
+          transparent 68%
+        );
+      }
+    }
+
+    &--lift {
+      transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 0, 4rem) scale(0.94);
+      z-index: 3;
+      box-shadow: 0 1rem 2rem rgba($psa-ink, 0.18);
+
+      &::after {
+        background: linear-gradient(to top, rgba($psa-ink, 0.55) 0%, transparent 45%);
+      }
+    }
+  }
+
+  &__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(160deg, rgba($psa-lime, 0.45) 0%, rgba($psa-ink, 0.12) 100%),
+      $psa-bone;
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 0, 0);
+    z-index: 2;
+
+    span {
+      font-size: 4.5rem;
+      font-weight: 700;
+      line-height: 1;
+      color: $psa-ink;
+      opacity: 0.35;
+    }
+  }
+
+  &__content {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 0, 6rem);
+  }
+
+  &__name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-shadow: 0 0 1.5rem rgba($psa-ink, 0.65);
+  }
+
+  &__meta {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  &__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba($psa-lime, 0.92);
+    text-shadow: 0 0 1rem rgba($psa-ink, 0.45);
+  }
+
+  &__value {
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: $psa-paper;
+    text-shadow: 0 0 1rem rgba($psa-ink, 0.55);
+    word-break: break-word;
+  }
+
+  &__link {
+    color: inherit;
+    text-decoration: none;
+    transition: color $psa-transition;
+
+    &:hover,
+    &:focus-visible {
+      color: $psa-lime;
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1.25rem;
+    border: $psa-lime 0.35rem solid;
+    border-radius: 0.2rem;
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) translate3d(0, 0, 2rem);
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  &--border-left::before {
+    border-left-color: transparent;
+  }
+
+  &--border-right::before {
+    border-right-color: transparent;
+  }
+
+  &--border-bottom::before {
+    border-bottom-color: transparent;
+  }
+
+  &--placeholder::before {
+    border-color: rgba($psa-ink, 0.2);
+  }
+
+  &--placeholder &__content {
+    color: $psa-ink;
+  }
+
+  &--placeholder &__name {
+    text-shadow: none;
+  }
+
+  &--placeholder &__label {
+    color: $psa-graphite;
+    text-shadow: none;
+  }
+
+  &--placeholder &__value {
+    color: $psa-ink;
+    text-shadow: none;
+  }
+
+  &--placeholder &__link:hover,
+  &--placeholder &__link:focus-visible {
+    color: color.adjust($psa-ink, $lightness: -6%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psa-team-card {
+    perspective: none;
+
+    &__shadow,
+    &__image,
+    &__placeholder,
+    &__content,
+    &::before {
+      transform: none !important;
+    }
+  }
+}
+
+@media (max-width: $psa-bp-mobile) {
+  .psa-team-card {
+    width: min(100%, 17.5rem);
+    min-height: 24rem;
+  }
+}

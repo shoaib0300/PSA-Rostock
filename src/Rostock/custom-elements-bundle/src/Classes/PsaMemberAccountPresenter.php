@@ -9,6 +9,7 @@ use Contao\Date;
 use Contao\FilesModel;
 use Contao\FrontendUser;
 use Contao\StringUtil;
+use Contao\Validator;
 use Contao\System;
 
 final class PsaMemberAccountPresenter
@@ -182,7 +183,7 @@ final class PsaMemberAccountPresenter
     private static function resolveAvatarUuid(mixed $value): ?string
     {
         if (\is_string($value) && $value !== '') {
-            if (StringUtil::isUuid($value)) {
+            if (Validator::isStringUuid($value)) {
                 return $value;
             }
 

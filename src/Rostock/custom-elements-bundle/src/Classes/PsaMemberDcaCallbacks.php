@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\Classes;
 
 use Contao\StringUtil;
+use Contao\Validator;
 
 final class PsaMemberDcaCallbacks
 {
@@ -17,7 +18,7 @@ final class PsaMemberDcaCallbacks
         }
 
         if (\is_string($value) && $value !== '') {
-            return StringUtil::isUuid($value) ? StringUtil::uuidToBin($value) : $value;
+            return Validator::isStringUuid($value) ? StringUtil::uuidToBin($value) : $value;
         }
 
         return null;

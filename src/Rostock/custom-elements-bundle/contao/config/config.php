@@ -8,7 +8,7 @@ use Rostock\CustomElementsBundle\Models\PsaMeetupJoinModel;
 use Rostock\CustomElementsBundle\Models\PsaMeetupPollOptionModel;
 use Rostock\CustomElementsBundle\Models\PsaMeetupPollVoteModel;
 use Rostock\CustomElementsBundle\Models\PsaMeetupModel;
-use Rostock\CustomElementsBundle\Models\QuickBookerModel;
+use Rostock\CustomElementsBundle\Models\PsaTeamMemberModel;
 use Rostock\CustomElementsBundle\Module\PsaModuleLostPassword;
 use Rostock\CustomElementsBundle\Module\PsaModuleRegistration;
 
@@ -19,6 +19,10 @@ $GLOBALS['BE_MOD']['booking_management']['quickbooker_module'] = [
 
 $GLOBALS['BE_MOD']['psa_community']['psa_meetups'] = [
     'tables' => ['tl_psa_meetup'],
+];
+
+$GLOBALS['BE_MOD']['psa_community']['psa_team'] = [
+    'tables' => ['tl_psa_team_member'],
 ];
 
 $GLOBALS['BE_MOD']['system']['copyright'] = array(
@@ -36,6 +40,7 @@ $GLOBALS['TL_MODELS']['tl_psa_meetup_join'] = PsaMeetupJoinModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_meetup_comment'] = PsaMeetupCommentModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_option'] = PsaMeetupPollOptionModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_vote'] = PsaMeetupPollVoteModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_team_member'] = PsaTeamMemberModel::class;
 
 $GLOBALS['TL_CTE']['includes']['files_copyright'] = ContentFilesCopyright::class;
 
@@ -52,3 +57,5 @@ System::loadLanguageFile('psa_events', 'de');
 System::loadLanguageFile('psa_events', 'en');
 System::loadLanguageFile('psa_meetups', 'de');
 System::loadLanguageFile('psa_meetups', 'en');
+System::loadLanguageFile('psa_team', 'de');
+System::loadLanguageFile('psa_team', 'en');

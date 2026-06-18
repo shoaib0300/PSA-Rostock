@@ -21,6 +21,9 @@ services:
     Rostock\CustomElementsBundle\Classes\PsaMeetup:
         autowire: true
 
+    Rostock\CustomElementsBundle\Classes\PsaTeam:
+        autowire: true
+
     contao.security.frontend_user_provider:
         class: Rostock\CustomElementsBundle\Security\PsaFrontendUserProvider
         arguments:

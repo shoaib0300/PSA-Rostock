@@ -1,0 +1,94 @@
+<?php
+
+$lang = is_array($this->lang ?? null) ? $this->lang : [];
+$members = is_array($this->members ?? null) ? $this->members : [];
+$borderVariants = [
+    'psa-team-card--border-left',
+    'psa-team-card--border-right psa-team-card--border-bottom',
+    'psa-team-card--border-left',
+];
+
+?>
+<div class="psa-team block" data-psa-team>
+  <?php if ($this->headline): ?>
+    <<?= $this->hl ?> class="psa-team__title"><?= htmlspecialchars((string) $this->headline, ENT_QUOTES) ?></<?= $this->hl ?>>
+  <?php endif; ?>
+
+  <?php if ($members === []): ?>
+    <p class="psa-team__empty"><?= $lang['team_empty'] ?? 'No team members yet.' ?></p>
+  <?php else: ?>
+    <div class="psa-team__grid">
+      <?php foreach ($members as $index => $member): ?>
+        <?php
+          $hasPhoto = !empty($member['photo']);
+          $photoSrc = $hasPhoto ? htmlspecialchars((string) $member['photo'], ENT_QUOTES) : '';
+          $photoAlt = htmlspecialchars((string) $member['name'], ENT_QUOTES);
+          $borderClass = $borderVariants[$index % \count($borderVariants)];
+          $cardClass = 'psa-team-card '.$borderClass.($hasPhoto ? '' : ' psa-team-card--placeholder');
+        ?>
+        <article class="<?= $cardClass ?>" data-psa-team-card>
+          <?php if ($hasPhoto): ?>
+            <div class="psa-team-card__shadow" aria-hidden="true">
+              <img src="<?= $photoSrc ?>" alt="">
+            </div>
+            <div class="psa-team-card__image psa-team-card__image--bg" aria-hidden="true">
+              <img src="<?= $photoSrc ?>" alt="">
+            </div>
+            <div class="psa-team-card__image psa-team-card__image--lift">
+              <img src="<?= $photoSrc ?>" alt="<?= $photoAlt ?>" width="320" height="448" loading="lazy">
+            </div>
+          <?php else: ?>
+            <div class="psa-team-card__placeholder" aria-hidden="true">
+              <span><?= htmlspecialchars(mb_strtoupper(mb_substr((string) $member['name'], 0, 1)), ENT_QUOTES) ?></span>
+            </div>
+          <?php endif; ?>
+
+          <div class="psa-team-card__content">
+            <h2 class="psa-team-card__name"><?= htmlspecialchars((string) $member['name'], ENT_QUOTES) ?></h2>
+
+            <ul class="psa-team-card__meta">
+              <?php if (!empty($member['position'])): ?>
+                <li class="psa-team-card__item">
+                  <span class="psa-team-card__label"><?= $lang['team_position'] ?? 'Position' ?></span>
+                  <span class="psa-team-card__value"><?= htmlspecialchars((string) $member['position'], ENT_QUOTES) ?></span>
+                </li>
+              <?php endif; ?>
+
+              <?php if (!empty($member['degree'])): ?>
+                <li class="psa-team-card__item">
+                  <span class="psa-team-card__label"><?= $lang['team_degree'] ?? 'Degree' ?></span>
+                  <span class="psa-team-card__value"><?= htmlspecialchars((string) $member['degree'], ENT_QUOTES) ?></span>
+                </li>
+              <?php endif; ?>
+
+              <?php if (!empty($member['university'])): ?>
+                <li class="psa-team-card__item">
+                  <span class="psa-team-card__label"><?= $lang['team_university'] ?? 'University' ?></span>
+                  <span class="psa-team-card__value"><?= htmlspecialchars((string) $member['university'], ENT_QUOTES) ?></span>
+                </li>
+              <?php endif; ?>
+
+              <?php if (!empty($member['email'])): ?>
+                <li class="psa-team-card__item">
+                  <span class="psa-team-card__label"><?= $lang['team_email'] ?? 'Email' ?></span>
+                  <a class="psa-team-card__value psa-team-card__link" href="mailto:<?= htmlspecialchars((string) $member['email'], ENT_QUOTES) ?>">
+                    <?= htmlspecialchars((string) $member['email'], ENT_QUOTES) ?>
+                  </a>
+                </li>
+              <?php endif; ?>
+
+              <?php if (!empty($member['phone'])): ?>
+                <li class="psa-team-card__item">
+                  <span class="psa-team-card__label"><?= $lang['team_phone'] ?? 'Phone' ?></span>
+                  <a class="psa-team-card__value psa-team-card__link" href="tel:<?= htmlspecialchars(preg_replace('/\s+/', '', (string) $member['phone']) ?? '', ENT_QUOTES) ?>">
+                    <?= htmlspecialchars((string) $member['phone'], ENT_QUOTES) ?>
+                  </a>
+                </li>
+              <?php endif; ?>
+            </ul>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+</div>

@@ -20,3 +20,9 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['psa_meetup'] =
     {protected_legend:hide},protected;
     {expert_legend:hide},cssID;
     {invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['psa_team'] =
+    '{title_legend},name,type,headline;
+    {protected_legend:hide},protected;
+    {expert_legend:hide},cssID;
+    {invisible_legend:hide},invisible,start,stop';
