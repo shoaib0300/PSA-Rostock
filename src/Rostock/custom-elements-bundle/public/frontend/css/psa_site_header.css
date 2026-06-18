@@ -188,41 +188,42 @@
 .psa-header__logo {
   position: relative;
   flex: 0 0 auto;
-  max-width: min(176px, 38vw);
+  max-width: min(200px, 58vw);
   pointer-events: auto;
-}
-.psa-header__logo::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(100% + 28px);
-  height: var(--psa-header-height-desktop);
-  transform: translate(-50%, -50%);
-  transform-origin: left center;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(34, 47, 48, 0.08);
-  border-radius: 12px;
-  z-index: 0;
 }
 .psa-header__logo-link {
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  min-height: 39px;
-  padding: 8px 14px;
+  min-height: 0;
+  padding: 4px 8px;
   text-decoration: none;
   color: var(--psa-ink);
+}
+.psa-header__logo-link::before {
+  content: "";
+  position: absolute;
+  inset: -4px -8px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(34, 47, 48, 0.08);
+  border-radius: 10px;
+  z-index: -1;
 }
 .psa-header__logo-img {
   display: block;
   width: auto;
-  max-width: 148px;
-  height: 28px;
+  max-width: 180px;
+  height: 48px;
   object-fit: contain;
+}
+.psa-header__logo-svg {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: 48px;
 }
 .psa-header__logo-text {
   font-size: 1.05rem;
@@ -290,6 +291,9 @@
   border: 1px solid var(--psa-ink);
   border-radius: 12px;
   background: var(--psa-ink);
+}
+.psa-header__user-menu--popup {
+  display: none;
 }
 .psa-header__user {
   display: inline-flex;
@@ -430,6 +434,9 @@
 .psa-header__popup-item--join {
   margin-top: 1.5rem;
 }
+.psa-header__popup-item--auth {
+  display: list-item;
+}
 .psa-header__popup-link, .psa-header__popup-menu--module .level_1 a {
   display: inline-flex;
   justify-content: center;
@@ -532,16 +539,23 @@ body.has-psa-header.has-psa-hero {
 }
 @media (min-width: 992px) and (max-width: 1399px) {
   .psa-header__logo {
-    max-width: clamp(108px, 11vw, 160px);
+    max-width: clamp(170px, 22vw, 200px);
+  }
+  .psa-header__logo-svg, .psa-header__logo-img {
+    height: clamp(40px, 4.5vw, 48px);
+    max-width: min(180px, 48vw);
+  }
+  .psa-header__logo-link {
+    padding: 4px clamp(6px, 0.8vw, 8px);
+  }
+  .psa-header__logo-link::before {
+    inset: -3px clamp(-6px, -0.8vw, -8px);
   }
   .psa-header__logo-text {
     font-size: clamp(0.82rem, 0.65rem + 0.45vw, 1.05rem);
   }
   .psa-header__logo-link {
     padding: 8px clamp(8px, 0.9vw, 14px);
-  }
-  .psa-header__logo::before {
-    width: calc(100% + clamp(14px, 2vw, 28px));
   }
   .psa-header__link, .psa-header__menu--module .level_1 a {
     min-height: clamp(34px, 3.1vw, 39px);
@@ -560,9 +574,12 @@ body.has-psa-header.has-psa-hero {
   .psa-header[data-navigation-status=active] .psa-header__logo-link {
     color: var(--psa-paper);
   }
-  .psa-header[data-navigation-status=active] .psa-header__logo::before {
+  .psa-header[data-navigation-status=active] .psa-header__logo-link::before {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.12);
+  }
+  .psa-header[data-navigation-status=active] .psa-header__logo::before {
+    display: none;
   }
   .psa-header__bar {
     left: var(--psa-hero-frame-inset);
@@ -586,6 +603,9 @@ body.has-psa-header.has-psa-hero {
     display: inline-flex !important;
     max-width: min(100vw - 120px, 280px);
   }
+  .psa-header__user-menu--popup {
+    display: none !important;
+  }
   .psa-header__user {
     max-width: min(130px, 34vw);
     min-height: 40px;
@@ -601,5 +621,23 @@ body.has-psa-header.has-psa-hero {
   }
   .psa-header__popup {
     display: block;
+  }
+}
+@media (max-width: 480px) {
+  .psa-header__user-menu--bar {
+    display: none !important;
+  }
+  .psa-header__user-menu--popup {
+    display: inline-flex !important;
+    align-self: center;
+    width: auto;
+    max-width: min(100% - 48px, 320px);
+    margin: auto 0 24px;
+  }
+  .psa-header__popup-item--auth {
+    display: none;
+  }
+  .psa-header__popup-menu {
+    padding-bottom: 12px;
   }
 }

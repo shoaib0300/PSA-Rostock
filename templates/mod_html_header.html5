@@ -2,7 +2,8 @@
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=12';
+$assetLogo = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/images/psa-logo.svg') . '?v=1';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=16';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
 
@@ -15,7 +16,6 @@ $registerUrl = $this->registerUrl ?? '/register';
 $accountUrl = $headerAuth['accountUrl'];
 $logoutUrl = $headerAuth['logoutUrl'];
 $memberDisplayName = $headerAuth['memberDisplayName'];
-$logoPath = $this->logoPath ?? '';
 $navigation = $this->navigation ?? '';
 $tagline = $this->tagline ?? '';
 ?>
@@ -26,11 +26,14 @@ $tagline = $this->tagline ?? '';
         <div class="psa-header__inner">
             <div class="psa-header__logo">
                 <a href="/" class="psa-header__logo-link" aria-label="<?= $siteName ?>">
-                    <?php if ($logoPath): ?>
-                        <img src="<?= $logoPath ?>" alt="<?= $siteName ?>" class="psa-header__logo-img" width="176" height="28">
-                    <?php else: ?>
-                        <span class="psa-header__logo-text"><?= $siteName ?></span>
-                    <?php endif; ?>
+                    <img
+                        src="<?= $assetLogo ?>"
+                        alt="<?= $siteName ?>"
+                        class="psa-header__logo-img"
+                        width="500"
+                        height="180"
+                        decoding="async"
+                    >
                 </a>
             </div>
 
@@ -61,7 +64,7 @@ $tagline = $this->tagline ?? '';
                 <?php endif; ?>
 
                 <?php if ($isLoggedIn && $memberDisplayName !== ''): ?>
-                    <div class="psa-header__user-menu">
+                    <div class="psa-header__user-menu psa-header__user-menu--bar">
                         <a
                             href="<?= $accountUrl ?>"
                             class="psa-header__user"
@@ -124,13 +127,13 @@ $tagline = $this->tagline ?? '';
                     <?php endforeach; ?>
 
                     <?php if ($isLoggedIn && $memberDisplayName !== ''): ?>
-                        <li class="psa-header__popup-item">
+                        <li class="psa-header__popup-item psa-header__popup-item--auth">
                             <a href="<?= $accountUrl ?>" class="psa-header__popup-link psa-header__popup-link--user">
                                 <?= $memberDisplayName ?>
                             </a>
                         </li>
                         <?php if ($logoutUrl): ?>
-                            <li class="psa-header__popup-item">
+                            <li class="psa-header__popup-item psa-header__popup-item--auth">
                                 <a href="<?= $logoutUrl ?>" class="psa-header__popup-link psa-header__popup-link--logout">
                                     <?= $this->trans('MSC.logout') ?>
                                 </a>
@@ -146,6 +149,27 @@ $tagline = $this->tagline ?? '';
                         </li>
                     <?php endif; ?>
                 </ul>
+            <?php endif; ?>
+
+            <?php if ($isLoggedIn && $memberDisplayName !== ''): ?>
+                <div class="psa-header__user-menu psa-header__user-menu--popup">
+                    <a
+                        href="<?= $accountUrl ?>"
+                        class="psa-header__user"
+                        aria-label="<?= $this->trans('MSC.personalData') ?>"
+                        title="<?= $this->trans('MSC.personalData') ?>"
+                    >
+                        <svg class="psa-header__user-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path fill="currentColor" d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5Z"/>
+                        </svg>
+                        <span class="psa-header__user-name"><?= $memberDisplayName ?></span>
+                    </a>
+                    <?php if ($logoutUrl): ?>
+                        <a href="<?= $logoutUrl ?>" class="psa-header__logout">
+                            <?= $this->trans('MSC.logout') ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
 
             <?php if ($tagline): ?>

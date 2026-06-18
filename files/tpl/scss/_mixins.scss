@@ -30,6 +30,12 @@
   }
 }
 
+@mixin max-header-compact {
+  @media (max-width: $psa-bp-header-compact) {
+    @content;
+  }
+}
+
 @mixin focus-hover {
   &:hover,
   &:focus-visible {
