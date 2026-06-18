@@ -114,7 +114,7 @@ class InstallMemberPagesCommand extends Command
 
         $accountModuleId = $this->ensureModule($io, 'PSA Account', 'personalData', [
             'editable' => serialize(self::ACCOUNT_FIELDS),
-            'memberTpl' => 'member_grouped',
+            'memberTpl' => 'member_account',
             'jumpTo' => $accountPageId,
             'headline' => serialize(['unit' => 'h1', 'value' => 'My account']),
         ]);

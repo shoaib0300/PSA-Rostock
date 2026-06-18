@@ -9,6 +9,15 @@ $GLOBALS['TL_LANG']['PSA']['member_flash'] = [
 
 $GLOBALS['TL_LANG']['PSA']['login_identifier'] = 'Benutzername oder E-Mail';
 
+$GLOBALS['TL_LANG']['PSA']['account_edit'] = 'Bearbeiten';
+$GLOBALS['TL_LANG']['PSA']['account_save'] = 'Speichern';
+$GLOBALS['TL_LANG']['PSA']['account_cancel'] = 'Abbrechen';
+$GLOBALS['TL_LANG']['PSA']['account_required_badge'] = 'Pflichtfeld';
+$GLOBALS['TL_LANG']['PSA']['account_required_empty'] = 'Bitte ausfüllen';
+$GLOBALS['TL_LANG']['PSA']['account_empty_value'] = '—';
+$GLOBALS['TL_LANG']['PSA']['account_password_masked'] = '••••••••';
+$GLOBALS['TL_LANG']['PSA']['account_avatar_set'] = 'Foto hochgeladen';
+
 $GLOBALS['TL_LANG']['PSA']['password_reset_email'] = <<<'TEXT'
 Hallo ##firstname## ##lastname##,
 

@@ -251,3 +251,130 @@
 .mod_login.logout .psa-member-form__form {
   max-width: 480px;
 }
+
+.psa-member-account .psa-member-form__form {
+  max-width: 760px;
+}
+
+.psa-member-account__legend {
+  margin: 0 0 1rem;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 600;
+  color: #222f30;
+}
+
+.psa-member-account__section + .psa-member-account__section {
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+.psa-member-account__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.psa-account-field {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(34, 47, 48, 0.1);
+  border-radius: 12px;
+  background: #ffffff;
+}
+.psa-account-field--required-empty {
+  border-color: rgba(220, 53, 69, 0.35);
+  background: rgba(220, 53, 69, 0.03);
+}
+.psa-account-field.is-editing {
+  border-color: rgba(34, 47, 48, 0.22);
+  box-shadow: 0 8px 24px rgba(34, 47, 48, 0.06);
+}
+.psa-account-field__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.55rem;
+}
+.psa-account-field__labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+}
+.psa-account-field__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222f30;
+}
+.psa-account-field__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(34, 47, 48, 0.07);
+  color: #4d5757;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.psa-account-field__badge--alert {
+  background: rgba(220, 53, 69, 0.12);
+  color: #842029;
+}
+.psa-account-field__edit {
+  flex-shrink: 0;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(34, 47, 48, 0.18);
+  border-radius: 999px;
+  background: #fff;
+  color: #222f30;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.psa-account-field__edit:hover, .psa-account-field__edit:focus-visible {
+  border-color: #222f30;
+  background: rgba(206, 247, 158, 0.25);
+}
+.psa-account-field__value {
+  color: #222f30;
+  font-size: 1rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.psa-account-field__avatar {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.psa-account-field__editor {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(34, 47, 48, 0.08);
+}
+.psa-account-field__editor .widget {
+  margin-bottom: 0.75rem;
+}
+.psa-account-field__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+.psa-account-field__cancel {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #4d5757;
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+.psa-account-field__cancel:hover, .psa-account-field__cancel:focus-visible {
+  color: #222f30;
+}

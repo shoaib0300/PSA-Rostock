@@ -118,13 +118,7 @@ final class PsaMeetup
     {
         $meetup = $this->getPublishedMeetup($meetupId);
 
-        if ($meetup === null) {
-            throw new \InvalidArgumentException('Invalid poll.');
-        }
-
-        $pollQuestion = trim((string) ($meetup['poll']['question'] ?? ''));
-
-        if ($pollQuestion === '') {
+        if ($meetup === null || ($meetup['pollQuestion'] ?? '') === '') {
             throw new \InvalidArgumentException('Invalid poll.');
         }
 

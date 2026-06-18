@@ -1,0 +1,120 @@
+<?php
+
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_member_forms.css') . '?v=2';
+$assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_member_account.js') . '?v=1';
+$lang = $GLOBALS['TL_LANG']['PSA'] ?? [];
+$groups = is_array($this->accountGroups ?? null) ? $this->accountGroups : [];
+
+?>
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php
+
+$this->wrapperAttributes = $this
+    ->attrs($this->cssID)
+    ->addClass([$this->class, 'block', 'psa-member-form', 'psa-member-account'])
+    ->addStyle($this->style ?? '')
+    ->mergeWith($this->wrapperAttributes)
+;
+
+?>
+
+<?php $this->block('content'); ?>
+
+<link rel="stylesheet" href="<?= $assetCss ?>">
+<link rel="stylesheet" href="<?= $assetButtonCss ?>">
+<script src="<?= $assetJs ?>" defer></script>
+
+<section class="psa-member-form__shell">
+    <div class="<?= CeHelpers::psaContainerClass(false) ?>">
+        <?php if ($this->headline && empty($this->hideHeadline)): ?>
+            <?= $this->headline ?>
+        <?php endif; ?>
+
+        <?php if ($this->message): ?>
+            <div class="psa-member-form__message psa-member-form__message--success" role="status">
+                <?= $this->message ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->hasError ?? false): ?>
+            <div class="psa-member-form__message psa-member-form__message--error" role="alert">
+                <?= $this->trans('ERR.form') ?>
+            </div>
+        <?php endif; ?>
+
+        <form id="<?= $this->formId ?>" class="psa-member-form__form psa-member-account__form" method="post" enctype="<?= $this->enctype ?>" data-psa-member-account>
+            <div class="formbody">
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+
+                <?php foreach ($groups as $group): ?>
+                    <section class="psa-member-account__section">
+                        <?php if (($group['legend'] ?? '') !== ''): ?>
+                            <h2 class="psa-member-account__legend"><?= htmlspecialchars((string) $group['legend'], ENT_QUOTES) ?></h2>
+                        <?php endif; ?>
+
+                        <?php if (($group['hint'] ?? '') !== ''): ?>
+                            <p class="psa-member-form__hint"><?= htmlspecialchars((string) $group['hint'], ENT_QUOTES) ?></p>
+                        <?php endif; ?>
+
+                        <div class="psa-member-account__fields">
+                            <?php foreach ($group['fields'] as $field): ?>
+                                <article
+                                    class="psa-account-field<?= !empty($field['showRequiredBadge']) ? ' psa-account-field--required-empty' : '' ?>"
+                                    data-psa-account-field
+                                    data-field="<?= htmlspecialchars((string) $field['name'], ENT_QUOTES) ?>"
+                                    data-submit-value="<?= htmlspecialchars((string) ($field['submitValue'] ?? ''), ENT_QUOTES) ?>"
+                                    data-skip-hidden="<?= \in_array($field['name'], ['password', 'avatar'], true) ? '1' : '0' ?>"
+                                >
+                                    <div class="psa-account-field__view">
+                                        <div class="psa-account-field__head">
+                                            <div class="psa-account-field__labels">
+                                                <span class="psa-account-field__label"><?= htmlspecialchars((string) $field['label'], ENT_QUOTES) ?></span>
+                                                <?php if (!empty($field['required'])): ?>
+                                                    <span class="psa-account-field__badge"><?= $lang['account_required_badge'] ?? 'Required' ?></span>
+                                                <?php endif; ?>
+                                                <?php if (!empty($field['showRequiredBadge'])): ?>
+                                                    <span class="psa-account-field__badge psa-account-field__badge--alert"><?= $lang['account_required_empty'] ?? 'Required field' ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <button type="button" class="psa-account-field__edit" data-psa-account-edit>
+                                                <?= $lang['account_edit'] ?? 'Edit' ?>
+                                            </button>
+                                        </div>
+
+                                        <div class="psa-account-field__value">
+                                            <?php if (($field['displayHtml'] ?? '') !== ''): ?>
+                                                <?= $field['displayHtml'] ?>
+                                            <?php else: ?>
+                                                <?= htmlspecialchars((string) ($field['displayValue'] ?? ''), ENT_QUOTES) ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="psa-account-field__editor" data-psa-account-editor hidden>
+                                        <?= $field['widgetHtml'] ?? '' ?>
+                                        <div class="psa-account-field__actions">
+                                            <?= CeHelpers::renderPsaButton($lang['account_save'] ?? 'Save', [
+                                                'type' => 'submit',
+                                                'class' => 'psa-account-field__save',
+                                            ]) ?>
+                                            <button type="button" class="psa-account-field__cancel" data-psa-account-cancel>
+                                                <?= $lang['account_cancel'] ?? 'Cancel' ?>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+                    </section>
+                <?php endforeach; ?>
+            </div>
+        </form>
+    </div>
+</section>
+
+<?php $this->endblock(); ?>
