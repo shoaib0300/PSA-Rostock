@@ -9,6 +9,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\ServiceAnnotation\ContentElement;
 use Contao\StringUtil;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,6 +20,7 @@ class CeTextDoubleController extends AbstractContentElementController
     {
         if ($request->attributes->get('_scope') === 'frontend') {
             // FRONTEND
+            CeHelpers::registerButtonAssets();
             $GLOBALS['TL_CSS']['ce_text_double'] = "bundles/customelements/frontend/css/ce_text_double.css";
             $template->headline = $model->headline;
             $template->text = $model->text;

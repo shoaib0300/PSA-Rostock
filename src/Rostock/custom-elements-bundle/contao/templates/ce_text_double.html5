@@ -1,3 +1,4 @@
+<?php use Rostock\CustomElementsBundle\Classes\CeHelpers; ?>
 <div class="content-text-double <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
     <div class="light-image-overlay"></div>
     <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
@@ -17,7 +18,12 @@
                 ?>    
                 <div class="text-col-content">
                     <?= $this->text ?>
-                    <?= $this->addButton ? '<a href="' . $this->button_link . '" class="rs-button ' . $this->button_type . '" target="' . $this->button_target . '">' . $this->button_label . '</a>' : ''; ?>
+                    <?php if ($this->addButton): ?>
+                        <?= CeHelpers::renderPsaButton($this->button_label, [
+                            'href' => $this->button_link,
+                            'target' => $this->button_target,
+                        ]) ?>
+                    <?php endif; ?>
                 </div>
             </div>
 

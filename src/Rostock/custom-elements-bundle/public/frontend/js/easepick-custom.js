@@ -545,7 +545,7 @@ window.QuickBooker = {
         // Prevent form submission except via submit button
         document.addEventListener('submit', function(e) {
             if (e.target.id === 'quickbooker') {
-                if (!e.submitter || !e.submitter.classList.contains('rs-button')) {
+                if (!e.submitter || !e.submitter.classList.contains('psa-hero__btn')) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     return false;

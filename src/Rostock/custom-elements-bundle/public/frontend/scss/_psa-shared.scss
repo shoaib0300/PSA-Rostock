@@ -1,0 +1,4 @@
+// Re-export global PSA tokens from files/tpl/scss (works without sass --load-path)
+@forward '../../../../../../files/tpl/scss/variables';
+@forward '../../../../../../files/tpl/scss/mixins';
+@forward '../../../../../../files/tpl/scss/fonts';

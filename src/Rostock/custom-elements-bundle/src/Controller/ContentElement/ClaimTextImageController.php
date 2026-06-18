@@ -9,6 +9,7 @@ use Contao\ContentModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,6 +19,7 @@ class ClaimTextImageController extends AbstractContentElementController
     protected function getResponse(Template $template, ContentModel $model, Request $request): Response
     {
         if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
+            CeHelpers::registerButtonAssets();
             // FRONTEND
             $arrSubline = StringUtil::deserialize($model->subline);
             $template->subline = \is_array($arrSubline) ? $arrSubline['value'] ?? '' : $arrSubline;

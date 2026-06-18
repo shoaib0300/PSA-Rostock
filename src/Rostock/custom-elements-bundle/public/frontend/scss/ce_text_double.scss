@@ -29,23 +29,6 @@
         }
     }
 
-    a.rs-button {
-        background-color: white;
-        color: var(--colors-velvet-red-red-600-ci) !important;
-        border-radius: 6px;
-        box-shadow: -2px 4px 4px 0px rgba(0, 0, 0, 0.15);
-        display: flex;
-        padding: 15px 40px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: fit-content;
-    }
-
-    a.rs-button:after, .rs-button:after {
-        display: none !important;
-    }
-
     .light-image-overlay {
         position: absolute;
         top: 50%;

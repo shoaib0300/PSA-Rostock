@@ -15,7 +15,7 @@ $GLOBALS['TL_DCA'][$strName]['palettes']['ce_slider_main'] = '{type_legend},type
                                                                     {layout_legend},full_width,center_text,dark_mode;{protected_legend:hide},protected;
                                                                     {expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
-$GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},type,headline,subline;{psa_source_legend},multiSRC;{psa_scroll_legend},hero_caption,hero_scroll_items;{button_legend},addButton;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},type,headline,subline;{psa_source_legend},multiSRC;{button_legend},addButton;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['addButton'] = 'button_label,button_link,button_target';
 
@@ -74,44 +74,6 @@ $GLOBALS['TL_DCA'][$strName]['fields']['banner_link'] = [
     'inputType' => 'pageTree',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
-];
-
-$GLOBALS['TL_DCA'][$strName]['fields']['hero_caption'] = [
-    'label' => &$GLOBALS['TL_LANG'][$strName]['hero_caption'],
-    'inputType' => 'text',
-    'eval' => ['tl_class' => 'w50'],
-    'sql' => "varchar(255) NOT NULL default ''",
-];
-
-$GLOBALS['TL_DCA'][$strName]['fields']['hero_scroll_items'] = [
-    'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_items'],
-    'exclude' => false,
-    'inputType' => 'multiColumnWizard',
-    'eval' => [
-        'tl_class' => 'clr',
-        'columnFields' => [
-            'headline' => [
-                'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_headline'],
-                'exclude' => true,
-                'inputType' => 'text',
-                'eval' => [
-                    'wrapper_style' => 'width:42%;min-width:18rem',
-                    'style' => 'width:100%;box-sizing:border-box',
-                ],
-            ],
-            'text' => [
-                'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_text'],
-                'exclude' => true,
-                'inputType' => 'textarea',
-                'eval' => [
-                    'rows' => 3,
-                    'wrapper_style' => 'width:50%;min-width:22rem',
-                    'style' => 'width:100%;box-sizing:border-box',
-                ],
-            ],
-        ],
-    ],
-    'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA'][$strName]['fields']['optional_text'] = [

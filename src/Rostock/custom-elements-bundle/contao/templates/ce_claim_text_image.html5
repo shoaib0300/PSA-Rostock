@@ -38,7 +38,12 @@ if (!empty($fileMeta['copyright'])) {
                     <<?= $this->hl ?>><?= $this->headline; ?></<?= $this->hl ?>>
                     <span class="<?= $this->sl ?>"><?= $this->subline; ?></span>
                     <?= $this->side_text; ?>
-                    <?= $this->addButton ? '<a href="' . $this->button_link . '" class="rs-button ' . $this->button_type . '" target="' . $this->button_target . '">' . $this->button_label . '</a>' : ''; ?>
+                    <?php if ($this->addButton): ?>
+                        <?= CeHelpers::renderPsaButton($this->button_label, [
+                            'href' => $this->button_link,
+                            'target' => $this->button_target,
+                        ]) ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

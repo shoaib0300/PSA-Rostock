@@ -1,0 +1,44 @@
+// PSA design tokens (shared across hero, header, and site templates)
+
+// —— Colors ——
+$psa-ink: #222f30;
+$psa-graphite: #4d5757;
+$psa-bone: #f7f7f5;
+$psa-paper: #ffffff;
+$psa-lichen: #c9cbbe;
+$psa-lime: #cef79e;
+
+// —— Typography ——
+$psa-font-sans: 'DM Sans', system-ui, sans-serif;
+$psa-font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+// —— Motion ——
+$psa-ease: cubic-bezier(0.25, 1, 0.5, 1);
+$psa-transition: 0.6s $psa-ease;
+
+// —— Layout ——
+$psa-max-width: 1366px;
+$psa-site-rail: 12px;
+$psa-site-rail-x: 14px;
+$psa-site-logo-pad-x: 14px;
+$psa-site-content-width: calc(100% - 40px);
+
+// —— Hero ——
+$psa-hero-frame-inset: 8px;
+$psa-hero-frame-radius: 20px;
+$psa-hero-frame-duration: 0.55s;
+
+// —— Header ——
+$psa-header-height: 64px;
+$psa-header-height-desktop: 54px;
+$psa-header-top: 20px;
+$psa-header-top-desktop: 30px;
+$psa-header-max: 1366px;
+$psa-header-nav-desktop: 992px;
+
+// —— Breakpoints ——
+$psa-bp-nav: 992px;
+$psa-bp-wide: 1400px;
+$psa-bp-mobile: 600px;
+$psa-bp-tablet-max: 991px;
+$psa-bp-nav-mid-max: 1399px;

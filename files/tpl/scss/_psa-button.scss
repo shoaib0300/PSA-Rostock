@@ -1,3 +1,7 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Global PSA button — use class psa-hero__btn site-wide
 .psa-hero__btn {
   --psa-hero-btn-size: 2.5rem;
   --psa-hero-btn-corner-w: calc(var(--psa-hero-btn-size) * 18 / 48);
@@ -9,6 +13,7 @@
   --psa-hero-btn-icon-pad: calc(var(--psa-hero-btn-size) * 10 / 48);
   --psa-hero-btn-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none' viewBox='0 0 10 10'%3E%3Cpath fill='%23222F30' d='M7.703 5.8H.398V4.6h7.305l-3.36-3.36.855-.84 4.8 4.8-4.8 4.8-.855-.84 3.36-3.36Z'/%3E%3C/svg%3E");
   --psa-hero-btn-arrow-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none' viewBox='0 0 10 10'%3E%3Cpath fill='%23ffffff' d='M7.703 5.8H.398V4.6h7.305l-3.36-3.36.855-.84 4.8 4.8-4.8 4.8-.855-.84 3.36-3.36Z'/%3E%3C/svg%3E");
+
   display: inline-flex;
   align-items: stretch;
   flex: 0 0 auto;
@@ -20,8 +25,8 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #ffffff;
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: $psa-paper;
+  font-family: $psa-font-mono;
   font-size: var(--psa-hero-btn-font);
   line-height: 1;
   text-decoration: none;
@@ -29,31 +34,37 @@
   cursor: pointer;
   -webkit-font-smoothing: antialiased;
   appearance: none;
-}
-.psa-hero__btn:hover .psa-hero__btn-label, .psa-hero__btn:focus-visible .psa-hero__btn-label {
-  margin-right: calc(var(--psa-hero-btn-size) * 12 / 48);
-  padding-right: calc(var(--psa-hero-btn-size) * 5 / 48);
-  color: #222f30;
-  background-color: #cef79e;
-}
-.psa-hero__btn:hover .psa-hero__btn-corner, .psa-hero__btn:focus-visible .psa-hero__btn-corner {
-  right: calc(var(--psa-hero-btn-size) * 12 / 48 * -1);
-}
-.psa-hero__btn:hover .psa-hero__btn-path--corner-default,
-.psa-hero__btn:hover .psa-hero__btn-path--icon-default, .psa-hero__btn:focus-visible .psa-hero__btn-path--corner-default,
-.psa-hero__btn:focus-visible .psa-hero__btn-path--icon-default {
-  opacity: 0;
-}
-.psa-hero__btn:hover .psa-hero__btn-path--corner-hover,
-.psa-hero__btn:hover .psa-hero__btn-path--icon-hover, .psa-hero__btn:focus-visible .psa-hero__btn-path--corner-hover,
-.psa-hero__btn:focus-visible .psa-hero__btn-path--icon-hover {
-  opacity: 1;
-}
-.psa-hero__btn:hover .psa-hero__btn-icon, .psa-hero__btn:focus-visible .psa-hero__btn-icon {
-  transform: scale(0.875);
-}
-.psa-hero__btn:hover .psa-hero__btn-icon::before, .psa-hero__btn:focus-visible .psa-hero__btn-icon::before {
-  background-position: center left 50%, center left 150%;
+
+  @include focus-hover {
+    .psa-hero__btn-label {
+      margin-right: calc(var(--psa-hero-btn-size) * 12 / 48);
+      padding-right: calc(var(--psa-hero-btn-size) * 5 / 48);
+      color: $psa-ink;
+      background-color: $psa-lime;
+    }
+
+    .psa-hero__btn-corner {
+      right: calc(var(--psa-hero-btn-size) * 12 / 48 * -1);
+    }
+
+    .psa-hero__btn-path--corner-default,
+    .psa-hero__btn-path--icon-default {
+      opacity: 0;
+    }
+
+    .psa-hero__btn-path--corner-hover,
+    .psa-hero__btn-path--icon-hover {
+      opacity: 1;
+    }
+
+    .psa-hero__btn-icon {
+      transform: scale(0.875);
+
+      &::before {
+        background-position: center left 50%, center left 150%;
+      }
+    }
+  }
 }
 
 .psa-hero__btn-label {
@@ -66,10 +77,14 @@
   max-height: var(--psa-hero-btn-size);
   margin-right: var(--psa-hero-btn-corner-offset);
   padding: var(--psa-hero-btn-pad-y) var(--psa-hero-btn-pad-x) var(--psa-hero-btn-pad-y) var(--psa-hero-btn-pad-left);
-  background: #222f30;
+  background: $psa-ink;
   border-radius: calc(var(--psa-hero-btn-size) * 8 / 48) 0 0 calc(var(--psa-hero-btn-size) * 8 / 48);
   overflow: visible;
-  transition: margin-right 0.6s cubic-bezier(0.25, 1, 0.5, 1), padding-right 0.6s cubic-bezier(0.25, 1, 0.5, 1), color 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition:
+    margin-right $psa-transition,
+    padding-right $psa-transition,
+    color $psa-transition,
+    background-color $psa-transition;
 }
 
 .psa-hero__btn-label-text {
@@ -100,12 +115,12 @@
   height: 100%;
   line-height: 0;
   pointer-events: none;
-  transition: right 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: right $psa-transition;
 }
 
 .psa-hero__btn-corner path,
 .psa-hero__btn-icon path {
-  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity $psa-transition;
 }
 
 .psa-hero__btn-path--corner-hover,
@@ -114,11 +129,11 @@
 }
 
 .psa-hero__btn-path--icon-default {
-  fill: #cef79e;
+  fill: $psa-lime;
 }
 
 .psa-hero__btn-path--icon-hover {
-  fill: #222f30;
+  fill: $psa-ink;
 }
 
 .psa-hero__btn-icon {
@@ -134,21 +149,22 @@
   line-height: 0;
   transform: scale(1);
   transform-origin: center right;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-}
-.psa-hero__btn-icon::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: calc(var(--psa-hero-btn-size) * 4 / 48);
-  z-index: 2;
-  width: calc(100% - var(--psa-hero-btn-size) * 4 / 48);
-  height: 100%;
-  background-color: transparent;
-  background-image: var(--psa-hero-btn-arrow-hover), var(--psa-hero-btn-arrow);
-  background-repeat: no-repeat;
-  background-position: center left -150%, center left 50%;
-  background-size: calc(var(--psa-hero-btn-size) * 10 / 48) calc(var(--psa-hero-btn-size) * 10 / 48);
-  transition: background-position 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  pointer-events: none;
+  transition: transform $psa-transition;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(var(--psa-hero-btn-size) * 4 / 48);
+    z-index: 2;
+    width: calc(100% - var(--psa-hero-btn-size) * 4 / 48);
+    height: 100%;
+    background-color: transparent;
+    background-image: var(--psa-hero-btn-arrow-hover), var(--psa-hero-btn-arrow);
+    background-repeat: no-repeat;
+    background-position: center left -150%, center left 50%;
+    background-size: calc(var(--psa-hero-btn-size) * 10 / 48) calc(var(--psa-hero-btn-size) * 10 / 48);
+    transition: background-position $psa-transition;
+    pointer-events: none;
+  }
 }

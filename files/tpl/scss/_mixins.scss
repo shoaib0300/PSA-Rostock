@@ -1,0 +1,85 @@
+@use 'variables' as *;
+
+@mixin min-nav {
+  @media (min-width: $psa-bp-nav) {
+    @content;
+  }
+}
+
+@mixin max-nav {
+  @media (max-width: $psa-bp-tablet-max) {
+    @content;
+  }
+}
+
+@mixin min-wide {
+  @media (min-width: $psa-bp-wide) {
+    @content;
+  }
+}
+
+@mixin nav-mid {
+  @media (min-width: $psa-bp-nav) and (max-width: $psa-bp-nav-mid-max) {
+    @content;
+  }
+}
+
+@mixin max-mobile {
+  @media (max-width: $psa-bp-mobile) {
+    @content;
+  }
+}
+
+@mixin focus-hover {
+  &:hover,
+  &:focus-visible {
+    @content;
+  }
+}
+
+@mixin glass-panel {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba($psa-ink, 0.08);
+}
+
+@mixin psa-shared-root-vars {
+  --psa-hero-frame-inset: #{$psa-hero-frame-inset};
+  --psa-site-rail: #{$psa-site-rail};
+}
+
+@mixin psa-hero-root-vars {
+  --psa-hero-ink: #{$psa-ink};
+  --psa-hero-graphite: #{$psa-graphite};
+  --psa-hero-bone: #{$psa-bone};
+  --psa-hero-lime: #{$psa-lime};
+  --psa-hero-white: #{$psa-paper};
+  --psa-hero-max: #{$psa-max-width};
+  --psa-hero-ease: #{$psa-ease};
+  --psa-hero-frame-inset: #{$psa-hero-frame-inset};
+  --psa-hero-frame-radius: #{$psa-hero-frame-radius};
+  --psa-hero-frame-duration: #{$psa-hero-frame-duration};
+  --psa-site-rail: #{$psa-site-rail};
+  --psa-site-rail-x: #{$psa-site-rail-x};
+  --psa-site-logo-pad-x: #{$psa-site-logo-pad-x};
+  --psa-site-content-width: #{$psa-site-content-width};
+}
+
+@mixin psa-header-root-vars {
+  --psa-ink: #{$psa-ink};
+  --psa-paper: #{$psa-paper};
+  --psa-bone: #{$psa-bone};
+  --psa-graphite: #{$psa-graphite};
+  --psa-lichen: #{$psa-lichen};
+  --psa-lime: #{$psa-lime};
+  --psa-header-height: #{$psa-header-height};
+  --psa-header-height-desktop: #{$psa-header-height-desktop};
+  --psa-header-top: #{$psa-header-top};
+  --psa-header-top-desktop: #{$psa-header-top-desktop};
+  --psa-header-max: #{$psa-header-max};
+  --psa-header-nav-desktop: #{$psa-header-nav-desktop};
+  --psa-ease: #{$psa-ease};
+  --psa-hero-frame-inset: #{$psa-hero-frame-inset};
+  --psa-site-rail: #{$psa-site-rail};
+}

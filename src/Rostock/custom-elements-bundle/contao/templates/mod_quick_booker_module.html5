@@ -1,6 +1,7 @@
 <?php
 
 use Contao\System;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 // Start session
 $session = System::getContainer()->get('request_stack')->getCurrentRequest()->getSession();
 ?>
@@ -157,7 +158,7 @@ $session = System::getContainer()->get('request_stack')->getCurrentRequest()->ge
                                 </div>
         
                                 <div class="col-lg-3 col-button">
-                                    <button class="rs-button secondary">Verfügbarkeit prüfen</button>
+                                    <?= CeHelpers::renderPsaButton('Verfügbarkeit prüfen', ['type' => 'submit']) ?>
                                 </div>
                             </div>
                         </div>

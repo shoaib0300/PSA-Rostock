@@ -11,6 +11,7 @@ use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,16 +20,11 @@ class PsaHeroController extends AbstractContentElementController
 {
     private const VIDEO_EXTENSIONS = ['mp4', 'webm'];
 
-    private const DEFAULT_SCROLL_ITEMS = [
-        ['title' => '', 'text' => 'Connect with fellow Pakistanis living in Rostock through cultural events, meetups, and community support.'],
-        ['title' => '', 'text' => 'Discover upcoming gatherings, register for membership, and stay part of a growing network built on belonging.'],
-        ['title' => '', 'text' => 'From team initiatives to contributor programs — help shape the community you want to be part of.'],
-    ];
-
     protected function getResponse(Template $template, ContentModel $model, Request $request): Response
     {
         if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest($request)) {
             $GLOBALS['PSA_HAS_HERO'] = true;
+            CeHelpers::registerButtonAssets();
             $GLOBALS['TL_CSS']['psa_hero'] = 'bundles/customelements/frontend/css/psa_hero.css';
             $GLOBALS['TL_BODY']['psa_hero'] = FrontendTemplate::generateScriptTag(
                 'bundles/customelements/frontend/js/psa_hero.js',
@@ -45,8 +41,6 @@ class PsaHeroController extends AbstractContentElementController
             $template->set('button_label', (string) ($model->button_label ?? ''));
             $template->set('button_link', (string) ($model->button_link ?? ''));
             $template->set('button_target', (bool) $model->button_target);
-            $template->set('scrollerLabel', $model->hero_caption ?: 'What we do');
-            $template->set('scrollItems', $this->resolveScrollItems($model));
             $template->set('slides', $this->buildSlides($model));
         } else {
             $template = new BackendTemplate('be_wildcard');
@@ -56,108 +50,6 @@ class PsaHeroController extends AbstractContentElementController
         }
 
         return $template->getResponse();
-    }
-
-    /**
-     * @return list<array{title: string, text: string}>
-     */
-    private function resolveScrollItems(ContentModel $model): array
-    {
-        $fromMcw = $this->parseMcwScrollItems($model->hero_scroll_items ?? null);
-
-        if ($fromMcw !== []) {
-            return $fromMcw;
-        }
-
-        return $this->parseLegacyScrollItems($model->text);
-    }
-
-    /**
-     * @return list<array{title: string, text: string}>
-     */
-    private function parseMcwScrollItems(mixed $data): array
-    {
-        $rows = StringUtil::deserialize($data, true);
-
-        if (!\is_array($rows) || $rows === []) {
-            return [];
-        }
-
-        $items = [];
-
-        foreach ($rows as $row) {
-            if (!\is_array($row)) {
-                continue;
-            }
-
-            $title = trim((string) ($row['headline'] ?? ''));
-            $text = trim((string) ($row['text'] ?? ''));
-
-            if ($title !== '' || $text !== '') {
-                $items[] = ['title' => $title, 'text' => $text];
-            }
-        }
-
-        return $items;
-    }
-
-    /**
-     * @return list<array{title: string, text: string}>
-     */
-    private function parseLegacyScrollItems(?string $text): array
-    {
-        if (!$text) {
-            return self::DEFAULT_SCROLL_ITEMS;
-        }
-
-        if (preg_match_all('/<h[2-4][^>]*>(.*?)<\/h[2-4]>\s*<p[^>]*>(.*?)<\/p>/is', $text, $matches, PREG_SET_ORDER)) {
-            $items = [];
-
-            foreach ($matches as $match) {
-                $title = trim(strip_tags($match[1] ?? ''));
-                $body = trim(strip_tags($match[2] ?? ''));
-
-                if ($title !== '' || $body !== '') {
-                    $items[] = ['title' => $title, 'text' => $body];
-                }
-            }
-
-            if ($items !== []) {
-                return $items;
-            }
-        }
-
-        if (str_contains($text, '</p>')) {
-            preg_match_all('/<p[^>]*>(.*?)<\/p>/is', $text, $matches);
-            $items = [];
-
-            foreach ($matches[1] ?? [] as $paragraph) {
-                $body = trim(strip_tags($paragraph));
-
-                if ($body !== '') {
-                    $items[] = ['title' => '', 'text' => $body];
-                }
-            }
-
-            if ($items !== []) {
-                return $items;
-            }
-        }
-
-        $plain = trim(strip_tags($text));
-
-        if ($plain === '') {
-            return self::DEFAULT_SCROLL_ITEMS;
-        }
-
-        $parts = preg_split('/\R\s*\R/', $plain) ?: [];
-        $items = [];
-
-        foreach (array_filter(array_map('trim', $parts)) as $part) {
-            $items[] = ['title' => '', 'text' => $part];
-        }
-
-        return $items !== [] ? $items : [['title' => '', 'text' => $plain]];
     }
 
     /**

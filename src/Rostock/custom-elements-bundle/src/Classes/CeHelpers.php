@@ -180,4 +180,65 @@ class CeHelpers
         }
         return null;
     }
+
+    public static function registerButtonAssets(): void
+    {
+        $GLOBALS['TL_CSS']['psa_button'] = 'bundles/customelements/frontend/css/psa_button.css';
+    }
+
+    /**
+     * Render the global PSA button markup (class psa-hero__btn).
+     *
+     * @param array{href?: string|null, target?: string, class?: string, type?: string, attrs?: array<string, string>} $options
+     */
+    public static function renderPsaButton(string $label, array $options = []): string
+    {
+        $href = $options['href'] ?? null;
+        $target = (string) ($options['target'] ?? '');
+        $class = trim('psa-hero__btn ' . ($options['class'] ?? ''));
+        $buttonType = (string) ($options['type'] ?? 'button');
+        $extraAttrs = $options['attrs'] ?? [];
+
+        $attrs = ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"';
+
+        if ($href !== null && $href !== '') {
+            $tag = 'a';
+            $attrs .= ' href="' . htmlspecialchars($href, ENT_QUOTES) . '"';
+
+            if ($target !== '') {
+                $attrs .= ' target="' . htmlspecialchars($target, ENT_QUOTES) . '"';
+
+                if ($target === '_blank') {
+                    $attrs .= ' rel="noopener noreferrer"';
+                }
+            }
+        } else {
+            $tag = 'button';
+            $attrs .= ' type="' . htmlspecialchars($buttonType, ENT_QUOTES) . '"';
+        }
+
+        foreach ($extraAttrs as $key => $value) {
+            $attrs .= ' ' . htmlspecialchars((string) $key, ENT_QUOTES) . '="' . htmlspecialchars((string) $value, ENT_QUOTES) . '"';
+        }
+
+        $labelEsc = htmlspecialchars($label, ENT_QUOTES);
+
+        return '<' . $tag . $attrs . '>'
+            . '<span class="psa-hero__btn-label">'
+            . '<span class="psa-hero__btn-label-text">' . $labelEsc . '</span>'
+            . '<span class="psa-hero__btn-corner" aria-hidden="true">'
+            . '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="48" fill="none" viewBox="0 0 18 48">'
+            . '<path class="psa-hero__btn-path--corner-default" fill="#222F30" d="M0 0h5.63c7.808 0 13.536 7.337 11.642 14.91l-6.09 24.359A11.527 11.527 0 0 1 0 48V0Z"/>'
+            . '<path class="psa-hero__btn-path--corner-hover" fill="#CEF79E" d="M0 0c5.29 0 9.9 3.6 11.183 8.731l6.09 24.359C19.165 40.663 13.437 48 5.63 48H0V0Z"/>'
+            . '</svg>'
+            . '</span>'
+            . '</span>'
+            . '<span class="psa-hero__btn-icon" aria-hidden="true">'
+            . '<svg xmlns="http://www.w3.org/2000/svg" width="51" height="48" fill="none" viewBox="0 0 51 48">'
+            . '<path class="psa-hero__btn-path--icon-default" fill="currentColor" d="M6.728 9.09A12 12 0 0 1 18.369 0H39c6.627 0 12 5.373 12 12v24c0 6.627-5.373 12-12 12H12.37C4.561 48-1.167 40.663.727 33.09l6-24Z"/>'
+            . '<path class="psa-hero__btn-path--icon-hover" fill="currentColor" d="M.728 14.91C-1.166 7.338 4.562 0 12.369 0H39c6.628 0 12 5.373 12 12v24c0 6.627-5.372 12-12 12H18.37a12 12 0 0 1-11.641-9.09l-6-24Z"/>'
+            . '</svg>'
+            . '</span>'
+            . '</' . $tag . '>';
+    }
 }

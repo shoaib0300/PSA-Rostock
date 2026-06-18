@@ -12,7 +12,12 @@ use Rostock\CustomElementsBundle\Classes\CeHelpers;
                 <?php endif; ?>
                 <span class="<?= $this->sl ?>"><?= $this->subline; ?></span>
                 <?= $this->text; ?>
-                <?= $this->addButton ? '<a href="' . $this->button_link . '" class="rs-button ' . $this->button_type . '" target="' . $this->button_target . '">' . $this->button_label . '</a>' : ''; ?>
+                <?php if ($this->addButton): ?>
+                    <?= CeHelpers::renderPsaButton($this->button_label, [
+                        'href' => $this->button_link,
+                        'target' => $this->button_target,
+                    ]) ?>
+                <?php endif; ?>
             </div>
             <?php if (is_array($this->multiSRC)) : ?>
                 <div class="custom-col-12 main-slider-wrapper">

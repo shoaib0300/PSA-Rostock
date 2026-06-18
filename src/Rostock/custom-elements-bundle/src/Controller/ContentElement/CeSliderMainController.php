@@ -10,6 +10,7 @@ use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,6 +22,7 @@ class CeSliderMainController extends AbstractContentElementController
         if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             // FRONTEND
             $GLOBALS['TL_BODY']['ce_slider_main']    = FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/ce_slider_main.js', false, null);
+            CeHelpers::registerButtonAssets();
             $GLOBALS['TL_CSS']['ce_slider_main'] = "bundles/customelements/frontend/css/ce_slider_main.css";
             
 

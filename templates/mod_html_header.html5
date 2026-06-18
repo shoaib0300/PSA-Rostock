@@ -1,5 +1,8 @@
 <?php
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=7';
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=8';
+$assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
 
 $defaultNav = [
@@ -33,6 +36,7 @@ $navigation = $this->navigation ?? '';
 $tagline = $this->tagline ?? '';
 ?>
 <link rel="stylesheet" href="<?= $assetCss ?>">
+<link rel="stylesheet" href="<?= $assetButtonCss ?>">
 <header class="psa-header <?= $this->class ?>" <?= $this->cssID ?> data-navigation-status="not-active">
     <div class="psa-header__bar">
         <div class="psa-header__inner">
@@ -65,7 +69,10 @@ $tagline = $this->tagline ?? '';
                     </ul>
                 <?php endif; ?>
 
-                <a href="<?= $registerUrl ?>" class="psa-header__cta">Join us</a>
+                <?= CeHelpers::renderPsaButton('Join us', [
+                    'href' => $registerUrl,
+                    'class' => 'psa-header__join',
+                ]) ?>
 
                 <button
                     class="psa-header__toggle"
@@ -108,8 +115,10 @@ $tagline = $this->tagline ?? '';
                             ><?= $item['label'] ?></a>
                         </li>
                     <?php endforeach; ?>
-                    <li class="psa-header__popup-item">
-                        <a href="<?= $registerUrl ?>" class="psa-header__popup-link">Join us</a>
+                    <li class="psa-header__popup-item psa-header__popup-item--join">
+                        <?= CeHelpers::renderPsaButton('Join us', [
+                            'href' => $registerUrl,
+                        ]) ?>
                     </li>
                 </ul>
             <?php endif; ?>
