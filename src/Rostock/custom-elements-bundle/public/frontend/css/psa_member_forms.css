@@ -104,6 +104,8 @@
 .mod_registration,
 .mod_personalData,
 .mod_login,
+.mod_lostPassword,
+.mod_password,
 .psa-member-form {
   font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 }

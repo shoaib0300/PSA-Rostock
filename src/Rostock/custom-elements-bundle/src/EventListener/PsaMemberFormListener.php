@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
-use Contao\Input;
 use Rostock\CustomElementsBundle\Classes\PsaMemberAvatarStorage;
 
 #[AsHook('getAttributesFromDca')]
 class PsaMemberFormListener
 {
-    public function __invoke(array $attributes, object $dca): array
+    public function __invoke(array $attributes, ?object $dca): array
     {
         $field = (string) ($attributes['name'] ?? '');
 

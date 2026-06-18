@@ -74,7 +74,7 @@ $this->wrapperAttributes = $this
                         </div>
                     <?php else: ?>
                         <div class="widget widget-text mb-3">
-                            <label class="form-label" for="username"><?= $this->username ?></label>
+                            <label class="form-label" for="username"><?= $GLOBALS['TL_LANG']['PSA']['login_identifier'] ?? $this->username ?></label>
                             <input type="text" name="username" id="username" class="form-control" value="<?= $this->value ?>" autocapitalize="off" autocomplete="username" required>
                         </div>
                     <?php endif; ?>
@@ -108,7 +108,7 @@ $this->wrapperAttributes = $this
                     </div>
                 <?php endif; ?>
 
-                <?php if (!$this->logout && !$this->twoFactorEnabled): ?>
+                <?php if (!$this->logout && !$this->twoFactorEnabled && empty($this->isLoggedIn)): ?>
                     <div class="psa-member-form__footer">
                         <a class="psa-member-form__link" href="/register">Create an account</a>
                     </div>

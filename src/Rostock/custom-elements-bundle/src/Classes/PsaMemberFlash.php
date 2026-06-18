@@ -14,6 +14,10 @@ final class PsaMemberFlash
 
     public const TYPE_ACCOUNT_ACTIVATED = 'account_activated';
 
+    public const TYPE_PASSWORD_RESET_SENT = 'password_reset_sent';
+
+    public const TYPE_PASSWORD_CHANGED = 'password_changed';
+
     public function __construct(private readonly RequestStack $requestStack)
     {
     }

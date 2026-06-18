@@ -1,32 +1,13 @@
 <?php
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
+use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=1';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=2';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 
-$defaultNav = [
-    ['label' => 'Home', 'href' => '/'],
-    ['label' => 'Events', 'href' => '/events'],
-    ['label' => 'Meetups', 'href' => '/meetups'],
-    ['label' => 'Team', 'href' => '/team'],
-    ['label' => 'Contributors', 'href' => '/contributors'],
-    ['label' => 'About', 'href' => '/about'],
-];
-
-$navItems = \is_array($this->navItems ?? null) ? $this->navItems : [];
-
-if ($navItems === []) {
-    $currentPath = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/') ?: '/';
-
-    foreach ($defaultNav as $item) {
-        $hrefPath = rtrim($item['href'], '/') ?: '/';
-        $navItems[] = [
-            'label' => $item['label'],
-            'href' => $item['href'],
-            'active' => $hrefPath === $currentPath,
-        ];
-    }
-}
+$headerAuth = PsaHeaderAuth::resolve();
+$isLoggedIn = $headerAuth['isLoggedIn'];
+$navItems = $headerAuth['navItems'];
 
 $siteName = $this->siteName ?? 'PSA Rostock';
 $registerUrl = $this->registerUrl ?? '/register';
@@ -66,12 +47,14 @@ $copyright = $this->copyright ?? ('© ' . date('Y') . ' ' . $siteName);
                 </ul>
             </nav>
 
+            <?php if (!$isLoggedIn): ?>
             <div class="psa-footer__cta">
                 <?= CeHelpers::renderPsaButton('Join us', [
                     'href' => $registerUrl,
                     'class' => 'psa-footer__join',
                 ]) ?>
             </div>
+            <?php endif; ?>
         </div>
 
         <div class="psa-footer__bottom">

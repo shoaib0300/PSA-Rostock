@@ -1,44 +1,27 @@
 <?php
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
+use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=8';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=12';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
 
-$defaultNav = [
-    ['label' => 'Home', 'href' => '/'],
-    ['label' => 'Events', 'href' => '/events'],
-    ['label' => 'Meetups', 'href' => '/meetups'],
-    ['label' => 'Team', 'href' => '/team'],
-    ['label' => 'Contributors', 'href' => '/contributors'],
-    ['label' => 'About', 'href' => '/about'],
-    ['label' => 'Login', 'href' => '/login'],
-];
-
-$navItems = \is_array($this->navItems ?? null) ? $this->navItems : [];
-
-if ($navItems === []) {
-    $currentPath = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/') ?: '/';
-
-    foreach ($defaultNav as $item) {
-        $hrefPath = rtrim($item['href'], '/') ?: '/';
-        $navItems[] = [
-            'label' => $item['label'],
-            'href' => $item['href'],
-            'active' => $hrefPath === $currentPath,
-        ];
-    }
-}
+$headerAuth = PsaHeaderAuth::resolve();
+$isLoggedIn = $headerAuth['isLoggedIn'];
+$navItems = $headerAuth['navItems'];
 
 $siteName = $this->siteName ?? 'PSA Rostock';
 $registerUrl = $this->registerUrl ?? '/register';
+$accountUrl = $headerAuth['accountUrl'];
+$logoutUrl = $headerAuth['logoutUrl'];
+$memberDisplayName = $headerAuth['memberDisplayName'];
 $logoPath = $this->logoPath ?? '';
 $navigation = $this->navigation ?? '';
 $tagline = $this->tagline ?? '';
 ?>
 <link rel="stylesheet" href="<?= $assetCss ?>">
 <link rel="stylesheet" href="<?= $assetButtonCss ?>">
-<header class="psa-header <?= $this->class ?>" <?= $this->cssID ?> data-navigation-status="not-active">
+<header class="psa-header <?= $this->class ?><?= $isLoggedIn ? ' psa-header--logged-in' : '' ?>" <?= $this->cssID ?> data-navigation-status="not-active">
     <div class="psa-header__bar">
         <div class="psa-header__inner">
             <div class="psa-header__logo">
@@ -70,10 +53,33 @@ $tagline = $this->tagline ?? '';
                     </ul>
                 <?php endif; ?>
 
-                <?= CeHelpers::renderPsaButton('Join us', [
-                    'href' => $registerUrl,
-                    'class' => 'psa-header__join',
-                ]) ?>
+                <?php if (!$isLoggedIn): ?>
+                    <?= CeHelpers::renderPsaButton('Join us', [
+                        'href' => $registerUrl,
+                        'class' => 'psa-header__join',
+                    ]) ?>
+                <?php endif; ?>
+
+                <?php if ($isLoggedIn && $memberDisplayName !== ''): ?>
+                    <div class="psa-header__user-menu">
+                        <a
+                            href="<?= $accountUrl ?>"
+                            class="psa-header__user"
+                            aria-label="<?= $this->trans('MSC.personalData') ?>"
+                            title="<?= $this->trans('MSC.personalData') ?>"
+                        >
+                            <svg class="psa-header__user-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5Z"/>
+                            </svg>
+                            <span class="psa-header__user-name"><?= $memberDisplayName ?></span>
+                        </a>
+                        <?php if ($logoutUrl): ?>
+                            <a href="<?= $logoutUrl ?>" class="psa-header__logout">
+                                <?= $this->trans('MSC.logout') ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
 
                 <button
                     class="psa-header__toggle"
@@ -116,11 +122,29 @@ $tagline = $this->tagline ?? '';
                             ><?= $item['label'] ?></a>
                         </li>
                     <?php endforeach; ?>
-                    <li class="psa-header__popup-item psa-header__popup-item--join">
-                        <?= CeHelpers::renderPsaButton('Join us', [
-                            'href' => $registerUrl,
-                        ]) ?>
-                    </li>
+
+                    <?php if ($isLoggedIn && $memberDisplayName !== ''): ?>
+                        <li class="psa-header__popup-item">
+                            <a href="<?= $accountUrl ?>" class="psa-header__popup-link psa-header__popup-link--user">
+                                <?= $memberDisplayName ?>
+                            </a>
+                        </li>
+                        <?php if ($logoutUrl): ?>
+                            <li class="psa-header__popup-item">
+                                <a href="<?= $logoutUrl ?>" class="psa-header__popup-link psa-header__popup-link--logout">
+                                    <?= $this->trans('MSC.logout') ?>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php if (!$isLoggedIn): ?>
+                        <li class="psa-header__popup-item psa-header__popup-item--join">
+                            <?= CeHelpers::renderPsaButton('Join us', [
+                                'href' => $registerUrl,
+                            ]) ?>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             <?php endif; ?>
 

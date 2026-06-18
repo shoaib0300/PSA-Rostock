@@ -3,7 +3,25 @@
 $GLOBALS['TL_LANG']['PSA']['member_flash'] = [
     'registration_pending' => 'Danke für deine Registrierung! Wir haben dir einen Bestätigungslink per E-Mail geschickt. Bitte klicke auf den Link, um dein Konto zu aktivieren, und melde dich dann hier an.',
     'account_activated' => 'Dein Konto ist jetzt aktiv. Willkommen bei PSA Rostock — du kannst dich unten anmelden.',
+    'password_reset_sent' => 'Wenn ein Konto mit dieser E-Mail existiert, haben wir dir einen Link zum Zurücksetzen des Passworts geschickt. Bitte prüfe dein Postfach.',
+    'password_changed' => 'Dein Passwort wurde aktualisiert. Du kannst dich unten mit deinem neuen Passwort anmelden.',
 ];
+
+$GLOBALS['TL_LANG']['PSA']['login_identifier'] = 'Benutzername oder E-Mail';
+
+$GLOBALS['TL_LANG']['PSA']['password_reset_email'] = <<<'TEXT'
+Hallo ##firstname## ##lastname##,
+
+du hast ein neues Passwort für dein PSA-Rostock-Konto auf ##domain## angefordert.
+
+Bitte klicke auf den folgenden Link, um ein neues Passwort zu wählen:
+
+##link##
+
+Wenn du das nicht angefordert hast, ignoriere diese E-Mail bitte.
+
+PSA Rostock
+TEXT;
 
 $GLOBALS['TL_LANG']['PSA']['registration_email'] = <<<'TEXT'
 Hallo ##firstname## ##lastname##,

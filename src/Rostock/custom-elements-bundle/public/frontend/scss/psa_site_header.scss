@@ -191,6 +191,73 @@
     flex-shrink: 0;
   }
 
+  &__user-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    padding: 4px;
+    border: 1px solid var(--psa-ink);
+    border-radius: 12px;
+    background: var(--psa-ink);
+  }
+
+  &__user {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    max-width: min(200px, 30vw);
+    min-height: 39px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--psa-paper);
+    text-decoration: none;
+    transition: background-color $psa-transition;
+
+    @include focus-hover {
+      background: var(--psa-graphite);
+      color: var(--psa-paper);
+    }
+  }
+
+  &__user-icon {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  &__user-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+    text-transform: none;
+  }
+
+  &__logout {
+    display: inline-flex;
+    align-items: center;
+    min-height: 39px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--psa-lime);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background-color $psa-transition, color $psa-transition;
+
+    @include focus-hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--psa-paper);
+    }
+  }
+
   &__toggle {
     display: inline-flex;
     align-items: center;
@@ -321,6 +388,15 @@
     }
   }
 
+  &__popup-link--user {
+    color: var(--psa-lime);
+  }
+
+  &__popup-link--logout {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    color: rgba(255, 255, 255, 0.72);
+  }
+
   &__popup-tagline {
     flex: 0 0 auto;
     margin: 0;
@@ -381,6 +457,14 @@ body.has-psa-header {
 
     &__join {
       display: inline-flex;
+    }
+
+    &__user-menu {
+      border-radius: 8px;
+    }
+
+    &__user {
+      max-width: min(180px, 24vw);
     }
 
     &__toggle {
@@ -472,6 +556,23 @@ body.has-psa-header {
     &__menu,
     &__join {
       display: none !important;
+    }
+
+    &__user-menu {
+      display: inline-flex !important;
+      max-width: min(calc(100vw - 120px), 280px);
+    }
+
+    &__user {
+      max-width: min(130px, 34vw);
+      min-height: 40px;
+      padding: 8px;
+    }
+
+    &__logout {
+      min-height: 40px;
+      padding: 8px 10px;
+      font-size: 0.6875rem;
     }
 
     &__toggle {

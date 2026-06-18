@@ -73,11 +73,13 @@ class InstallMemberPagesCommand extends Command
         $groupId = $this->ensureMemberGroup($io);
         $registerPageId = $this->ensurePage($io, 'register', 'Join us', false, null);
         $loginPageId = $this->ensurePage($io, 'login', 'Login', false, null);
+        $forgotPasswordPageId = $this->ensurePage($io, 'forgot-password', 'Forgot password', false, null);
         $accountPageId = $this->ensurePage($io, 'account', 'My account', true, [$groupId]);
 
         System::loadLanguageFile('psa_member', 'en');
 
         $registrationEmailText = trim((string) ($GLOBALS['TL_LANG']['PSA']['registration_email'] ?? ''));
+        $passwordResetEmailText = trim((string) ($GLOBALS['TL_LANG']['PSA']['password_reset_email'] ?? ''));
 
         $registrationModuleId = $this->ensureModule($io, 'PSA Registration', 'registration', [
             'editable' => serialize(self::REGISTRATION_FIELDS),
@@ -95,8 +97,19 @@ class InstallMemberPagesCommand extends Command
         $loginModuleId = $this->ensureModule($io, 'PSA Login', 'login', [
             'autologin' => '1',
             'customTpl' => 'mod_login',
+            'pwResetPage' => $forgotPasswordPageId,
             'jumpTo' => $accountPageId,
             'headline' => serialize(['unit' => 'h1', 'value' => 'Login']),
+        ]);
+
+        $lostPasswordModuleId = $this->ensureModule($io, 'PSA Forgot password', 'lostPassword', [
+            'reg_skipName' => '1',
+            'disableCaptcha' => '1',
+            'customTpl' => 'mod_lostPassword',
+            'jumpTo' => $loginPageId,
+            'reg_jumpTo' => $loginPageId,
+            'reg_password' => $passwordResetEmailText !== '' ? $passwordResetEmailText : null,
+            'headline' => serialize(['unit' => 'h1', 'value' => 'Reset your password']),
         ]);
 
         $accountModuleId = $this->ensureModule($io, 'PSA Account', 'personalData', [
@@ -108,14 +121,16 @@ class InstallMemberPagesCommand extends Command
 
         $this->ensureArticleWithModule($io, $registerPageId, 'registration', 'Registration', $registrationModuleId);
         $this->ensureArticleWithModule($io, $loginPageId, 'login', 'Login', $loginModuleId);
+        $this->ensureArticleWithModule($io, $forgotPasswordPageId, 'forgot-password', 'Forgot password', $lostPasswordModuleId);
         $this->ensureArticleWithModule($io, $accountPageId, 'account', 'Account', $accountModuleId);
 
         $this->wireHeaderRegisterLink($registerPageId, $io);
 
         $io->success(sprintf(
-            'Member setup ready. Pages: /register (%d), /login (%d), /account (%d). Group id: %d',
+            'Member setup ready. Pages: /register (%d), /login (%d), /forgot-password (%d), /account (%d). Group id: %d',
             $registerPageId,
             $loginPageId,
+            $forgotPasswordPageId,
             $accountPageId,
             $groupId,
         ));
@@ -289,6 +304,8 @@ class InstallMemberPagesCommand extends Command
             return;
         }
 
+        $header->type = 'html_header';
+        $header->customTpl = '';
         $header->jumpTo = $registerPageId;
         $header->tstamp = time();
         $header->save();
@@ -301,6 +318,6 @@ class InstallMemberPagesCommand extends Command
             $footer->save();
         }
 
-        $io->writeln('Header/footer Join links now point to page id '.$registerPageId.'.');
+        $io->writeln('Header module switched to html_header and Join link points to page id '.$registerPageId.'.');
     }
 }

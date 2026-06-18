@@ -4,6 +4,7 @@ use Contao\System;
 use Rostock\CustomElementsBundle\Elements\ContentFilesCopyright;
 use Rostock\CustomElementsBundle\Models\CopyrightModel;
 use Rostock\CustomElementsBundle\Models\QuickBookerModel;
+use Rostock\CustomElementsBundle\Module\PsaModuleLostPassword;
 use Rostock\CustomElementsBundle\Module\PsaModuleRegistration;
 
 // Back end modules
@@ -26,6 +27,7 @@ $GLOBALS['TL_CTE']['includes']['files_copyright'] = ContentFilesCopyright::class
 $GLOBALS['TL_BODY']['quick_booker_custom'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/easepick-custom.js');
 
 $GLOBALS['FE_MOD']['application']['registration'] = PsaModuleRegistration::class;
+$GLOBALS['FE_MOD']['application']['lostPassword'] = PsaModuleLostPassword::class;
 
 System::loadLanguageFile('defaults', 'de');
 System::loadLanguageFile('defaults', 'en');

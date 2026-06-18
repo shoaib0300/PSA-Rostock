@@ -7,10 +7,16 @@ services:
 
     Rostock\CustomElementsBundle\:
         resource: ../src
-        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements,Module,EventListener}
+        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements,Module,EventListener,Security}
 
     Rostock\CustomElementsBundle\EventListener\:
         resource: ../src/EventListener
 
     Rostock\CustomElementsBundle\Classes\PsaMemberFlash:
         autowire: true
+
+    contao.security.frontend_user_provider:
+        class: Rostock\CustomElementsBundle\Security\PsaFrontendUserProvider
+        arguments:
+            - '@contao.framework'
+            - 'Contao\FrontendUser'
