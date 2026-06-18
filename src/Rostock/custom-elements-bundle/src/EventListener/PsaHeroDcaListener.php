@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
-use Contao\Input;
 
 /**
  * Registers PSA Hero backend fields after the combined DCA cache is loaded.
@@ -25,8 +24,39 @@ class PsaHeroDcaListener
             $GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = 'addButton';
         }
 
-        $GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},type,headline,subline;{psa_source_legend},multiSRC;{psa_content_legend},text;{psa_scroll_legend},hero_caption;{button_legend},addButton;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+        $GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},type,headline,subline;{psa_source_legend},multiSRC;{psa_scroll_legend},hero_caption,hero_scroll_items;{button_legend},addButton;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
         $GLOBALS['TL_DCA'][$strName]['subpalettes']['addButton'] = 'button_label,button_link,button_target';
+
+        $GLOBALS['TL_DCA'][$strName]['fields']['hero_scroll_items'] = [
+            'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_items'],
+            'exclude' => false,
+            'inputType' => 'multiColumnWizard',
+            'eval' => [
+                'tl_class' => 'clr',
+                'columnFields' => [
+                    'headline' => [
+                        'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_headline'],
+                        'exclude' => true,
+                        'inputType' => 'text',
+                        'eval' => [
+                            'wrapper_style' => 'width:42%;min-width:18rem',
+                            'style' => 'width:100%;box-sizing:border-box',
+                        ],
+                    ],
+                    'text' => [
+                        'label' => &$GLOBALS['TL_LANG'][$strName]['hero_scroll_text'],
+                        'exclude' => true,
+                        'inputType' => 'textarea',
+                        'eval' => [
+                            'rows' => 3,
+                            'wrapper_style' => 'width:50%;min-width:22rem',
+                            'style' => 'width:100%;box-sizing:border-box',
+                        ],
+                    ],
+                ],
+            ],
+            'sql' => 'blob NULL',
+        ];
 
         $GLOBALS['TL_DCA'][$strName]['fields']['subline'] = [
             'label' => &$GLOBALS['TL_LANG'][$strName]['subline'],
@@ -74,23 +104,5 @@ class PsaHeroDcaListener
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'boolean', 'default' => false],
         ];
-
-        $GLOBALS['TL_DCA'][$strName]['config']['onload_callback'][] = [$this, 'onLoad'];
-    }
-
-    public function onLoad($dc): void
-    {
-        $type = $dc->activeRecord->type ?? Input::get('type') ?? '';
-
-        if ($type !== 'psa_hero') {
-            return;
-        }
-
-        unset($GLOBALS['TL_DCA']['tl_content']['fields']['text']['eval']['mandatory']);
-
-        $isGerman = ($GLOBALS['TL_LANGUAGE'] ?? 'en') === 'de';
-        $GLOBALS['TL_LANG']['tl_content']['text'][1] = $isGerman
-            ? 'Ein Absatz = Fließtext unter dem Hero. Mehrere h3+p-Paare = Scroll-Schritte mit Überschrift und Text.'
-            : 'One paragraph = body text below the hero. Multiple h3+p pairs = scroll steps with headline and text.';
     }
 }

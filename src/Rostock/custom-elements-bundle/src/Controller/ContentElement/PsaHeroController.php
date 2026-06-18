@@ -46,7 +46,7 @@ class PsaHeroController extends AbstractContentElementController
             $template->set('button_link', (string) ($model->button_link ?? ''));
             $template->set('button_target', (bool) $model->button_target);
             $template->set('scrollerLabel', $model->hero_caption ?: 'What we do');
-            $template->set('scrollItems', $this->parseScrollItems($model->text));
+            $template->set('scrollItems', $this->resolveScrollItems($model));
             $template->set('slides', $this->buildSlides($model));
         } else {
             $template = new BackendTemplate('be_wildcard');
@@ -61,7 +61,50 @@ class PsaHeroController extends AbstractContentElementController
     /**
      * @return list<array{title: string, text: string}>
      */
-    private function parseScrollItems(?string $text): array
+    private function resolveScrollItems(ContentModel $model): array
+    {
+        $fromMcw = $this->parseMcwScrollItems($model->hero_scroll_items ?? null);
+
+        if ($fromMcw !== []) {
+            return $fromMcw;
+        }
+
+        return $this->parseLegacyScrollItems($model->text);
+    }
+
+    /**
+     * @return list<array{title: string, text: string}>
+     */
+    private function parseMcwScrollItems(mixed $data): array
+    {
+        $rows = StringUtil::deserialize($data, true);
+
+        if (!\is_array($rows) || $rows === []) {
+            return [];
+        }
+
+        $items = [];
+
+        foreach ($rows as $row) {
+            if (!\is_array($row)) {
+                continue;
+            }
+
+            $title = trim((string) ($row['headline'] ?? ''));
+            $text = trim((string) ($row['text'] ?? ''));
+
+            if ($title !== '' || $text !== '') {
+                $items[] = ['title' => $title, 'text' => $text];
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * @return list<array{title: string, text: string}>
+     */
+    private function parseLegacyScrollItems(?string $text): array
     {
         if (!$text) {
             return self::DEFAULT_SCROLL_ITEMS;

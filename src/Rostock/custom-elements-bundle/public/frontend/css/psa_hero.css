@@ -45,27 +45,34 @@ body.has-psa-hero {
     overflow-x: clip;
 }
 
-/* —— First screen: media + text overlay (Integrated Bio) —— */
-.psa-hero__visual {
+/* —— Fixed/sticky video + scrolling content overlay —— */
+.psa-hero__backdrop {
     position: sticky;
     top: 0;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
+    z-index: 0;
     width: 100%;
-    max-width: 100%;
     height: 100lvh;
     min-height: 32rem;
-    color: var(--psa-hero-white);
     overflow: hidden;
+    pointer-events: none;
+}
+
+.psa-hero__flow {
+    position: relative;
+    z-index: 2;
+    margin-top: -100lvh;
+    color: var(--psa-hero-white);
+}
+
+.psa-hero__stage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100lvh;
+    min-height: 100svh;
 }
 
 .psa-hero__media {
     position: relative;
-    z-index: 0;
-    grid-area: 1 / 1;
-    min-width: 0;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -133,13 +140,14 @@ body.has-psa-hero {
 }
 
 .psa-hero__panel {
-    position: absolute;
-    inset: 0;
+    position: relative;
     z-index: 2;
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    min-height: 100lvh;
+    min-height: 100svh;
     pointer-events: none;
 }
 
@@ -385,28 +393,20 @@ body.has-psa-hero {
     background-position: center left 50%, center left 150%;
 }
 
-/* —— Content below the hero image (scroll) —— */
+/* —— Scroll content over sticky video —— */
 .psa-hero__below {
     position: relative;
     z-index: 2;
-    color: var(--psa-hero-ink);
-    background: var(--psa-hero-bone);
-}
-
-.psa-hero__body-text {
-    max-width: 42rem;
-    padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.5rem);
-}
-
-.psa-hero__body-text p {
-    margin: 0;
-    color: #4d5757;
-    font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.25rem);
-    line-height: 1.6;
+    color: var(--psa-hero-white);
+    background: transparent;
 }
 
 .psa-hero__scroller {
-    border-top: 1px solid #c9cbbe;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.psa-hero__scroller:not(.psa-hero__scroller--single) {
+    min-height: calc(var(--psa-hero-scroll-steps, 3) * 55lvh);
 }
 
 .psa-hero__scroller-head {
@@ -421,24 +421,48 @@ body.has-psa-hero {
     align-items: center;
     padding: 0.55rem 0.9rem;
     border-radius: 8px;
-    background: rgba(34, 47, 48, 0.08);
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--psa-hero-white);
     font-family: 'Roboto Mono', ui-monospace, monospace;
     font-size: 0.75rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
 
+.psa-hero__scroller--single .psa-hero__scroller-content {
+    grid-template-columns: 1fr;
+}
+
+.psa-hero__scroller--single .psa-hero__scroll-items {
+    position: static;
+    min-height: 0;
+}
+
+.psa-hero__scroller--single .psa-hero__scroll-item {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.psa-hero__scroller-body {
+    padding-top: 0;
+}
+
+.psa-hero__scroller--single .psa-hero__scroller-body {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
 .psa-hero__progress {
     width: 100%;
     height: 1px;
-    background: #c9cbbe;
+    background: rgba(255, 255, 255, 0.28);
     overflow: hidden;
 }
 
 .psa-hero__progress-bar {
     width: 100%;
     height: 100%;
-    background: var(--psa-hero-ink);
+    background: var(--psa-hero-white);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 0.15s linear;
@@ -459,8 +483,9 @@ body.has-psa-hero {
     gap: 0.35rem;
     width: fit-content;
     padding: 0.75rem 1.05rem;
-    border: 1px solid #c9cbbe;
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 20px;
+    color: var(--psa-hero-white);
     font-family: 'Roboto Mono', ui-monospace, monospace;
     font-size: 0.8125rem;
     line-height: 1;
@@ -468,8 +493,8 @@ body.has-psa-hero {
 
 .psa-hero__index-divider,
 .psa-hero__index-total {
-    color: #4d5757;
-    opacity: 0.5;
+    color: inherit;
+    opacity: 0.55;
 }
 
 .psa-hero__scroll-items {
@@ -498,6 +523,7 @@ body.has-psa-hero {
     line-height: 1.15;
     letter-spacing: -0.02em;
     text-wrap: pretty;
+    text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
 .psa-hero__scroll-title {
@@ -507,7 +533,7 @@ body.has-psa-hero {
     font-weight: 400;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--psa-hero-graphite, #4d5757);
+    color: rgba(255, 255, 255, 0.72);
 }
 
 @media (min-width: 992px) {
@@ -548,7 +574,6 @@ body.has-psa-hero {
         --psa-site-content-width: 1366px;
     }
 
-    .psa-hero__body-text,
     .psa-hero__scroller-head,
     .psa-hero__scroller-content {
         padding-left: calc(var(--psa-site-rail-x) + var(--psa-site-logo-pad-x));
