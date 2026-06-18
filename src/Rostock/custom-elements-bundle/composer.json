@@ -1,0 +1,25 @@
+{
+    "name": "rostock/custom-elements-bundle",
+    "version": "1.0.0",
+    "description": "Custom elements bundle for Contao",
+    "type": "contao-bundle",
+    "require": {
+        "php": "^8.4",
+        "contao/core-bundle": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rostock\\CustomElementsBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Shoaib Sarwar",
+            "email": "shoaibsarwar18@gmail.com"
+        }
+    ],
+    "extra": {
+        "contao-manager-plugin": "Rostock\\CustomElementsBundle\\ContaoManager\\Plugin"
+    }
+
+}

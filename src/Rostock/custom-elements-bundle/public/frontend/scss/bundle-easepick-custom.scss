@@ -1,0 +1,25 @@
+.container > main .calendars .calendar .days-grid > .day.unit.selected.not-available.start {
+    background-color: var(--buttons-primary-bg);
+    color: var(--white);
+    opacity: 1;
+}
+
+.container > main .calendars .calendar .days-grid > .day.today {
+    background-color: var(--buttons-primary-bg) !important;
+    color: var(--white);
+}
+
+.container > main .calendars .calendar .days-grid > .offset:hover{
+    border: 1px solid var(--buttons-primary-outline);
+    background-color: var(--buttons-primary-bg);
+}
+
+.container > main .calendars .calendar .header button:after {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+button.next-button.unit {
+    width: 24px;
+    height: 24px;
+}

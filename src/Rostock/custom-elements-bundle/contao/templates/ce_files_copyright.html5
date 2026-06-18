@@ -1,0 +1,10 @@
+<?php if ($this->copyrights):?>
+<div<?php echo $this->cssID; ?><?php if ($this->class):?> class="<?php echo $this->class?>"<?php endif?>>
+    <?php if ($this->headline):?><<?php echo $this->hl?>><?php echo $this->headline?></<?php echo $this->hl?>><?php endif?>
+    <ul>
+    <?php foreach ($this->copyrights as $copyright):?>
+        <li><span class="copy">© </span><?php echo $copyright['name']?><?php if ($copyright['group']):?> - <?php echo $copyright['group']?><?php endif?></li>
+    <?php endforeach?>
+    </ul>
+</div>
+<?php endif?>

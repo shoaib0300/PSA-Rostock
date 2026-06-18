@@ -1,0 +1,7 @@
+.content-start_hero {
+  padding-block: var(--margin-padding-margin-vertikal);
+  background-color: var(--body-background);
+}
+.content-start_hero [class^=container].container-fluid {
+  padding-inline: var(--margin-padding-margin-horizontal);
+}

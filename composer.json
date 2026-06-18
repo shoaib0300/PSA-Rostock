@@ -37,8 +37,13 @@
         "contao/manager-bundle": "5.7.*",
         "contao/news-bundle": "5.7.*",
         "contao/newsletter-bundle": "5.7.*",
+        "dompdf/dompdf": "^3.1",
         "menatwork/contao-multicolumnwizard-bundle": "^3.6",
-        "dompdf/dompdf": "^3.1"
+        "oveleon/contao-cookiebar": "^2.3",
+        "terminal42/contao-changelanguage": "^3.8",
+        "terminal42/notification_center": "^2.7",
+        "think-digital-agency/contao-live-preview": "^2.3",
+        "rostock/custom-elements-bundle": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -63,5 +68,11 @@
             "php-http/discovery": true,
             "contao/manager-plugin": true
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "src/Rostock/custom-elements-bundle"
+        }
+    ]
 }

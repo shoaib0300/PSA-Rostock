@@ -1,0 +1,32 @@
+<div class="content-text-double <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
+    <div class="light-image-overlay"></div>
+    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6 left-column">
+                <?php 
+                if ($this->headline):
+                    $headlineData = unserialize($this->headline); 
+                    $headlineUnit = $headlineData['unit'] ?? '';
+                    $headlineText = $headlineData['value'] ?? '';
+                    if ($headlineUnit && $headlineText): ?>
+                        <<?= htmlspecialchars($headlineUnit) ?> class="text-col-content <?= $this->center_text ? ' text-center' : ''; ?>">
+                        <?= htmlspecialchars_decode($headlineText) ?></<?= htmlspecialchars($headlineUnit) ?>>
+                    <?php endif; 
+                endif;
+                ?>    
+                <div class="text-col-content">
+                    <?= $this->text ?>
+                    <?= $this->addButton ? '<a href="' . $this->button_link . '" class="rs-button ' . $this->button_type . '" target="' . $this->button_target . '">' . $this->button_label . '</a>' : ''; ?>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6 right-column">
+                <div class="text-col-content">
+                    <?= $this->text2 ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

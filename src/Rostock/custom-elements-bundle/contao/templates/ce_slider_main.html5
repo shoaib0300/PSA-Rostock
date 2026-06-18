@@ -1,0 +1,62 @@
+<?php
+use Contao\FilesModel;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+?>
+
+<div class="content-rs-slider main-slider-wrapper <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
+    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
+        <div class="custom-row<?= $this->center_text ? ' text-center' : ''; ?>">
+            <div class="custom-col-12">
+                <?php if ($this->headline) : ?>
+                    <<?= $this->hl ?>><?= $this->headline; ?></<?= $this->hl ?>>
+                <?php endif; ?>
+                <span class="<?= $this->sl ?>"><?= $this->subline; ?></span>
+                <?= $this->text; ?>
+                <?= $this->addButton ? '<a href="' . $this->button_link . '" class="rs-button ' . $this->button_type . '" target="' . $this->button_target . '">' . $this->button_label . '</a>' : ''; ?>
+            </div>
+            <?php if (is_array($this->multiSRC)) : ?>
+                <div class="custom-col-12 main-slider-wrapper">
+                    <div class="main-slider"
+                        data-slides-mobile="<?= $this->slide_count_mobile; ?>"
+                        data-slides-tablet="<?= $this->slide_count_tablet; ?>"
+                        data-slides-desktop="<?= $this->slide_count_desktop; ?>">
+                        <?php foreach ($this->multiSRC as $sliderImage) : ?>
+                            <?php
+                                $fileModel = FilesModel::findByUuid($sliderImage);
+                                $imagePath = $fileModel ? $fileModel->path : '';
+                                $fileMeta = CeHelpers::getFileMetaData($sliderImage);
+                                $copyright = '';
+                                $copyrightTitle = '';
+                                $copyrightPosition = '';
+                                if (!empty($fileMeta['copyright'])) {
+                                    $copyright = $fileMeta['copyright'];
+                                    $copyrightTitle = htmlspecialchars($copyright->title);
+                                    $copyrightPosition = !empty($fileMeta['copyrightPosition']) ? $fileMeta['copyrightPosition'] : 'default-position';
+                                }
+                            ?>
+                            <div class="main-slide position-relative">
+                                <?php if ($imagePath && file_exists($imagePath)) : ?>
+                                    <img src="<?= $imagePath ?>" alt="Slider Image" class="slider-image" data-src="<?= $imagePath ?>">
+                                    <?php if (!empty($copyrightTitle)): ?>
+                                        <span class="copyright <?= $copyrightPosition ?>">
+                                            <span class="copyright-toggle" aria-label="Copyright">©</span>
+                                            <span class="copyright-title"><?= $copyrightTitle ?></span>
+                                        </span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="custom-nav-wrapper">
+                    <div class="custom-prev">
+                        <img src="/files/tpl/assets/vector/arrow_back.svg" alt="Previous">
+                    </div>
+                    <div class="custom-next">
+                        <img src="/files/tpl/assets/vector/arrow-forwar.svg" alt="Next">
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

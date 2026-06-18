@@ -1,0 +1,169 @@
+<?php
+
+use Contao\System;
+// Start session
+$session = System::getContainer()->get('request_stack')->getCurrentRequest()->getSession();
+?>
+
+<div class="booking-widget">
+    <div class="logo-contact">
+        <div class="contact">
+            <p>Rufen Sie uns gerne an</p>
+            <div class="phone">
+                <a href="tel:+4938378335657">+49 38378 335657</a>
+            </div>
+        </div>
+        <div class="logo">
+            <a href="/">
+                <img src="/files/tpl/assets/logo/brise_logo_white.svg" alt="Logo">
+            </a>
+        </div>
+    </div>
+    <div class="logo-mobile-only">
+        <a href="/">
+            <img src="/files/tpl/assets/logo/brise_type_white.svg" alt="Logo">
+        </a>
+    </div>
+    <!-- <div id="mob-quickbooker-show" class="col-lg-3 col-button">
+        <button class="rs-button secondary">Verfügbarkeitscheck</button>
+    </div> -->
+    <div class="hero-header-quick-booker">
+        <div class="booking-container header-quickbooker">
+            <div class="row align-items-center justify-content-between">
+                <div class="center-col">
+                    <!-- Quick Booker Form -->
+                    <form id="quickbooker-home" method="POST" action="/ferienobjekte#scroll-to-object">
+                        <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+                        <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+        
+                        <div class="quickbooker">
+                            <div class="row">
+                                <!-- Arrival and Departure Date -->
+                                <div class="col-md-6 col-lg-6 col-dates">
+                                    <div class="col-content dates-section">
+                                        <div class="arrival-departure single-date-range">
+                                            <div class="arrival-div date-range-div">
+                                                <input type="text" 
+                                                    class="arrival datepicker date-range" 
+                                                    id="arrival"
+                                                    name="date-range" 
+                                                    placeholder="Datum"
+                                                    value="<?php 
+                                                        $arrival = $session->get('arrival');
+                                                        $departure = $session->get('departure');
+                                                        if ($arrival && $departure) {
+                                                            echo date('d.m.Y', strtotime($arrival)) . ' - ' . date('d.m.Y', strtotime($departure));
+                                                        }
+                                                    ?>" 
+                                                    readonly>
+                                                <label for="arrival">Reisedatum</label>
+                                            </div>
+                                            <!-- Hidden fields for form submission -->
+                                            <input type="hidden" 
+                                                name="arrival" 
+                                                value="<?= $session->get('arrival') ? $session->get('arrival') : ''; ?>">
+                                            <input type="hidden" 
+                                                name="departure" 
+                                                value="<?= $session->get('departure') ? $session->get('departure') : ''; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <!-- Number of Guests -->
+                                <div class="col-md-6 col-lg-3 col-guests">
+                                    <div class="col-content number-of-guests-wrapper">
+                                        <input type="text" class="number-of-guests" id="home-qb-number-of-guests"
+                                            name="number-of-guests" readonly placeholder="GÄSTE">
+                                        <label for="home-qb-number-of-guests">GÄSTE</label>
+        
+                                        <div class="number-of-guests-modal">
+                                            <table>
+                                                <tr>
+                                                    <td>Erwachsene</td>
+                                                    <td>
+                                                        <div class="number-wrapper">
+                                                            <span class="minus">-</span>
+                                                            <input readonly name="adults" id="home-qb-adults" type="number" min="0"
+                                                                value="<?= ($session->get('adults')) ? $session->get('adults') : 0; ?>">
+                                                            <span class="plus">+</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kinder 0-5 Jahre</td>
+                                                    <td>
+                                                        <div class="number-wrapper">
+                                                            <span class="minus">-</span>
+                                                            <input readonly name="toddlers" id="home-qb-toddlers" type="number"
+                                                                min="0" value="<?= ($session->get('toddlers')) ? $session->get('toddlers') : 0; ?>">
+                                                            <span class="plus">+</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kinder 6-17 Jahre</td>
+                                                    <td>
+                                                        <div class="number-wrapper">
+                                                            <span class="minus">-</span>
+                                                            <input readonly name="children" id="home-qb-children" type="number"
+                                                                min="0" value="<?= ($session->get('children')) ? $session->get('children') : 0; ?>">
+                                                            <span class="plus">+</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"><hr></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Reisen Sie mit Haustieren?</td>
+                                                    <td>
+                                                        <div class="number-wrapper">
+                                                            <span class="minus">-</span>
+                                                            <input readonly name="pets" id="home-qb-pets" type="number" min="0"
+                                                                value="<?= ($session->get('pets')) ? $session->get('pets') : 0; ?>">
+                                                            <span class="plus">+</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <span id="closeModalHome" class="close-modal-guest">
+                                                <img src="/files/tpl/assets/vector/close.svg" alt=" Close modal">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <!-- New Column for Checkboxes -->
+                                <div class="col-md-6 col-lg-3 col-options">
+                                    <div class="col-content options-wrapper">
+                                        <!-- Hundefreundlich Checkbox -->
+                                        <div class="checkbox-wrapper">
+                                            <span>
+                                                <input type="checkbox" id="home-qb-dog-friendly" name="dog-friendly" 
+                                                <?= ($session->get('dog-friendly') == 1) ? 'checked' : ''; ?>>
+                                            <label for="home-qb-dog-friendly">Hundefreundlich</label>
+                                            </span>
+                                        </div>
+        
+                                        <!-- Meerblick Checkbox -->
+                                        <div class="checkbox-wrapper">
+                                            <span>
+                                                <input type="checkbox" id="home-qb-sea-view" name="sea-view"
+                                                <?= ($session->get('sea-view') == 1) ? 'checked' : ''; ?>>
+                                                <label for="home-qb-sea-view">Meerblick</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="col-lg-3 col-button">
+                                    <button class="rs-button secondary">Verfügbarkeit prüfen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

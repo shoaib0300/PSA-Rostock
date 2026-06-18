@@ -1,0 +1,42 @@
+<?php 
+use Contao\FilesModel; 
+use Contao\StringUtil; 
+
+// Fetch the latest file data
+$filePath = ''; 
+$fileExtension = ''; 
+
+if (!empty($this->image_video)) {
+    $image_video = is_array($this->image_video) ? $this->image_video : StringUtil::deserialize($this->image_video, true);
+    if (!empty($image_video)) {
+        $uuidString = StringUtil::binToUuid($image_video[0]);
+        $fileModel = FilesModel::findByUuid($uuidString);
+        if ($fileModel !== null) {
+            $filePath = $fileModel->path;
+            $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+        }
+    }
+} 
+?> 
+
+<?php if (!empty($filePath)): ?> 
+<section class="top-hero-header <?php echo $this->cssID[1] ?? ''; ?>">
+    <a href="/" class="logo-mobile">
+        <img src="/files/tpl/assets/vector/mobile-logo.svg" alt=" Mobile Logo">
+    </a>
+    <div class="top-hero-header-inner"> 
+        <div class="top-hero-header-inner"> 
+            <?php if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif'])): ?> 
+                <img src="<?php echo $filePath; ?>" alt="image " class="image"> 
+            <?php elseif (in_array($fileExtension, ['mp4', 'webm'])): ?> 
+            <video autoplay muted loop playsinline class="video"> 
+                <source src="<?php echo $filePath; ?>" type="video/<?php echo $fileExtension; ?>"> 
+                    Your browser does not support the video tag. 
+                </video> 
+            <?php endif; ?>
+        </div> 
+
+
+    </div> 
+</section> 
+<?php endif; ?> 
