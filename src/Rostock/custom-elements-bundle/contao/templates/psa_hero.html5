@@ -1,6 +1,6 @@
 <?php
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=20';
-$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=20';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=23';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=23';
 
 $headline = $this->headline ?: 'A community that feels like home.';
 $lede = $this->lede ?: 'Connect with fellow Pakistaniss in Rostock — events, meetups, culture, and belonging.';
@@ -18,7 +18,7 @@ $ctaLabel = $this->addButton ? ($this->button_label ?: 'Explore Events') : 'Expl
 $ctaTarget = ($this->addButton && $this->button_target) ? '_blank' : '';
 ?>
 <link rel="stylesheet" href="<?= $assetCss ?>">
-<section class="psa-hero <?= $this->class ?>" <?= $this->cssID ?>>
+<section class="psa-hero <?= $this->class ?>" data-psa-hero <?= $this->cssID ?>>
     <div class="psa-hero__visual">
         <figure class="psa-hero__media" aria-hidden="true">
             <div class="psa-hero__media-frame">

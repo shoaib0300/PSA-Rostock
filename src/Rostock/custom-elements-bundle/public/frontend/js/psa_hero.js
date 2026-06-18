@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-psa-hero]').forEach((hero) => {
+        let wasExpanded = false;
+
+        const update = () => {
+            const expanded = window.scrollY > 0;
+
+            if (expanded !== wasExpanded) {
+                hero.style.setProperty('--psa-hero-frame-duration', expanded ? '1s' : '0.55s');
+                wasExpanded = expanded;
+            }
+
+            hero.classList.toggle('psa-hero--expanded', expanded);
+        };
+
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+    });
+
     document.querySelectorAll('.JS-psa-hero-slider').forEach((slider) => {
         const slides = slider.querySelectorAll('.psa-hero__media-slide');
 

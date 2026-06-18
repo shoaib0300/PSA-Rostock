@@ -9,6 +9,8 @@
     --psa-hero-max: 1366px;
     --psa-hero-ease: cubic-bezier(0.25, 1, 0.5, 1);
     --psa-hero-frame-inset: 8px;
+    --psa-hero-frame-radius: 20px;
+    --psa-hero-frame-duration: 0.55s;
     --psa-site-rail: 12px;
     --psa-site-rail-x: 14px;
     --psa-site-logo-pad-x: 14px;
@@ -45,7 +47,9 @@ body.has-psa-hero {
 
 /* —— First screen: media + text overlay (Integrated Bio) —— */
 .psa-hero__visual {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
@@ -72,7 +76,15 @@ body.has-psa-hero {
     position: absolute;
     inset: var(--psa-hero-frame-inset);
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: var(--psa-hero-frame-radius);
+    transition:
+        inset var(--psa-hero-frame-duration) var(--psa-hero-ease),
+        border-radius var(--psa-hero-frame-duration) var(--psa-hero-ease);
+}
+
+.psa-hero--expanded .psa-hero__media-frame {
+    inset: 0;
+    border-radius: 0;
 }
 
 .psa-hero__media-frame::after {
@@ -507,8 +519,8 @@ body.has-psa-hero {
         --psa-site-content-width: min(calc(100% - 32px), 1366px);
     }
 
-    .psa-hero__media-frame {
-        border-radius: 24px;
+    :root {
+        --psa-hero-frame-radius: 24px;
     }
 
     .psa-hero__bottom {
