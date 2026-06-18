@@ -1,0 +1,17 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<section class="psa-events psa-events--past">
+  <?php if ($this->headline): ?>
+    <?= $this->headline ?>
+  <?php endif; ?>
+
+  <div class="psa-events__grid">
+    <?= $this->events ?>
+  </div>
+
+  <?= $this->pagination ?>
+</section>
+
+<?php $this->endblock(); ?>

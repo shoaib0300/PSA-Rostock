@@ -17,6 +17,9 @@ $GLOBALS['TL_LANG']['PSA']['event_login_required'] = 'Nur Mitglieder können abs
 $GLOBALS['TL_LANG']['PSA']['event_login_rsvp'] = 'Nur Mitglieder können abstimmen und kommentieren. Bitte <a href="%s">melde dich zuerst an</a>, wenn du abstimmen oder kommentieren möchtest.';
 $GLOBALS['TL_LANG']['PSA']['event_login_comment'] = 'Nur Mitglieder können abstimmen und kommentieren. Bitte <a href="%s">melde dich zuerst an</a>, wenn du abstimmen oder kommentieren möchtest.';
 $GLOBALS['TL_LANG']['PSA']['event_view_details'] = 'Details ansehen';
+$GLOBALS['TL_LANG']['PSA']['event_show_past'] = 'Alle vergangenen Events ansehen';
+$GLOBALS['TL_LANG']['PSA']['event_hide_past'] = 'Vergangene Events ausblenden';
+$GLOBALS['TL_LANG']['PSA']['event_past_headline'] = 'Vergangene Events';
 $GLOBALS['TL_LANG']['PSA']['comment_label'] = 'Dein Kommentar';
 $GLOBALS['TL_LANG']['PSA']['comment_placeholder'] = 'Schreib deine Gedanken zu diesem Event…';
 $GLOBALS['TL_LANG']['PSA']['comment_delete'] = 'Löschen';

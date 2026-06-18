@@ -1,3 +1,8 @@
+<?php
+
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+?>
 <?php $this->extend('block_unsearchable'); ?>
 
 <?php $this->block('content'); ?>
@@ -12,6 +17,26 @@
   </div>
 
   <?= $this->pagination ?>
+
+  <?php if (!empty($this->pastEventsHtml)): ?>
+    <div class="psa-events__past-toggle">
+      <?= CeHelpers::renderPsaButton($GLOBALS['TL_LANG']['PSA']['event_show_past'] ?? 'See all past events', [
+          'type' => 'button',
+          'class' => 'psa-events__past-btn',
+          'attrs' => [
+              'id' => 'psa-events-past-toggle',
+              'aria-expanded' => 'false',
+              'aria-controls' => 'psa-events-past',
+              'data-label-show' => $GLOBALS['TL_LANG']['PSA']['event_show_past'] ?? 'See all past events',
+              'data-label-hide' => $GLOBALS['TL_LANG']['PSA']['event_hide_past'] ?? 'Hide past events',
+          ],
+      ]) ?>
+    </div>
+
+    <div class="psa-events__past" id="psa-events-past" hidden>
+      <?= $this->pastEventsHtml ?>
+    </div>
+  <?php endif; ?>
 </section>
 
 <?php $this->endblock(); ?>

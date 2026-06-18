@@ -6,10 +6,12 @@ namespace Rostock\CustomElementsBundle\EventListener;
 
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
+use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\Input;
+use Contao\ModuleModel;
 use Contao\System;
 use Contao\Template;
 use Rostock\CustomElementsBundle\Classes\PsaEventContentSanitizer;
@@ -29,6 +31,12 @@ class PsaEventTemplateListener
 
         if (\in_array($name, ['mod_eventreader', 'mod_eventreader_psa'], true)) {
             $this->enrichEventReader($template);
+
+            return;
+        }
+
+        if (\in_array($name, ['mod_eventlist', 'mod_eventlist_psa'], true)) {
+            $this->enrichEventListModule($template);
 
             return;
         }
@@ -83,6 +91,22 @@ class PsaEventTemplateListener
             $template->requireLogin = true;
             $template->login = $this->buildLoginMessage();
         }
+    }
+
+    private function enrichEventListModule(Template $template): void
+    {
+        $upcoming = ModuleModel::findOneBy('name', 'PSA Event List');
+        $past = ModuleModel::findOneBy('name', 'PSA Past Event List');
+
+        if ($upcoming === null || $past === null) {
+            return;
+        }
+
+        if ((int) ($template->id ?? 0) !== (int) $upcoming->id) {
+            return;
+        }
+
+        $template->pastEventsHtml = Controller::getFrontendModule((int) $past->id);
     }
 
     private function enrichEventListItem(Template $template): void

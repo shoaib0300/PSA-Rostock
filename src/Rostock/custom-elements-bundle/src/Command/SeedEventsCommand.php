@@ -161,43 +161,116 @@ class SeedEventsCommand extends Command
             ],
         ];
 
+        $pastSamples = [
+            [
+                'title' => 'New Year Community Meetup',
+                'alias' => 'new-year-community-meetup',
+                'date' => '2026-01-18',
+                'time' => '15:00',
+                'endTime' => '18:00',
+                'location' => 'PSA Gemeinschaftsraum',
+                'address' => 'August-Bebel-Str. 55, 18055 Rostock',
+                'teaser' => '<p>We kicked off the year together with tea, introductions, and plans for the semester ahead.</p>',
+                'image' => $images[1],
+            ],
+            [
+                'title' => 'Winter Hot Chocolate Social',
+                'alias' => 'winter-hot-chocolate-social',
+                'date' => '2026-02-08',
+                'time' => '16:00',
+                'endTime' => '19:00',
+                'location' => 'Café Central',
+                'address' => '18055 Rostock',
+                'teaser' => '<p>A cozy afternoon to meet new members and catch up after the winter break.</p>',
+                'image' => $images[2],
+            ],
+            [
+                'title' => 'Ramadan Community Iftar',
+                'alias' => 'ramadan-community-iftar',
+                'date' => '2026-03-15',
+                'time' => '18:30',
+                'endTime' => '21:30',
+                'location' => 'Gemeinschaftsraum Neptun',
+                'address' => 'August-Bebel-Str. 55, 18055 Rostock',
+                'teaser' => '<p>Members gathered to break fast together and share an evening of food and conversation.</p>',
+                'image' => $images[0],
+            ],
+            [
+                'title' => 'Spring Park Cleanup',
+                'alias' => 'spring-park-cleanup',
+                'date' => '2026-04-26',
+                'time' => '10:00',
+                'endTime' => '14:00',
+                'location' => 'Stadtpark Rostock',
+                'address' => '18055 Rostock',
+                'teaser' => '<p>Volunteers helped clean the park and enjoyed lunch together afterwards.</p>',
+                'image' => $images[1],
+            ],
+            [
+                'title' => 'Pre-Exam Study Circle',
+                'alias' => 'pre-exam-study-circle',
+                'date' => '2026-05-17',
+                'time' => '13:00',
+                'endTime' => '17:00',
+                'location' => 'Universitätsbibliothek Rostock',
+                'address' => '18057 Rostock',
+                'teaser' => '<p>Students revised together, shared notes, and supported each other before exam season.</p>',
+                'image' => $images[2],
+            ],
+        ];
+
         foreach ($samples as $index => $sample) {
-            $startDate = strtotime($sample['date'].' 00:00:00');
-            $endDate = $startDate;
-
-            $event = new CalendarEventsModel();
-            $event->pid = $calendarId;
-            $event->sorting = ($index + 1) * 128;
-            $event->tstamp = time();
-            $event->title = $sample['title'];
-            $event->alias = $sample['alias'];
-            $event->author = 1;
-            $event->startDate = $startDate;
-            $event->endDate = $endDate;
-            $event->startTime = $startDate;
-            $event->endTime = $endDate;
-            $event->addTime = '0';
-            $event->location = $sample['location'];
-            $event->address = $sample['address'];
-            $event->teaser = $sample['teaser'].'<p><strong>'.($sample['time'] ?? '').' – '.($sample['endTime'] ?? '').'</strong></p>';
-            $event->published = '1';
-            $event->source = 'default';
-            $event->addImage = $sample['image'] ? '1' : '';
-            $event->singleSRC = $sample['image'];
-            $event->alt = $sample['title'];
-            $event->imageTitle = $sample['title'];
-            $event->size = '';
-            $event->floating = 'above';
-            $event->fullsize = '0';
-            $event->save();
-
-            $io->writeln('Created event: '.$sample['title'].' (id '.$event->id.').');
+            $this->createEvent($io, $calendarId, ($index + 1) * 128, $sample);
         }
+
+        foreach ($pastSamples as $index => $sample) {
+            $this->createEvent($io, $calendarId, ($index + 1) * 128 + 64, $sample);
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $sample
+     */
+    private function createEvent(SymfonyStyle $io, int $calendarId, int $sorting, array $sample): void
+    {
+        $startDate = strtotime($sample['date'].' 00:00:00');
+        $endDate = $startDate;
+        $startTime = strtotime($sample['date'].' '.$sample['time'].':00');
+        $endTime = strtotime($sample['date'].' '.$sample['endTime'].':00');
+
+        $event = new CalendarEventsModel();
+        $event->pid = $calendarId;
+        $event->sorting = $sorting;
+        $event->tstamp = time();
+        $event->title = $sample['title'];
+        $event->alias = $sample['alias'];
+        $event->author = 1;
+        $event->startDate = $startDate;
+        $event->endDate = $endDate;
+        $event->startTime = $startTime;
+        $event->endTime = $endTime;
+        $event->addTime = '1';
+        $event->location = $sample['location'];
+        $event->address = $sample['address'];
+        $event->teaser = $sample['teaser'];
+        $event->published = '1';
+        $event->source = 'default';
+        $event->addImage = $sample['image'] ? '1' : '';
+        $event->singleSRC = $sample['image'];
+        $event->alt = $sample['title'];
+        $event->imageTitle = $sample['title'];
+        $event->size = '';
+        $event->floating = 'above';
+        $event->fullsize = '0';
+        $event->save();
+
+        $io->writeln('Created event: '.$sample['title'].' (id '.$event->id.').');
     }
 
     private function wireModuleTemplates(SymfonyStyle $io): void
     {
         $list = ModuleModel::findOneBy('name', 'PSA Event List');
+        $pastList = ModuleModel::findOneBy('name', 'PSA Past Event List');
         $reader = ModuleModel::findOneBy('name', 'PSA Event Reader');
 
         if ($list !== null) {
@@ -205,10 +278,29 @@ class SeedEventsCommand extends Command
             $list->customTpl = 'mod_eventlist_psa';
             $list->cal_noSpan = '1';
             $list->cal_format = 'next_all';
+            $list->cal_order = 'ascending';
             $list->headline = serialize(['unit' => 'h1', 'value' => 'Upcoming events']);
             $list->tstamp = time();
             $list->save();
             $io->writeln('Updated PSA Event List templates.');
+        }
+
+        if ($pastList !== null) {
+            $pastList->cal_template = 'event_list_psa';
+            $pastList->customTpl = 'mod_eventlist_past_psa';
+            $pastList->cal_noSpan = '1';
+            $pastList->cal_format = 'past_all';
+            $pastList->cal_order = 'descending';
+            $pastList->headline = serialize([
+                'unit' => 'h2',
+                'value' => $GLOBALS['TL_LANG']['PSA']['event_past_headline'] ?? 'Past events',
+            ]);
+            if ($reader !== null) {
+                $pastList->cal_readerModule = (int) $reader->id;
+            }
+            $pastList->tstamp = time();
+            $pastList->save();
+            $io->writeln('Updated PSA Past Event List templates.');
         }
 
         if ($reader !== null) {

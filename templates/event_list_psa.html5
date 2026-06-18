@@ -30,11 +30,17 @@
       <p class="psa-event-card__excerpt"><?= $this->excerpt ?></p>
     <?php endif; ?>
 
-    <?php if (($this->rsvpTotal ?? 0) > 0): ?>
-      <p class="psa-event-card__rsvp">
-        <span><?= (int) ($this->rsvpYes ?? 0) ?> <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going_short'] ?? 'going' ?></span>
-      </p>
-    <?php endif; ?>
+    <p class="psa-event-card__rsvp">
+      <span class="psa-event-card__rsvp-stat psa-event-card__rsvp-stat--yes">
+        <strong><?= (int) ($this->rsvpYes ?? 0) ?></strong>
+        <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going_short'] ?? 'going' ?>
+      </span>
+      <span class="psa-event-card__rsvp-sep" aria-hidden="true">·</span>
+      <span class="psa-event-card__rsvp-stat psa-event-card__rsvp-stat--no">
+        <strong><?= (int) ($this->rsvpNo ?? 0) ?></strong>
+        <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_not_going_short'] ?? 'not going' ?>
+      </span>
+    </p>
 
     <span class="psa-event-card__cta"><?= $GLOBALS['TL_LANG']['PSA']['event_view_details'] ?? 'View details' ?></span>
   </div>

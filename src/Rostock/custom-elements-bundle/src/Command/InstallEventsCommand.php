@@ -52,6 +52,17 @@ class InstallEventsCommand extends Command
             'customTpl' => 'mod_eventlist_psa',
             'headline' => serialize(['unit' => 'h1', 'value' => 'Upcoming events']),
         ]);
+        $this->ensureModule($io, 'PSA Past Event List', 'eventlist', [
+            'cal_calendar' => serialize([$calendarId]),
+            'cal_format' => 'past_all',
+            'cal_order' => 'descending',
+            'cal_limit' => '0',
+            'cal_noSpan' => '1',
+            'cal_readerModule' => $readerModuleId,
+            'cal_template' => 'event_list_psa',
+            'customTpl' => 'mod_eventlist_past_psa',
+            'headline' => serialize(['unit' => 'h2', 'value' => 'Past events']),
+        ]);
 
         $this->ensureArticleWithModule($io, $eventsPageId, 'events', 'Events', $listModuleId);
         $this->cleanupEventsPage($io, $eventsPageId, $listModuleId, $readerModuleId);
