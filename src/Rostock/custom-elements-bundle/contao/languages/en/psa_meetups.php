@@ -40,6 +40,8 @@ $GLOBALS['TL_LANG']['PSA']['meetup_comments'] = 'Comments';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_label'] = 'Add a comment';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_placeholder'] = 'Say you are interested or ask a question…';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_submit'] = 'Comment';
+$GLOBALS['TL_LANG']['PSA']['meetup_delete'] = 'Delete';
+$GLOBALS['TL_LANG']['PSA']['meetup_delete_confirm'] = 'Delete this post? This cannot be undone.';
 $GLOBALS['TL_LANG']['PSA']['meetup_login_comment'] = 'Log in to join or comment. <a href="%s">Sign in</a>';
 
 $GLOBALS['TL_LANG']['FMD']['psa_meetup'] = ['PSA Meetups', 'Member outing board with join and comments.'];

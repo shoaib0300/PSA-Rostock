@@ -54,6 +54,7 @@ final class PsaMeetupActionListener
             'psa_meetup_join',
             'psa_meetup_comment',
             'psa_delete_meetup_comment',
+            'psa_delete_meetup',
             'psa_meetup_poll_vote',
         ], true)) {
             return;
@@ -84,6 +85,7 @@ final class PsaMeetupActionListener
                 'psa_meetup_join' => $this->handleJoin($request, $memberId),
                 'psa_meetup_comment' => $this->handleComment($request, $memberId),
                 'psa_delete_meetup_comment' => $this->handleDeleteComment($request, $memberId),
+                'psa_delete_meetup' => $this->handleDeleteMeetup($request, $memberId),
                 'psa_meetup_poll_vote' => $this->handlePollVote($request, $memberId),
             };
         } catch (\InvalidArgumentException) {
@@ -177,6 +179,15 @@ final class PsaMeetupActionListener
 
         if ($commentId <= 0 || !$this->meetup->deleteComment($commentId, $memberId)) {
             throw new \InvalidArgumentException('Cannot delete comment.');
+        }
+    }
+
+    private function handleDeleteMeetup(Request $request, int $memberId): void
+    {
+        $meetupId = (int) $request->request->get('meetup_id', 0);
+
+        if ($meetupId <= 0 || !$this->meetup->deleteMeetup($meetupId, $memberId)) {
+            throw new \InvalidArgumentException('Cannot delete meetup.');
         }
     }
 

@@ -141,8 +141,18 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
           ?>
           <article class="psa-meetup-card<?= !empty($meetup['isPost']) ? ' psa-meetup-card--post' : '' ?>" id="meetup-<?= (int) $meetup['id'] ?>">
             <header class="psa-meetup-card__header">
-              <div class="psa-meetup-card__badges">
-                <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
+              <div class="psa-meetup-card__header-top">
+                <div class="psa-meetup-card__badges">
+                  <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
+                </div>
+                <?php if ($this->isMember && !empty($meetup['isAuthor'])): ?>
+                  <form class="psa-meetup-card__delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['meetup_delete_confirm'] ?? 'Delete this post?'), ENT_QUOTES) ?>')">
+                    <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup">
+                    <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                    <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
+                    <button type="submit" class="psa-meetup-card__delete-btn"><?= $lang['meetup_delete'] ?? 'Delete' ?></button>
+                  </form>
+                <?php endif; ?>
               </div>
               <h3 class="psa-meetup-card__title"><?= htmlspecialchars((string) $meetup['title'], ENT_QUOTES) ?></h3>
               <p class="psa-meetup-card__meta">

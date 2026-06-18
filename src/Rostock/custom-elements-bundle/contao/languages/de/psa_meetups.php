@@ -40,6 +40,8 @@ $GLOBALS['TL_LANG']['PSA']['meetup_comments'] = 'Kommentare';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_label'] = 'Kommentar hinzufügen';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_placeholder'] = 'Sag, dass du dabei bist, oder stelle eine Frage…';
 $GLOBALS['TL_LANG']['PSA']['meetup_comment_submit'] = 'Kommentieren';
+$GLOBALS['TL_LANG']['PSA']['meetup_delete'] = 'Löschen';
+$GLOBALS['TL_LANG']['PSA']['meetup_delete_confirm'] = 'Diesen Beitrag löschen? Das kann nicht rückgängig gemacht werden.';
 $GLOBALS['TL_LANG']['PSA']['meetup_login_comment'] = 'Zum Mitmachen oder Kommentieren bitte <a href="%s">anmelden</a>.';
 
 $GLOBALS['TL_LANG']['FMD']['psa_meetup'] = ['PSA Treffen', 'Mitglieder-Treffen mit Teilnahme und Kommentaren.'];

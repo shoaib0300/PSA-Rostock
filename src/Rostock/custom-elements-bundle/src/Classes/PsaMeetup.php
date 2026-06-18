@@ -271,6 +271,43 @@ final class PsaMeetup
         return true;
     }
 
+    public function deleteMeetup(int $meetupId, int $memberId): bool
+    {
+        $row = $this->connection->fetchAssociative(
+            'SELECT id, member_id FROM tl_psa_meetup WHERE id = ?',
+            [$meetupId],
+        );
+
+        if ($row === false || (int) $row['member_id'] !== $memberId) {
+            return false;
+        }
+
+        $this->connection->transactional(function () use ($meetupId): void {
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup_poll_vote WHERE meetup_id = ?',
+                [$meetupId],
+            );
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup_poll_option WHERE pid = ?',
+                [$meetupId],
+            );
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup_comment WHERE pid = ?',
+                [$meetupId],
+            );
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup_join WHERE pid = ?',
+                [$meetupId],
+            );
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup WHERE id = ?',
+                [$meetupId],
+            );
+        });
+
+        return true;
+    }
+
     /**
      * @return list<array<string, mixed>>
      */
