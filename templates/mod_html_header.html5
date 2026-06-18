@@ -2,8 +2,8 @@
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetLogo = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/images/psa-logo.svg') . '?v=1';
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=16';
+$assetLogo = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/images/psa-logo.svg') . '?v=2';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=17';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
 
@@ -30,8 +30,8 @@ $tagline = $this->tagline ?? '';
                         src="<?= $assetLogo ?>"
                         alt="<?= $siteName ?>"
                         class="psa-header__logo-img"
-                        width="500"
-                        height="180"
+                        width="294"
+                        height="114"
                         decoding="async"
                     >
                 </a>

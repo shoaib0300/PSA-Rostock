@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\Classes;
 
 use Contao\DataContainer;
-use Contao\FilesModel;
-use Contao\Input;
 use Contao\StringUtil;
 
 final class PsaMemberDcaCallbacks
 {
-    public static function storeAvatarUuid(mixed $value, mixed $user, mixed $module): mixed
+    public static function storeAvatarUuid(mixed $value, DataContainer $dc): mixed
     {
         if (\is_array($value)) {
             $uuid = $value['uuid'] ?? null;
@@ -26,7 +24,7 @@ final class PsaMemberDcaCallbacks
         return null;
     }
 
-    public static function loadAvatarUuid(mixed $value, mixed $user, mixed $module): mixed
+    public static function loadAvatarUuid(mixed $value, DataContainer $dc): mixed
     {
         if (!\is_string($value) || $value === '') {
             return '';
