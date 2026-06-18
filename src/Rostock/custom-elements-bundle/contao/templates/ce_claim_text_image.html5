@@ -4,40 +4,35 @@ use Rostock\CustomElementsBundle\Classes\CeHelpers;
 
 $fileMeta = CeHelpers::getFileMetaData($this->side_image);
 
-// Check if copyright exists
 if (!empty($fileMeta['copyright'])) {
     $copyright = $fileMeta['copyright'];
     $copyrightTitle = $copyright->title;
-    $copyrightPosition =  $fileMeta['copyrightPosition'];
+    $copyrightPosition = $fileMeta['copyrightPosition'];
 }
 ?>
 
-<div class="content-rs-text-image <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
-    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
-        <div class="row claim-text-image-row<?= $this->center_text ? ' text-center' : ''; ?><?= $this->v_center ? ' align-items-center' : ''; ?>">
-            <div class="col-md-6<?= $this->mirror ? ' order-md-2' : ''; ?> position-relative">
+<section class="<?= CeHelpers::psaScreenClass(trim('content-rs-text-image ' . $this->class)) ?>" <?= $this->cssID ?><?php if ($this->dark_mode) : ?> mode="dark"<?php endif; ?>>
+    <div class="<?= CeHelpers::psaContainerClass((bool) $this->full_width) ?>">
+        <div class="row claim-text-image-row<?= $this->center_text ? ' text-center' : '' ?><?= $this->v_center ? ' align-items-center' : '' ?>">
+            <div class="col-md-6<?= $this->mirror ? ' order-md-2' : '' ?> position-relative">
                 <div class="claim-image">
-                    {{picture::<?= $this->claim_image; ?>}}
+                    {{picture::<?= $this->claim_image ?>}}
                 </div>
                 <div class="image_container">
-                    {{picture::<?= $this->side_image; ?>}}
+                    {{picture::<?= $this->side_image ?>}}
                     <?php if (!empty($copyright) && !empty($copyrightTitle)): ?>
                         <span class="copyright <?= $copyrightPosition ?>">
-                            <div class="copyright-toggle">
-                                ©
-                            </div>
-                            <div class="copyright-title">
-                                <?= $copyrightTitle ?>
-                            </div>
+                            <div class="copyright-toggle">©</div>
+                            <div class="copyright-title"><?= $copyrightTitle ?></div>
                         </span>
                     <?php endif; ?>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="text-col-content">
-                    <<?= $this->hl ?>><?= $this->headline; ?></<?= $this->hl ?>>
-                    <span class="<?= $this->sl ?>"><?= $this->subline; ?></span>
-                    <?= $this->side_text; ?>
+                    <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
+                    <span class="<?= $this->sl ?>"><?= $this->subline ?></span>
+                    <?= $this->side_text ?>
                     <?php if ($this->addButton): ?>
                         <?= CeHelpers::renderPsaButton($this->button_label, [
                             'href' => $this->button_link,
@@ -48,4 +43,4 @@ if (!empty($fileMeta['copyright'])) {
             </div>
         </div>
     </div>
-</div>
+</section>

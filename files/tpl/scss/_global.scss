@@ -24,9 +24,20 @@ body {
   font-family: $psa-font-sans !important;
 }
 
+#main,
+.mod_article,
+.mod_article > .inside {
+  padding-inline: 0;
+  max-width: none;
+}
+
 body {
   color: $psa-ink;
   background-color: $psa-bone;
+}
+
+p {
+  color: $psa-ink;
 }
 
 h1,
@@ -41,7 +52,6 @@ h6,
 .h4,
 .h5,
 .h6,
-p,
 li,
 label,
 a,

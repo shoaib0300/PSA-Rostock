@@ -187,6 +187,32 @@ class CeHelpers
     }
 
     /**
+     * Standard outer wrapper for custom content elements.
+     *
+     * @param array{compact?: bool, flush?: bool, extra?: string} $options
+     */
+    public static function psaScreenClass(string $componentClass = '', array $options = []): string
+    {
+        $classes = array_filter([
+            'psa-screen',
+            $componentClass !== '' ? $componentClass : null,
+            !empty($options['compact']) ? 'psa-screen--compact' : null,
+            !empty($options['flush']) ? 'psa-screen--flush' : null,
+            $options['extra'] ?? null,
+        ]);
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Standard inner container (max-width + side padding).
+     */
+    public static function psaContainerClass(bool $fullWidth = false): string
+    {
+        return $fullWidth ? 'psa-container psa-container--full' : 'psa-container';
+    }
+
+    /**
      * Render the global PSA button markup (class psa-hero__btn).
      *
      * @param array{href?: string|null, target?: string, class?: string, type?: string, attrs?: array<string, string>} $options

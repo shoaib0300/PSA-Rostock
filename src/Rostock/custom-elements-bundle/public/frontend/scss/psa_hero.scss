@@ -59,6 +59,12 @@ body.has-psa-hero {
     .psa-hero__flow {
       margin-top: 0;
       color: var(--psa-hero-ink);
+
+      p,
+      .psa-hero__lede,
+      .psa-hero__heading {
+        color: var(--psa-hero-ink);
+      }
     }
   }
 
@@ -84,6 +90,12 @@ body.has-psa-hero {
     z-index: 2;
     margin-top: -100lvh;
     color: var(--psa-hero-white);
+
+    p,
+    .psa-hero__lede,
+    .psa-hero__heading {
+      color: var(--psa-hero-white);
+    }
   }
 
   &__stage {
@@ -215,6 +227,7 @@ body.has-psa-hero {
   &__heading {
     max-width: 14ch;
     margin: 0;
+    color: var(--psa-hero-white);
     font-size: clamp(3.125rem, 5vw + 1rem, 7rem);
     font-weight: 400;
     line-height: 1;
@@ -226,7 +239,7 @@ body.has-psa-hero {
   &__lede {
     max-width: 40rem;
     margin: 0;
-    color: inherit;
+    color: var(--psa-hero-white);
     font-size: clamp(1.25rem, 1rem + 0.5vw, 1.5rem);
     font-weight: 400;
     line-height: 1.2;
@@ -237,41 +250,9 @@ body.has-psa-hero {
 }
 
 @include min-nav {
-  :root {
-    --psa-hero-frame-inset: 12px;
-    --psa-site-rail: clamp(12px, 2vw, 32px);
-    --psa-site-rail-x: clamp(12px, 2vw, 32px);
-    --psa-site-logo-pad-x: 14px;
-    --psa-site-content-width: min(calc(100% - 32px), #{$psa-max-width});
-    --psa-hero-frame-radius: 24px;
-  }
-
   .psa-hero__bottom {
     flex-wrap: nowrap;
     align-items: flex-end;
-  }
-}
-
-@include nav-mid {
-  :root {
-    --psa-site-logo-pad-x: clamp(8px, 0.9vw, 14px);
-  }
-}
-
-@include min-wide {
-  :root {
-    --psa-site-rail: 32px;
-    --psa-site-rail-x: 32px;
-    --psa-site-content-width: #{$psa-max-width};
-  }
-}
-
-@include max-nav {
-  :root {
-    --psa-site-rail: 16px;
-    --psa-site-rail-x: 26px;
-    --psa-site-logo-pad-x: 14px;
-    --psa-site-content-width: calc(100% - 32px);
   }
 }
 

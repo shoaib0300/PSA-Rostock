@@ -345,11 +345,6 @@ body.has-psa-header {
 }
 
 @include min-nav {
-  :root {
-    --psa-hero-frame-inset: 12px;
-    --psa-site-rail: clamp(12px, 2vw, 32px);
-  }
-
   .psa-header {
     &__bar {
       top: var(--psa-header-top-desktop);
@@ -434,10 +429,6 @@ body.has-psa-header {
 }
 
 @include min-wide {
-  :root {
-    --psa-site-rail: 32px;
-  }
-
   .psa-header {
     &__link,
     &__menu--module .level_1 a {
@@ -449,10 +440,6 @@ body.has-psa-header {
 }
 
 @include max-nav {
-  :root {
-    --psa-site-rail: 16px;
-  }
-
   .psa-header {
     &[data-navigation-status='active'] {
       .psa-header__logo-link {

@@ -1,21 +1,20 @@
 <?php use Rostock\CustomElementsBundle\Classes\CeHelpers; ?>
-<div class="content-text-double <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
+<section class="<?= CeHelpers::psaScreenClass(trim('content-text-double ' . $this->class)) ?>" <?= $this->cssID ?><?php if ($this->dark_mode) : ?> mode="dark"<?php endif; ?>>
     <div class="light-image-overlay"></div>
-    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
+    <div class="<?= CeHelpers::psaContainerClass((bool) $this->full_width) ?>">
         <div class="row">
-            <!-- Left Column -->
             <div class="col-md-6 left-column">
-                <?php 
+                <?php
                 if ($this->headline):
-                    $headlineData = unserialize($this->headline); 
+                    $headlineData = unserialize($this->headline);
                     $headlineUnit = $headlineData['unit'] ?? '';
                     $headlineText = $headlineData['value'] ?? '';
                     if ($headlineUnit && $headlineText): ?>
-                        <<?= htmlspecialchars($headlineUnit) ?> class="text-col-content <?= $this->center_text ? ' text-center' : ''; ?>">
+                        <<?= htmlspecialchars($headlineUnit) ?> class="text-col-content<?= $this->center_text ? ' text-center' : '' ?>">
                         <?= htmlspecialchars_decode($headlineText) ?></<?= htmlspecialchars($headlineUnit) ?>>
-                    <?php endif; 
+                    <?php endif;
                 endif;
-                ?>    
+                ?>
                 <div class="text-col-content">
                     <?= $this->text ?>
                     <?php if ($this->addButton): ?>
@@ -27,7 +26,6 @@
                 </div>
             </div>
 
-            <!-- Right Column -->
             <div class="col-md-6 right-column">
                 <div class="text-col-content">
                     <?= $this->text2 ?>
@@ -35,4 +33,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

@@ -6,6 +6,102 @@
   font-display: swap;
 }
 :root {
+  --psa-container-max: 1366px;
+  --psa-container-width: 100%;
+  --psa-container-padding-x: 12px;
+  --psa-section-padding-y: clamp(2.5rem, 4vw, 5rem);
+  --psa-section-padding-y-sm: clamp(1.5rem, 3vw, 2.5rem);
+  --psa-container-gutter: 1.5rem;
+  --psa-site-rail: 12px;
+  --psa-site-rail-x: 14px;
+  --psa-site-logo-pad-x: 14px;
+  --psa-site-content-width: calc(100% - 40px);
+  --psa-hero-frame-inset: 8px;
+  --psa-hero-frame-radius: 20px;
+}
+
+@media (min-width: 992px) {
+  :root {
+    --psa-container-padding-x: clamp(12px, 2vw, 32px);
+    --psa-container-width: min(calc(100% - 32px), 1366px);
+    --psa-site-rail: clamp(12px, 2vw, 32px);
+    --psa-site-rail-x: clamp(12px, 2vw, 32px);
+    --psa-site-logo-pad-x: 14px;
+    --psa-site-content-width: min(calc(100% - 32px), 1366px);
+    --psa-hero-frame-inset: 12px;
+    --psa-hero-frame-radius: 24px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1399px) {
+  :root {
+    --psa-site-logo-pad-x: clamp(8px, 0.9vw, 14px);
+  }
+}
+@media (min-width: 1400px) {
+  :root {
+    --psa-container-padding-x: 32px;
+    --psa-container-width: 1366px;
+    --psa-site-rail: 32px;
+    --psa-site-rail-x: 32px;
+    --psa-site-content-width: 1366px;
+  }
+}
+@media (max-width: 991px) {
+  :root {
+    --psa-container-padding-x: 16px;
+    --psa-container-width: calc(100% - 32px);
+    --psa-site-rail: 16px;
+    --psa-site-rail-x: 26px;
+    --psa-site-logo-pad-x: 14px;
+    --psa-site-content-width: calc(100% - 32px);
+  }
+}
+.psa-screen {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-block: var(--psa-section-padding-y);
+}
+.psa-screen--compact {
+  padding-block: var(--psa-section-padding-y-sm);
+}
+.psa-screen--flush {
+  padding-block: 0;
+}
+
+.psa-container {
+  box-sizing: border-box;
+  width: var(--psa-container-width);
+  max-width: var(--psa-container-max);
+  margin-inline: auto;
+  padding-inline: var(--psa-container-padding-x);
+}
+.psa-container--full {
+  width: 100%;
+  max-width: none;
+}
+.psa-container__inner {
+  width: 100%;
+}
+
+.psa-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--psa-container-gutter);
+  width: 100%;
+}
+
+.psa-grid__col {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+@media (min-width: 992px) {
+  .psa-grid__col {
+    flex: 1 1 calc(50% - var(--psa-container-gutter) / 2);
+  }
+}
+
+:root {
   --psa-hero-ink: #222f30;
   --psa-hero-graphite: #4d5757;
   --psa-hero-bone: #f7f7f5;
@@ -69,6 +165,11 @@ body.has-psa-hero {
   margin-top: 0;
   color: var(--psa-hero-ink);
 }
+.psa-hero--passed .psa-hero__flow p,
+.psa-hero--passed .psa-hero__flow .psa-hero__lede,
+.psa-hero--passed .psa-hero__flow .psa-hero__heading {
+  color: var(--psa-hero-ink);
+}
 .psa-hero__backdrop-holder {
   position: relative;
   z-index: 0;
@@ -88,6 +189,11 @@ body.has-psa-hero {
   position: relative;
   z-index: 2;
   margin-top: -100lvh;
+  color: var(--psa-hero-white);
+}
+.psa-hero__flow p,
+.psa-hero__flow .psa-hero__lede,
+.psa-hero__flow .psa-hero__heading {
   color: var(--psa-hero-white);
 }
 .psa-hero__stage {
@@ -189,6 +295,7 @@ body.has-psa-hero {
 .psa-hero__heading {
   max-width: 14ch;
   margin: 0;
+  color: var(--psa-hero-white);
   font-size: clamp(3.125rem, 5vw + 1rem, 7rem);
   font-weight: 400;
   line-height: 1;
@@ -199,7 +306,7 @@ body.has-psa-hero {
 .psa-hero__lede {
   max-width: 40rem;
   margin: 0;
-  color: inherit;
+  color: var(--psa-hero-white);
   font-size: clamp(1.25rem, 1rem + 0.5vw, 1.5rem);
   font-weight: 400;
   line-height: 1.2;
@@ -209,37 +316,9 @@ body.has-psa-hero {
 }
 
 @media (min-width: 992px) {
-  :root {
-    --psa-hero-frame-inset: 12px;
-    --psa-site-rail: clamp(12px, 2vw, 32px);
-    --psa-site-rail-x: clamp(12px, 2vw, 32px);
-    --psa-site-logo-pad-x: 14px;
-    --psa-site-content-width: min(calc(100% - 32px), 1366px);
-    --psa-hero-frame-radius: 24px;
-  }
   .psa-hero__bottom {
     flex-wrap: nowrap;
     align-items: flex-end;
-  }
-}
-@media (min-width: 992px) and (max-width: 1399px) {
-  :root {
-    --psa-site-logo-pad-x: clamp(8px, 0.9vw, 14px);
-  }
-}
-@media (min-width: 1400px) {
-  :root {
-    --psa-site-rail: 32px;
-    --psa-site-rail-x: 32px;
-    --psa-site-content-width: 1366px;
-  }
-}
-@media (max-width: 991px) {
-  :root {
-    --psa-site-rail: 16px;
-    --psa-site-rail-x: 26px;
-    --psa-site-logo-pad-x: 14px;
-    --psa-site-content-width: calc(100% - 32px);
   }
 }
 @media (max-width: 600px) {

@@ -18,12 +18,20 @@ $psa-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberati
 $psa-ease: cubic-bezier(0.25, 1, 0.5, 1);
 $psa-transition: 0.6s $psa-ease;
 
-// —— Layout ——
-$psa-max-width: 1366px;
+// —— Layout / container ——
+$psa-container-max: 1366px;
+$psa-section-padding-y: clamp(2.5rem, 4vw, 5rem);
+$psa-section-padding-y-sm: clamp(1.5rem, 3vw, 2.5rem);
+$psa-container-gutter: 1.5rem;
+
+// Side rails (horizontal padding) — synced with header/hero
 $psa-site-rail: 12px;
 $psa-site-rail-x: 14px;
 $psa-site-logo-pad-x: 14px;
 $psa-site-content-width: calc(100% - 40px);
+
+// Legacy alias
+$psa-max-width: $psa-container-max;
 
 // —— Hero ——
 $psa-hero-frame-inset: 8px;
@@ -35,7 +43,7 @@ $psa-header-height: 64px;
 $psa-header-height-desktop: 54px;
 $psa-header-top: 20px;
 $psa-header-top-desktop: 30px;
-$psa-header-max: 1366px;
+$psa-header-max: $psa-container-max;
 $psa-header-nav-desktop: 992px;
 
 // —— Breakpoints ——

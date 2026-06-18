@@ -3,15 +3,15 @@ use Contao\FilesModel;
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 ?>
 
-<div class="content-rs-slider main-slider-wrapper <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
-    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
-        <div class="custom-row<?= $this->center_text ? ' text-center' : ''; ?>">
+<section class="<?= CeHelpers::psaScreenClass(trim('content-rs-slider main-slider-wrapper ' . $this->class)) ?>" <?= $this->cssID ?><?php if ($this->dark_mode) : ?> mode="dark"<?php endif; ?>>
+    <div class="<?= CeHelpers::psaContainerClass((bool) $this->full_width) ?>">
+        <div class="custom-row<?= $this->center_text ? ' text-center' : '' ?>">
             <div class="custom-col-12">
                 <?php if ($this->headline) : ?>
-                    <<?= $this->hl ?>><?= $this->headline; ?></<?= $this->hl ?>>
+                    <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
                 <?php endif; ?>
-                <span class="<?= $this->sl ?>"><?= $this->subline; ?></span>
-                <?= $this->text; ?>
+                <span class="<?= $this->sl ?>"><?= $this->subline ?></span>
+                <?= $this->text ?>
                 <?php if ($this->addButton): ?>
                     <?= CeHelpers::renderPsaButton($this->button_label, [
                         'href' => $this->button_link,
@@ -22,15 +22,14 @@ use Rostock\CustomElementsBundle\Classes\CeHelpers;
             <?php if (is_array($this->multiSRC)) : ?>
                 <div class="custom-col-12 main-slider-wrapper">
                     <div class="main-slider"
-                        data-slides-mobile="<?= $this->slide_count_mobile; ?>"
-                        data-slides-tablet="<?= $this->slide_count_tablet; ?>"
-                        data-slides-desktop="<?= $this->slide_count_desktop; ?>">
+                        data-slides-mobile="<?= $this->slide_count_mobile ?>"
+                        data-slides-tablet="<?= $this->slide_count_tablet ?>"
+                        data-slides-desktop="<?= $this->slide_count_desktop ?>">
                         <?php foreach ($this->multiSRC as $sliderImage) : ?>
                             <?php
                                 $fileModel = FilesModel::findByUuid($sliderImage);
                                 $imagePath = $fileModel ? $fileModel->path : '';
                                 $fileMeta = CeHelpers::getFileMetaData($sliderImage);
-                                $copyright = '';
                                 $copyrightTitle = '';
                                 $copyrightPosition = '';
                                 if (!empty($fileMeta['copyright'])) {
@@ -64,4 +63,4 @@ use Rostock\CustomElementsBundle\Classes\CeHelpers;
             <?php endif; ?>
         </div>
     </div>
-</div>
+</section>
