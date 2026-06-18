@@ -1,6 +1,6 @@
 <?php
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=28';
-$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=28';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=32';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=32';
 
 $headline = $this->headline ?: 'A community that feels like home.';
 $lede = $this->lede ?: 'Connect with fellow Pakistaniss in Rostock — events, meetups, culture, and belonging.';
@@ -13,7 +13,12 @@ $ctaLabel = $this->addButton ? ($this->button_label ?: 'Explore Events') : 'Expl
 $ctaTarget = ($this->addButton && $this->button_target) ? '_blank' : '';
 ?>
 <link rel="stylesheet" href="<?= $assetCss ?>">
-<section class="psa-hero <?= $this->class ?>" data-psa-hero <?= $this->cssID ?>>
+<section
+    class="psa-hero <?= $this->class ?>"
+    data-psa-hero
+    <?= $hasScrollItems ? 'data-psa-hero-steps="' . \count($scrollItems) . '"' : '' ?>
+    <?= $this->cssID ?>
+>
     <div class="psa-hero__backdrop-holder" aria-hidden="true">
         <div class="psa-hero__backdrop">
             <figure class="psa-hero__media">
@@ -88,48 +93,54 @@ $ctaTarget = ($this->addButton && $this->button_target) ? '_blank' : '';
             <div class="psa-hero__below">
                 <div
                     class="psa-hero__scroller<?= $isMultiScroll ? '' : ' psa-hero__scroller--single' ?>"
-                    <?= $isMultiScroll ? ' data-psa-hero-scroller style="--psa-hero-scroll-steps:' . \count($scrollItems) . '"' : '' ?>
+                    <?= $isMultiScroll ? ' data-psa-hero-scroller' : '' ?>
+                    style="--psa-hero-scroll-steps: <?= $isMultiScroll ? (\count($scrollItems) + 1) : \count($scrollItems) ?>"
                 >
-                <?php if ($scrollerLabel): ?>
-                    <div class="psa-hero__scroller-head">
-                        <span class="psa-hero__scroller-label"><?= $scrollerLabel ?></span>
-                    </div>
-                <?php endif; ?>
-                <div class="psa-hero__scroller-body">
-                    <?php if ($isMultiScroll): ?>
-                        <div class="psa-hero__progress" aria-hidden="true">
-                            <div class="psa-hero__progress-bar" data-psa-hero-progress></div>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="psa-hero__scroller-content">
-                        <?php if ($isMultiScroll): ?>
-                            <aside class="psa-hero__index" aria-hidden="true">
-                                <span class="psa-hero__index-current" data-psa-hero-index-current>01</span>
-                                <span class="psa-hero__index-divider">/</span>
-                                <span class="psa-hero__index-total"><?= str_pad((string) \count($scrollItems), 2, '0', STR_PAD_LEFT) ?></span>
-                            </aside>
-                        <?php endif; ?>
-
-                        <div class="psa-hero__scroll-items">
-                            <?php foreach ($scrollItems as $index => $item): ?>
-                                <?php
-                                $itemTitle = \is_array($item) ? ($item['title'] ?? '') : '';
-                                $itemText = \is_array($item) ? ($item['text'] ?? '') : (string) $item;
-                                ?>
-                                <div class="psa-hero__scroll-item<?= $index === 0 ? ' is-active' : '' ?>"<?= $isMultiScroll ? ' data-psa-hero-scroll-item' : '' ?>>
-                                    <?php if ($itemTitle): ?>
-                                        <h3 class="psa-hero__scroll-title"><?= $itemTitle ?></h3>
-                                    <?php endif; ?>
-                                    <?php if ($itemText): ?>
-                                        <p><?= $itemText ?></p>
-                                    <?php endif; ?>
+                    <div class="psa-hero__scroller-runway">
+                        <div class="psa-hero__scroller-pin">
+                            <?php if ($scrollerLabel): ?>
+                                <div class="psa-hero__scroller-head">
+                                    <span class="psa-hero__scroller-label"><?= $scrollerLabel ?></span>
                                 </div>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
+
+                            <div class="psa-hero__scroller-body">
+                                <?php if ($isMultiScroll): ?>
+                                    <div class="psa-hero__progress" aria-hidden="true">
+                                        <div class="psa-hero__progress-bar" data-psa-hero-progress></div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="psa-hero__scroller-content">
+                                    <?php if ($isMultiScroll): ?>
+                                        <aside class="psa-hero__index" aria-hidden="true">
+                                            <span class="psa-hero__index-current" data-psa-hero-index-current>01</span>
+                                            <span class="psa-hero__index-divider">/</span>
+                                            <span class="psa-hero__index-total"><?= str_pad((string) \count($scrollItems), 2, '0', STR_PAD_LEFT) ?></span>
+                                        </aside>
+                                    <?php endif; ?>
+
+                                    <div class="psa-hero__scroll-items">
+                                        <?php foreach ($scrollItems as $index => $item): ?>
+                                            <?php
+                                            $itemTitle = \is_array($item) ? ($item['title'] ?? '') : '';
+                                            $itemText = \is_array($item) ? ($item['text'] ?? '') : (string) $item;
+                                            ?>
+                                            <div class="psa-hero__scroll-item<?= $index === 0 ? ' is-active' : '' ?>"<?= $isMultiScroll ? ' data-psa-hero-scroll-item' : '' ?>>
+                                                <?php if ($itemTitle): ?>
+                                                    <h3 class="psa-hero__scroll-title"><?= $itemTitle ?></h3>
+                                                <?php endif; ?>
+                                                <?php if ($itemText): ?>
+                                                    <p><?= $itemText ?></p>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         <?php endif; ?>
     </div>

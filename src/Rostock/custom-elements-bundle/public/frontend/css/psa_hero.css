@@ -63,6 +63,10 @@ body.has-psa-hero {
     pointer-events: none;
 }
 
+.psa-hero--fixed-video .psa-hero__backdrop-holder {
+    pointer-events: none;
+}
+
 .psa-hero--fixed-video .psa-hero__backdrop {
     position: fixed;
     top: 0;
@@ -74,14 +78,39 @@ body.has-psa-hero {
     z-index: 0;
 }
 
+.psa-hero--video-done .psa-hero__backdrop-holder,
+.psa-hero--passed .psa-hero__backdrop-holder {
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.psa-hero--video-done .psa-hero__backdrop,
 .psa-hero--passed .psa-hero__backdrop {
+    display: none;
+}
+
+.psa-hero--video-done .psa-hero__scroller-pin,
+.psa-hero--passed .psa-hero__scroller-pin {
+    position: relative;
+}
+
+.psa-hero--in-steps .psa-hero__stage,
+.psa-hero--intro-done .psa-hero__stage,
+.psa-hero--video-done .psa-hero__stage,
+.psa-hero--passed .psa-hero__stage {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.psa-hero--video-done .psa-hero__stage,
+.psa-hero--passed .psa-hero__stage {
     position: absolute;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100lvh;
-    min-height: 32rem;
+    width: 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .psa-hero__flow {
@@ -89,6 +118,59 @@ body.has-psa-hero {
     z-index: 2;
     margin-top: -100lvh;
     color: var(--psa-hero-white);
+}
+
+.psa-hero--passed .psa-hero__flow {
+    margin-top: 0;
+    color: var(--psa-hero-ink);
+}
+
+.psa-hero--video-done .psa-hero__below,
+.psa-hero--passed .psa-hero__below {
+    color: var(--psa-hero-ink);
+    background: var(--psa-hero-bone);
+}
+
+.psa-hero--video-done .psa-hero__scroller,
+.psa-hero--passed .psa-hero__scroller {
+    border-top-color: rgba(34, 47, 48, 0.12);
+}
+
+.psa-hero--video-done .psa-hero__scroller-label,
+.psa-hero--passed .psa-hero__scroller-label {
+    background: rgba(34, 47, 48, 0.08);
+    color: var(--psa-hero-ink);
+}
+
+.psa-hero--video-done .psa-hero__index,
+.psa-hero--passed .psa-hero__index {
+    border-color: rgba(34, 47, 48, 0.2);
+    color: var(--psa-hero-ink);
+}
+
+.psa-hero--video-done .psa-hero__scroll-title,
+.psa-hero--passed .psa-hero__scroll-title {
+    color: var(--psa-hero-graphite);
+}
+
+.psa-hero--video-done .psa-hero__scroll-item p,
+.psa-hero--passed .psa-hero__scroll-item p {
+    color: var(--psa-hero-ink);
+    text-shadow: none;
+}
+
+.psa-hero--video-done .psa-hero__progress,
+.psa-hero--passed .psa-hero__progress {
+    background: rgba(34, 47, 48, 0.15);
+}
+
+.psa-hero--video-done .psa-hero__progress-bar,
+.psa-hero--passed .psa-hero__progress-bar {
+    background: var(--psa-hero-ink);
+}
+
+.has-psa-hero.psa-hero-sequence-done #main > .inside {
+    background: var(--psa-hero-bone);
 }
 
 .psa-hero__stage {
@@ -433,15 +515,47 @@ body.has-psa-hero {
     border-top: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.psa-hero__scroller:not(.psa-hero__scroller--single) {
-    min-height: calc(var(--psa-hero-scroll-steps, 3) * 55lvh);
+.psa-hero__scroller-runway {
+    min-height: calc(var(--psa-hero-scroll-steps, 1) * 100lvh);
+}
+
+.psa-hero__scroller-pin {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100lvh;
+    min-height: 32rem;
+    padding-top: clamp(5rem, 14vh, 8rem);
+    padding-bottom: clamp(2.5rem, 8vh, 5rem);
+}
+
+.psa-hero--in-steps:not(.psa-hero--video-done) .psa-hero__scroller-pin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.psa-hero__scroller-body {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 0;
+    padding-top: 0;
 }
 
 .psa-hero__scroller-head {
     width: 100%;
     max-width: var(--psa-hero-max);
     margin: 0 auto;
-    padding: 2.5rem clamp(1.25rem, 4vw, 2.5rem) 1.5rem;
+    padding: 0 clamp(1.25rem, 4vw, 2.5rem) 1.5rem;
 }
 
 .psa-hero__scroller-label {
@@ -469,15 +583,13 @@ body.has-psa-hero {
 .psa-hero__scroller--single .psa-hero__scroll-item {
     position: static;
     opacity: 1;
+    visibility: visible;
+    transform: none;
     pointer-events: auto;
 }
 
-.psa-hero__scroller-body {
-    padding-top: 0;
-}
-
-.psa-hero__scroller--single .psa-hero__scroller-body {
-    padding-top: clamp(2.5rem, 5vw, 4rem);
+.psa-hero__scroller--single .psa-hero__scroller-runway {
+    min-height: 70lvh;
 }
 
 .psa-hero__progress {
@@ -527,19 +639,30 @@ body.has-psa-hero {
 
 .psa-hero__scroll-items {
     position: relative;
-    min-height: clamp(8rem, 22vh, 14rem);
+    width: 100%;
+    min-height: clamp(10rem, 26vh, 16rem);
 }
 
 .psa-hero__scroll-item {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
     opacity: 0;
-    transition: opacity 0.35s var(--psa-hero-ease);
+    visibility: hidden;
+    transform: translateY(0.35rem);
+    transition:
+        opacity 0.55s var(--psa-hero-ease),
+        visibility 0.55s var(--psa-hero-ease),
+        transform 0.55s var(--psa-hero-ease);
     pointer-events: none;
 }
 
 .psa-hero__scroll-item.is-active {
     opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
     pointer-events: auto;
 }
 
