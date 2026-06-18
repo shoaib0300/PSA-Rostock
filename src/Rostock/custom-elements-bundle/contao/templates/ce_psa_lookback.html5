@@ -1,0 +1,96 @@
+<?php
+
+$lang = is_array($this->lang ?? null) ? $this->lang : [];
+$monthsLeft = is_array($this->monthsLeft ?? null) ? $this->monthsLeft : [];
+$monthsRight = is_array($this->monthsRight ?? null) ? $this->monthsRight : [];
+$slides = is_array($this->slides ?? null) ? $this->slides : [];
+$year = (int) ($this->year ?? date('Y'));
+
+?>
+<section class="psa-lookback block<?= $this->class ? ' '.$this->class : '' ?>" <?= $this->cssID ?> data-psa-lookback>
+  <div class="psa-lookback__header">
+    <div class="psa-lookback__intro">
+      <?php if ($this->lede): ?>
+        <p class="psa-lookback__eyebrow"><?= htmlspecialchars((string) $this->lede, ENT_QUOTES) ?></p>
+      <?php endif; ?>
+
+      <<?= $this->hl ?> class="psa-lookback__title" aria-label="<?= htmlspecialchars((string) $this->headline, ENT_QUOTES) ?>">
+        <?php foreach (preg_split('//u', (string) $this->headline, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $char): ?>
+          <span><?= htmlspecialchars($char, ENT_QUOTES) ?></span>
+        <?php endforeach; ?>
+      </<?= $this->hl ?>>
+
+      <p class="psa-lookback__year">(PSA / <?= $year ?>)</p>
+    </div>
+
+    <?php if ($monthsLeft !== [] || $monthsRight !== []): ?>
+      <nav class="psa-lookback__months" aria-label="<?= $lang['lookback_months_label'] ?? 'Events by month' ?>">
+        <?php foreach ([$monthsLeft, $monthsRight] as $column): ?>
+          <?php if ($column === []) { continue; } ?>
+          <div class="psa-lookback__months-col">
+            <?php foreach ($column as $month): ?>
+              <button
+                type="button"
+                class="psa-lookback__month"
+                data-psa-lookback-month="<?= htmlspecialchars((string) $month['key'], ENT_QUOTES) ?>"
+                data-psa-lookback-index="<?= (int) $month['firstIndex'] ?>"
+              >
+                <span class="psa-lookback__month-name"><?= htmlspecialchars(mb_strtoupper((string) $month['label']), ENT_QUOTES) ?></span>
+                <span class="psa-lookback__month-meta">
+                  <?= $lang['lookback_events'] ?? 'Events' ?> (<?= (int) $month['count'] ?>)
+                </span>
+              </button>
+            <?php endforeach; ?>
+          </div>
+        <?php endforeach; ?>
+      </nav>
+    <?php endif; ?>
+  </div>
+
+  <?php if ($slides === []): ?>
+    <p class="psa-lookback__empty"><?= $lang['lookback_empty'] ?? 'No events found for this lookback.' ?></p>
+  <?php else: ?>
+    <div class="psa-lookback__slider-shell">
+      <div class="psa-lookback__slider" data-psa-lookback-slider tabindex="0">
+        <?php foreach ($slides as $slide): ?>
+          <?php
+            $tag = !empty($slide['href']) ? 'a' : 'article';
+            $hrefAttr = !empty($slide['href'])
+              ? ' href="'.htmlspecialchars((string) $slide['href'], ENT_QUOTES).'"'
+              : '';
+          ?>
+          <<?= $tag ?>
+            class="psa-lookback__slide"
+            data-psa-lookback-slide
+            data-month="<?= htmlspecialchars((string) $slide['monthKey'], ENT_QUOTES) ?>"
+            data-index="<?= (int) $slide['index'] ?>"
+            <?= $hrefAttr ?>
+          >
+            <div class="psa-lookback__slide-frame">
+              <span class="psa-lookback__slide-index"><?= (int) $slide['index'] ?></span>
+
+              <div class="psa-lookback__slide-media">
+                <?php if (!empty($slide['image'])): ?>
+                  <img
+                    src="<?= htmlspecialchars((string) $slide['image'], ENT_QUOTES) ?>"
+                    alt="<?= htmlspecialchars((string) $slide['title'], ENT_QUOTES) ?>"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                  >
+                <?php else: ?>
+                  <div class="psa-lookback__slide-placeholder" aria-hidden="true"></div>
+                <?php endif; ?>
+              </div>
+
+              <div class="psa-lookback__slide-caption">
+                <h3 class="psa-lookback__slide-title"><?= htmlspecialchars((string) $slide['title'], ENT_QUOTES) ?></h3>
+                <p class="psa-lookback__slide-month"><?= htmlspecialchars((string) $slide['monthLabel'], ENT_QUOTES) ?></p>
+              </div>
+            </div>
+          </<?= $tag ?>>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  <?php endif; ?>
+</section>

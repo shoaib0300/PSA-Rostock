@@ -26,3 +26,14 @@ $GLOBALS['TL_LANG'][$strName]['ce_slider_main'] = ['Hauptslider', 'Konfiguration
 $GLOBALS['TL_LANG'][$strName]['claim_text_image'] = ['Text-Bild-Element', 'Text und Bild im Claim-Design.'];
 $GLOBALS['TL_LANG'][$strName]['ce_text_double'] = ['Doppelte Textelemente', 'Zwei nebeneinander liegende Textelemente.'];
 $GLOBALS['TL_LANG'][$strName]['psa_hero'] = ['PSA Hero', 'Hero-Bereich für die PSA Rostock Community.'];
+$GLOBALS['TL_LANG'][$strName]['psa_lookback'] = ['PSA Lookback', 'Zeitleisten-Slider mit Kalender-Events nach Monat und Jahr.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_legend'] = 'Lookback-Einstellungen';
+$GLOBALS['TL_LANG'][$strName]['lookback_calendar'] = ['Kalender', 'Kalender als Event-Quelle.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_jumpTo'] = ['Event-Leserseite', 'Seite für Event-Detail-Links, meist /events.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_scope'] = ['Event-Umfang', 'Welche Events im Lookback-Slider erscheinen.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_year'] = ['Jahresfilter', 'Optionaler Jahresfilter, z. B. 2026. Leer lassen für alle Jahre.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_scope_ref'] = [
+    'past' => 'Vergangene Events',
+    'upcoming' => 'Kommende Events',
+    'all' => 'Alle Events',
+];

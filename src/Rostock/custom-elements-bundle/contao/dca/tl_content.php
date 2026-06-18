@@ -17,6 +17,8 @@ $GLOBALS['TL_DCA'][$strName]['palettes']['ce_slider_main'] = '{type_legend},type
 
 $GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},type,headline,subline;{psa_source_legend},multiSRC;{button_legend},addButton;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+$GLOBALS['TL_DCA'][$strName]['palettes']['psa_lookback'] = '{type_legend},type,headline,subline;{lookback_legend},lookback_calendar,lookback_jumpTo,lookback_scope,lookback_year;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['addButton'] = 'button_label,button_link,button_target';
 
 $GLOBALS['TL_DCA'][$strName]['fields']['button_type'] = [
@@ -81,4 +83,35 @@ $GLOBALS['TL_DCA'][$strName]['fields']['optional_text'] = [
     'inputType' => 'text',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA'][$strName]['fields']['lookback_calendar'] = [
+    'label' => &$GLOBALS['TL_LANG'][$strName]['lookback_calendar'],
+    'inputType' => 'select',
+    'foreignKey' => 'tl_calendar.title',
+    'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
+    'sql' => "int(10) unsigned NOT NULL default '0'",
+];
+
+$GLOBALS['TL_DCA'][$strName]['fields']['lookback_jumpTo'] = [
+    'label' => &$GLOBALS['TL_LANG'][$strName]['lookback_jumpTo'],
+    'inputType' => 'pageTree',
+    'eval' => ['fieldType' => 'radio', 'tl_class' => 'w50'],
+    'sql' => "int(10) unsigned NOT NULL default '0'",
+];
+
+$GLOBALS['TL_DCA'][$strName]['fields']['lookback_scope'] = [
+    'label' => &$GLOBALS['TL_LANG'][$strName]['lookback_scope'],
+    'inputType' => 'select',
+    'options' => ['past', 'upcoming', 'all'],
+    'reference' => &$GLOBALS['TL_LANG'][$strName]['lookback_scope_ref'],
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(16) NOT NULL default 'past'",
+];
+
+$GLOBALS['TL_DCA'][$strName]['fields']['lookback_year'] = [
+    'label' => &$GLOBALS['TL_LANG'][$strName]['lookback_year'],
+    'inputType' => 'text',
+    'eval' => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
+    'sql' => "varchar(4) NOT NULL default ''",
 ];

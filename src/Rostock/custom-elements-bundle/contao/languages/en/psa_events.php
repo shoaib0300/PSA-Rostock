@@ -17,6 +17,9 @@ $GLOBALS['TL_LANG']['PSA']['event_login_required'] = 'Only members can vote and 
 $GLOBALS['TL_LANG']['PSA']['event_login_rsvp'] = 'Only members can vote and comment. Please <a href="%s">log in</a> first if you want to vote or comment.';
 $GLOBALS['TL_LANG']['PSA']['event_login_comment'] = 'Only members can vote and comment. Please <a href="%s">log in</a> first if you want to vote or comment.';
 $GLOBALS['TL_LANG']['PSA']['event_view_details'] = 'View details';
+$GLOBALS['TL_LANG']['PSA']['lookback_months_label'] = 'Events by month';
+$GLOBALS['TL_LANG']['PSA']['lookback_events'] = 'Events';
+$GLOBALS['TL_LANG']['PSA']['lookback_empty'] = 'No events found for this lookback.';
 $GLOBALS['TL_LANG']['PSA']['event_show_past'] = 'See all past events';
 $GLOBALS['TL_LANG']['PSA']['event_hide_past'] = 'Hide past events';
 $GLOBALS['TL_LANG']['PSA']['event_past_headline'] = 'Past events';

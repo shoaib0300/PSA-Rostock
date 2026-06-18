@@ -1,0 +1,272 @@
+@use 'sass:color';
+@use '../../../../../../files/tpl/scss/variables' as *;
+
+.psa-lookback {
+  --psa-lookback-slide-width: clamp(15rem, 28vw, 20rem);
+  --psa-lookback-slide-gap: clamp(1rem, 2vw, 1.5rem);
+
+  max-width: $psa-container-max;
+  margin: 0 auto;
+  padding: $psa-section-padding-y $psa-container-gutter;
+  font-family: $psa-font-sans;
+  color: $psa-ink;
+
+  &__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $psa-graphite;
+  }
+
+  &__title {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.04em;
+    max-width: 11ch;
+    font-size: clamp(2.5rem, 7vw, 4.75rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+
+    span {
+      display: inline-block;
+    }
+  }
+
+  &__year {
+    margin: 0;
+    font-family: $psa-font-mono;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: $psa-graphite;
+  }
+
+  &__months {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+    justify-self: end;
+    width: min(100%, 28rem);
+  }
+
+  &__months-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__month {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    transition: color $psa-transition;
+
+    &:hover,
+    &.is-active,
+    &:focus-visible {
+      color: color.adjust($psa-ink, $lightness: -8%);
+      outline: none;
+    }
+
+    &.is-active .psa-lookback__month-name {
+      color: $psa-ink;
+    }
+  }
+
+  &__month-name {
+    font-family: $psa-font-mono;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: $psa-graphite;
+  }
+
+  &__month-meta {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: $psa-ink;
+  }
+
+  &__empty {
+    margin: 0;
+    text-align: center;
+    color: $psa-graphite;
+    font-style: italic;
+  }
+
+  &__slider-shell {
+    position: relative;
+    margin-inline: calc(#{$psa-container-gutter} * -0.5);
+    padding-inline: calc(#{$psa-container-gutter} * 0.5);
+  }
+
+  &__slider {
+    display: flex;
+    gap: var(--psa-lookback-slide-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: calc(#{$psa-container-gutter} * 0.5);
+    padding-block: 0.5rem 1.5rem;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba($psa-ink, 0.25) transparent;
+
+    &.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+      user-select: none;
+    }
+
+    &::-webkit-scrollbar {
+      height: 0.35rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba($psa-ink, 0.22);
+      border-radius: 999px;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 var(--psa-lookback-slide-width);
+    scroll-snap-align: start;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover .psa-lookback__slide-frame,
+    &:focus-visible .psa-lookback__slide-frame {
+      transform: translateY(-0.35rem);
+      box-shadow: 0 1.5rem 3rem rgba($psa-ink, 0.14);
+    }
+  }
+
+  &__slide-frame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(var(--psa-lookback-slide-width) * 1.35);
+    border: 1px solid rgba($psa-ink, 0.12);
+    border-radius: 1rem;
+    overflow: hidden;
+    background: $psa-paper;
+    box-shadow: 0 0.75rem 2rem rgba($psa-ink, 0.06);
+    transition: transform $psa-transition, box-shadow $psa-transition;
+  }
+
+  &__slide-index {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    font-family: $psa-font-mono;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: $psa-paper;
+    text-shadow: 0 0 1rem rgba($psa-ink, 0.55);
+  }
+
+  &__slide-media {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 68%;
+    background: $psa-bone;
+
+    img,
+    .psa-lookback__slide-placeholder {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 16rem;
+      object-fit: cover;
+    }
+  }
+
+  &__slide-placeholder {
+    background:
+      linear-gradient(145deg, rgba($psa-lime, 0.35), rgba($psa-ink, 0.08)),
+      $psa-bone;
+  }
+
+  &__slide-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.1rem 1.15rem;
+    background: linear-gradient(180deg, rgba($psa-paper, 0.96), $psa-paper);
+  }
+
+  &__slide-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: $psa-ink;
+  }
+
+  &__slide-month {
+    margin: 0;
+    font-family: $psa-font-mono;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: $psa-graphite;
+  }
+
+  &__slide.is-active .psa-lookback__slide-frame {
+    border-color: rgba($psa-lime, 0.95);
+    box-shadow: 0 1.25rem 2.5rem rgba($psa-ink, 0.12);
+  }
+}
+
+@media (max-width: $psa-bp-tablet-max) {
+  .psa-lookback {
+    &__header {
+      grid-template-columns: 1fr;
+    }
+
+    &__months {
+      justify-self: stretch;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: $psa-bp-mobile) {
+  .psa-lookback {
+    &__months {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psa-lookback__slide-frame,
+  .psa-lookback__month {
+    transition: none;
+  }
+}

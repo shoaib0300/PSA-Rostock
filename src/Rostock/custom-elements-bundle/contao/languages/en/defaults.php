@@ -15,5 +15,6 @@ $GLOBALS['TL_LANG']['CTE']['custom_elements']    = ['Custom Elements', ''];
 $GLOBALS['TL_LANG']['CTE']['PSA Rostock']        = ['PSA Rostock', 'Community website elements for Pakistanis in Rostock.'];
 $GLOBALS['TL_LANG']['CTE']['ce_text_double']   = ['Text 2-Cols', ''];
 $GLOBALS['TL_LANG']['CTE']['psa_hero']         = ['Hero Section', 'Headline + subline on the image, media in Sources, optional button.'];
+$GLOBALS['TL_LANG']['CTE']['psa_lookback']     = ['Lookback Slider', 'Horizontal event timeline with month/year navigation and images.'];
 $GLOBALS['TL_LANG']['CTE']['claim_text_image']    = ['Text-Image Element', 'Text and image in the claim design.'];
 $GLOBALS['TL_LANG']['CTE']['ce_slider_main']   = ['Main Slider', 'Configuration for the main slider.'];

@@ -26,3 +26,14 @@ $GLOBALS['TL_LANG'][$strName]['ce_slider_main'] = ['Main Slider', 'Configuration
 $GLOBALS['TL_LANG'][$strName]['claim_text_image'] = ['Text-Image Element', 'Text and image in the claim design.'];
 $GLOBALS['TL_LANG'][$strName]['ce_text_double'] = ['Double Text Elements', 'Two side-by-side text elements.'];
 $GLOBALS['TL_LANG'][$strName]['psa_hero'] = ['PSA Hero', 'Homepage hero section for the PSA Rostock community.'];
+$GLOBALS['TL_LANG'][$strName]['psa_lookback'] = ['PSA Lookback', 'Timeline slider of calendar events grouped by month and year.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_legend'] = 'Lookback settings';
+$GLOBALS['TL_LANG'][$strName]['lookback_calendar'] = ['Calendar', 'Calendar used as the event source.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_jumpTo'] = ['Event reader page', 'Page used to build links to event details, usually /events.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_scope'] = ['Event scope', 'Which events should appear in the lookback slider.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_year'] = ['Year filter', 'Optional year filter, e.g. 2026. Leave empty for all years in scope.'];
+$GLOBALS['TL_LANG'][$strName]['lookback_scope_ref'] = [
+    'past' => 'Past events',
+    'upcoming' => 'Upcoming events',
+    'all' => 'All events',
+];
