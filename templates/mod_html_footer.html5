@@ -1,0 +1,81 @@
+<?php
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=1';
+$assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
+
+$defaultNav = [
+    ['label' => 'Home', 'href' => '/'],
+    ['label' => 'Events', 'href' => '/events'],
+    ['label' => 'Meetups', 'href' => '/meetups'],
+    ['label' => 'Team', 'href' => '/team'],
+    ['label' => 'Contributors', 'href' => '/contributors'],
+    ['label' => 'About', 'href' => '/about'],
+];
+
+$navItems = \is_array($this->navItems ?? null) ? $this->navItems : [];
+
+if ($navItems === []) {
+    $currentPath = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/') ?: '/';
+
+    foreach ($defaultNav as $item) {
+        $hrefPath = rtrim($item['href'], '/') ?: '/';
+        $navItems[] = [
+            'label' => $item['label'],
+            'href' => $item['href'],
+            'active' => $hrefPath === $currentPath,
+        ];
+    }
+}
+
+$siteName = $this->siteName ?? 'PSA Rostock';
+$registerUrl = $this->registerUrl ?? '/register';
+$logoPath = $this->logoPath ?? '';
+$tagline = $this->tagline ?? '';
+$copyright = $this->copyright ?? ('© ' . date('Y') . ' ' . $siteName);
+?>
+<link rel="stylesheet" href="<?= $assetCss ?>">
+<link rel="stylesheet" href="<?= $assetButtonCss ?>">
+<footer class="psa-footer <?= $this->class ?>" <?= $this->cssID ?>>
+    <div class="<?= CeHelpers::psaContainerClass(false) ?>">
+        <div class="psa-footer__main">
+            <div class="psa-footer__brand">
+                <a href="/" class="psa-footer__logo-link" aria-label="<?= $siteName ?>">
+                    <?php if ($logoPath): ?>
+                        <img src="<?= $logoPath ?>" alt="<?= $siteName ?>" class="psa-footer__logo-img" width="176" height="28">
+                    <?php else: ?>
+                        <span class="psa-footer__logo-text"><?= $siteName ?></span>
+                    <?php endif; ?>
+                </a>
+                <?php if ($tagline): ?>
+                    <p class="psa-footer__tagline"><?= $tagline ?></p>
+                <?php endif; ?>
+            </div>
+
+            <nav class="psa-footer__nav" aria-label="Footer navigation">
+                <ul class="psa-footer__menu">
+                    <?php foreach ($navItems as $item): ?>
+                        <li class="psa-footer__menu-item">
+                            <a
+                                href="<?= $item['href'] ?>"
+                                class="psa-footer__link<?= !empty($item['active']) ? ' is-active' : '' ?>"
+                                <?= !empty($item['active']) ? 'aria-current="page"' : '' ?>
+                            ><?= $item['label'] ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+
+            <div class="psa-footer__cta">
+                <?= CeHelpers::renderPsaButton('Join us', [
+                    'href' => $registerUrl,
+                    'class' => 'psa-footer__join',
+                ]) ?>
+            </div>
+        </div>
+
+        <div class="psa-footer__bottom">
+            <p class="psa-footer__copyright"><?= $copyright ?></p>
+        </div>
+    </div>
+</footer>

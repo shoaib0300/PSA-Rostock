@@ -1,0 +1,125 @@
+@use 'psa-shared' as *;
+
+#footer,
+#footer .inside,
+.mod_html_footer,
+.mod_html_footer .inside {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  max-width: none;
+}
+
+.psa-footer {
+  font-family: $psa-font-sans;
+  color: $psa-paper;
+  background: $psa-ink;
+  padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2rem);
+
+  &__main {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+
+    @include min-nav {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto;
+      align-items: center;
+      gap: clamp(1.5rem, 4vw, 3rem);
+    }
+  }
+
+  &__brand {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 22rem;
+  }
+
+  &__logo-link {
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+
+    @include focus-hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__logo-img {
+    display: block;
+    width: auto;
+    max-width: 176px;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  &__logo-text {
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  &__tagline {
+    margin: 0;
+    color: $psa-lichen;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  &__nav {
+    min-width: 0;
+  }
+
+  &__menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__link {
+    color: $psa-paper;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    opacity: 0.88;
+
+    @include focus-hover {
+      opacity: 1;
+      color: $psa-lime;
+    }
+
+    &.is-active {
+      opacity: 1;
+      color: $psa-lime;
+    }
+  }
+
+  &__cta {
+    justify-self: start;
+
+    @include min-nav {
+      justify-self: end;
+    }
+  }
+
+  &__join.psa-hero__btn {
+    white-space: nowrap;
+  }
+
+  &__bottom {
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba($psa-paper, 0.12);
+  }
+
+  &__copyright {
+    margin: 0;
+    color: $psa-lichen;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+}

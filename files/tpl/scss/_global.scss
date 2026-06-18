@@ -15,12 +15,14 @@ body {
 .mod_article,
 .mod_article .inside,
 .mod_html_header,
+.mod_html_footer,
 .content-text-double,
 .content-rs-text-image,
 .content-rs-slider,
 .ce_psa_hero,
 .psa-hero,
-.psa-header {
+.psa-header,
+.psa-footer {
   font-family: $psa-font-sans !important;
 }
 
