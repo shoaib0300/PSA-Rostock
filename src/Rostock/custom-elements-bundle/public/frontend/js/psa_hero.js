@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const passed = heroRect.bottom <= 0;
             let ratio = 0;
             let inSteps = false;
+            let progressComplete = false;
             let introDone = false;
 
             if (stage) {
@@ -28,11 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (scroller && runway && stepCount >= 2) {
                 const runwayRect = runway.getBoundingClientRect();
-                const runwayTop = scrollY + runwayRect.top;
-                const runwayHeight = runway.offsetHeight;
-                const scrollRange = Math.max(runwayHeight - viewportHeight, 1);
-                const scrolled = Math.min(Math.max(scrollY - runwayTop, 0), scrollRange);
-                ratio = scrolled / scrollRange;
+                const scrollRange = Math.max(runway.offsetHeight - viewportHeight, 1);
+                const inRunway = runwayRect.top <= 0 && runwayRect.bottom > viewportHeight;
+
+                if (inRunway) {
+                    ratio = Math.min(Math.max(-runwayRect.top / scrollRange, 0), 1);
+                } else if (runwayRect.bottom <= viewportHeight) {
+                    ratio = 1;
+                }
 
                 const activeIndex = Math.min(stepCount - 1, Math.floor(ratio * stepCount));
 
@@ -41,50 +45,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (progressBar) {
-                    const progress = Math.min(ratio * stepCount / Math.max(stepCount, 1), 1);
-                    progressBar.style.transform = `scaleX(${progress})`;
+                    progressBar.style.transform = `scaleX(${Math.min(ratio, 1)})`;
                 }
 
                 if (indexCurrent) {
                     indexCurrent.textContent = String(activeIndex + 1).padStart(2, '0');
                 }
 
-                inSteps = runwayRect.top <= 1
-                    && runwayRect.bottom > viewportHeight * 0.25
-                    && ratio < 0.995;
+                progressComplete = ratio >= (stepCount - 1) / stepCount;
+                inSteps = inRunway;
             }
 
-            const stepsComplete = scroller && runway && stepCount >= 2
-                ? ratio >= 0.995
-                : passed
-                    || (below !== null && below.getBoundingClientRect().bottom <= viewportHeight * 0.15)
-                    || (stage !== null && stage.getBoundingClientRect().bottom <= 0);
-
-            const sequenceReleased = stepsComplete && !inSteps;
+            const sequenceReleased = scroller && runway && stepCount >= 2
+                ? !inSteps && ratio >= 0.98
+                : false;
 
             if (expanded !== wasExpanded) {
                 hero.style.setProperty('--psa-hero-frame-duration', expanded ? '1s' : '0.55s');
                 wasExpanded = expanded;
             }
 
-            hero.classList.toggle('psa-hero--expanded', expanded);
+            hero.classList.toggle('psa-hero--expanded', expanded || inSteps);
             hero.classList.toggle('psa-hero--intro-done', introDone);
             hero.classList.toggle('psa-hero--in-steps', inSteps);
-            hero.classList.toggle('psa-hero--video-done', stepsComplete);
-            hero.classList.toggle('psa-hero--fixed-video', expanded && !stepsComplete && !passed);
+            hero.classList.toggle('psa-hero--progress-complete', progressComplete);
+            hero.classList.toggle('psa-hero--released', sequenceReleased);
+            hero.classList.toggle('psa-hero--fixed-video', inSteps && !passed);
             hero.classList.toggle('psa-hero--passed', passed);
-            document.body.classList.toggle(
-                'psa-hero-sequence-done',
-                passed || (sequenceReleased && heroRect.bottom <= viewportHeight * 0.4)
-            );
+            document.body.classList.toggle('psa-hero-sequence-done', passed);
 
             videos.forEach((video) => {
-                if ((stepsComplete && !inSteps) || passed) {
+                if (passed) {
                     video.pause();
                     return;
                 }
 
-                if (expanded && video.paused) {
+                if ((inSteps || expanded) && video.paused) {
                     video.play().catch(() => {});
                 }
             });
