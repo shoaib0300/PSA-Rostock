@@ -1,0 +1,124 @@
+<?php
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=7';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
+
+$defaultNav = [
+    ['label' => 'Home', 'href' => '/'],
+    ['label' => 'Events', 'href' => '/events'],
+    ['label' => 'Meetups', 'href' => '/meetups'],
+    ['label' => 'Team', 'href' => '/team'],
+    ['label' => 'Contributors', 'href' => '/contributors'],
+    ['label' => 'About', 'href' => '/about'],
+];
+
+$navItems = \is_array($this->navItems ?? null) ? $this->navItems : [];
+
+if ($navItems === []) {
+    $currentPath = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/') ?: '/';
+
+    foreach ($defaultNav as $item) {
+        $hrefPath = rtrim($item['href'], '/') ?: '/';
+        $navItems[] = [
+            'label' => $item['label'],
+            'href' => $item['href'],
+            'active' => $hrefPath === $currentPath,
+        ];
+    }
+}
+
+$siteName = $this->siteName ?? 'PSA Rostock';
+$registerUrl = $this->registerUrl ?? '/register';
+$logoPath = $this->logoPath ?? '';
+$navigation = $this->navigation ?? '';
+$tagline = $this->tagline ?? '';
+?>
+<link rel="stylesheet" href="<?= $assetCss ?>">
+<header class="psa-header <?= $this->class ?>" <?= $this->cssID ?> data-navigation-status="not-active">
+    <div class="psa-header__bar">
+        <div class="psa-header__inner">
+            <div class="psa-header__logo">
+                <a href="/" class="psa-header__logo-link" aria-label="<?= $siteName ?>">
+                    <?php if ($logoPath): ?>
+                        <img src="<?= $logoPath ?>" alt="<?= $siteName ?>" class="psa-header__logo-img" width="176" height="28">
+                    <?php else: ?>
+                        <span class="psa-header__logo-text"><?= $siteName ?></span>
+                    <?php endif; ?>
+                </a>
+            </div>
+
+            <nav class="psa-header__nav" aria-label="Main navigation">
+                <?php if ($navigation): ?>
+                    <div class="psa-header__menu psa-header__menu--module">
+                        <?= $navigation ?>
+                    </div>
+                <?php else: ?>
+                    <ul class="psa-header__menu">
+                        <?php foreach ($navItems as $item): ?>
+                            <li class="psa-header__menu-item">
+                                <a
+                                    href="<?= $item['href'] ?>"
+                                    class="psa-header__link<?= !empty($item['active']) ? ' is-active' : '' ?>"
+                                    <?= !empty($item['active']) ? 'aria-current="page"' : '' ?>
+                                ><?= $item['label'] ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+
+                <a href="<?= $registerUrl ?>" class="psa-header__cta">Join us</a>
+
+                <button
+                    class="psa-header__toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="psa-header-popup"
+                    aria-label="Toggle menu"
+                    data-psa-menu-toggle
+                >
+                    <span class="psa-header__toggle-icon" aria-hidden="true">
+                        <span class="psa-header__toggle-bar"></span>
+                        <span class="psa-header__toggle-bar"></span>
+                    </span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <nav
+        id="psa-header-popup"
+        class="psa-header__popup"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        aria-hidden="true"
+    >
+        <div class="psa-header__popup-inner">
+            <?php if ($navigation): ?>
+                <div class="psa-header__popup-menu psa-header__popup-menu--module">
+                    <?= $navigation ?>
+                </div>
+            <?php else: ?>
+                <ul class="psa-header__popup-menu">
+                    <?php foreach ($navItems as $item): ?>
+                        <li class="psa-header__popup-item">
+                            <a
+                                href="<?= $item['href'] ?>"
+                                class="psa-header__popup-link<?= !empty($item['active']) ? ' is-active' : '' ?>"
+                                <?= !empty($item['active']) ? 'aria-current="page"' : '' ?>
+                            ><?= $item['label'] ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                    <li class="psa-header__popup-item">
+                        <a href="<?= $registerUrl ?>" class="psa-header__popup-link">Join us</a>
+                    </li>
+                </ul>
+            <?php endif; ?>
+
+            <?php if ($tagline): ?>
+                <p class="psa-header__popup-tagline"><?= $tagline ?></p>
+            <?php endif; ?>
+        </div>
+    </nav>
+</header>
+<script>document.body.classList.add('has-psa-header');</script>
+<script src="<?= $assetJs ?>" defer></script>

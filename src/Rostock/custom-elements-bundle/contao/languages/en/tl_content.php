@@ -1,20 +1,31 @@
 <?php
 
 $strName = 'tl_content';
-// legends
-$GLOBALS['TL_LANG'][$strName]['headline_center'] = ['Center text only for Headline'];
-$GLOBALS['TL_LANG'][$strName]['top_hero_header'] = ['Top Video or Image Header'];
 
-// Field labels
+$GLOBALS['TL_LANG'][$strName]['headline_center'] = ['Center text only for Headline'];
+$GLOBALS['TL_LANG'][$strName]['hero_legend'] = 'Hero settings';
+$GLOBALS['TL_LANG'][$strName]['banner_legend'] = 'Side banner';
+$GLOBALS['TL_LANG'][$strName]['backgroundVideo'] = ['Background video', 'Optional full-screen hero video.'];
+$GLOBALS['TL_LANG'][$strName]['banner_headline'] = ['Showcase label', 'Small label on the media strip, e.g. Community Stories.'];
+$GLOBALS['TL_LANG'][$strName]['banner_subline'] = ['Category pill', 'Short pill label on the media strip, e.g. Community.'];
+$GLOBALS['TL_LANG'][$strName]['hero_caption'] = ['Section label', 'Small label above the scroll section, e.g. "What we do".'];
+$GLOBALS['TL_LANG'][$strName]['subline'] = ['Subline', 'Short line on the hero image, bottom left (e.g. community intro).'];
+$GLOBALS['TL_LANG'][$strName]['headline'] = ['Headline', 'Main headline on the hero image.'];
+$GLOBALS['TL_LANG'][$strName]['psa_overlay_legend'] = 'Hero overlay';
+$GLOBALS['TL_LANG'][$strName]['psa_source_legend'] = 'Media sources';
+$GLOBALS['TL_LANG'][$strName]['psa_content_legend'] = 'Content below image';
+$GLOBALS['TL_LANG'][$strName]['psa_scroll_legend'] = 'Scroll section';
+$GLOBALS['TL_LANG'][$strName]['button_legend'] = 'Button';
+$GLOBALS['TL_LANG'][$strName]['addButton'] = ['Add a button', 'Add a call-to-action button on the hero image.'];
+$GLOBALS['TL_LANG'][$strName]['button_label'] = ['Button label', 'Text shown on the button, e.g. Explore Events.'];
+$GLOBALS['TL_LANG'][$strName]['button_link'] = ['Button link', 'Target URL or page for the button.'];
+$GLOBALS['TL_LANG'][$strName]['button_target'] = ['Open in a new window', 'Open the button link in a new browser tab.'];
+$GLOBALS['TL_LANG'][$strName]['button_type'] = ['Button style', 'Visual style variant for legacy elements.'];
+$GLOBALS['TL_LANG'][$strName]['banner_link'] = ['Banner link', 'Page linked from the side banner.'];
+$GLOBALS['TL_LANG'][$strName]['claim_image'] = ['Aside image', 'Optional image shown on the right side of the hero.'];
 $GLOBALS['TL_LANG'][$strName]['text2'] = ['Secondary Text', 'Enter the secondary text content here.'];
-$GLOBALS['TL_LANG'][$strName]['image_video'] = ['Image or Video', 'Please select an image or video from the file tree.'];
-$GLOBALS['TL_LANG'][$strName]['headline'] = ['Headline', 'Enter the headline for the content element.'];
-$GLOBALS['TL_LANG'][$strName]['subline'] = ['Subline', 'Enter the subline for the content element.'];
-$GLOBALS['TL_LANG'][$strName]['ce_home_header'] = ['Home Page Header', 'Configuration for the header on the home page.'];
-$GLOBALS['TL_LANG'][$strName]['top_hero_header'] = ['Top Hero Header', 'Settings for the top hero header.'];
+$GLOBALS['TL_LANG'][$strName]['backgroundImageSRC'] = ['Background image', 'Optional hero background image.'];
 $GLOBALS['TL_LANG'][$strName]['ce_slider_main'] = ['Main Slider', 'Configuration for the main slider.'];
 $GLOBALS['TL_LANG'][$strName]['claim_text_image'] = ['Text-Image Element', 'Text and image in the claim design.'];
-$GLOBALS['TL_LANG'][$strName]['ce_start_hero'] = ['Homepage Hero', 'Settings for the hero section of the homepage.'];
 $GLOBALS['TL_LANG'][$strName]['ce_text_double'] = ['Double Text Elements', 'Two side-by-side text elements.'];
-$GLOBALS['TL_LANG']['tl_content']['show_information_box'] = ['Show Information Box', 'Check to display the information box.'];
-$GLOBALS['TL_LANG']['tl_content']['claim_image_right'] = ['Claim Image', 'Please select the claim image that appears'];
+$GLOBALS['TL_LANG'][$strName]['psa_hero'] = ['PSA Hero', 'Homepage hero section for the PSA Rostock community.'];

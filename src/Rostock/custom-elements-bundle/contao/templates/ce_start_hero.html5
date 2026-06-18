@@ -1,8 +1,0 @@
-<div class="content_start_hero <?php echo $this->class ?>" <?php echo $this->cssID ?> <?php if ($this->dark_mode) : ?>mode="dark" <?php endif; ?>>
-    <div class="container<?php if ($this->full_width) : ?>-fluid<?php endif; ?>">
-        <div class="row">
-            <div class="col-12">
-            </div>
-        </div>
-    </div>
-</div>
