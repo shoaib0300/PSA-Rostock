@@ -45,16 +45,43 @@ body.has-psa-hero {
     overflow-x: clip;
 }
 
-/* —— Fixed/sticky video + scrolling content overlay —— */
-.psa-hero__backdrop {
-    position: sticky;
-    top: 0;
+/* —— Full-viewport video + scrolling content overlay —— */
+.psa-hero__backdrop-holder {
+    position: relative;
     z-index: 0;
     width: 100%;
     height: 100lvh;
     min-height: 32rem;
+}
+
+.psa-hero__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     pointer-events: none;
+}
+
+.psa-hero--fixed-video .psa-hero__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100lvh;
+    min-height: 32rem;
+    z-index: 0;
+}
+
+.psa-hero--passed .psa-hero__backdrop {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100lvh;
+    min-height: 32rem;
 }
 
 .psa-hero__flow {
@@ -72,7 +99,8 @@ body.has-psa-hero {
 }
 
 .psa-hero__media {
-    position: relative;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     margin: 0;

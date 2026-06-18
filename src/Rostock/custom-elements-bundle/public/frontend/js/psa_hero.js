@@ -3,7 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let wasExpanded = false;
 
         const update = () => {
+            const heroRect = hero.getBoundingClientRect();
             const expanded = window.scrollY > 0;
+            const inHero = heroRect.bottom > 0;
+            const passed = heroRect.bottom <= 0;
 
             if (expanded !== wasExpanded) {
                 hero.style.setProperty('--psa-hero-frame-duration', expanded ? '1s' : '0.55s');
@@ -11,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             hero.classList.toggle('psa-hero--expanded', expanded);
+            hero.classList.toggle('psa-hero--fixed-video', expanded && inHero && !passed);
+            hero.classList.toggle('psa-hero--passed', passed);
         };
 
         update();
