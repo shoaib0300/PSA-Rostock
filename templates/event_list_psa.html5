@@ -1,0 +1,47 @@
+
+<article class="psa-event-card event layout_list<?= $this->classList ?> psa-event-list__item">
+  <?php if ($this->addImage && !empty($this->picture)): ?>
+    <div class="psa-event-card__media">
+      <?php $this->insert('picture_default', $this->picture); ?>
+    </div>
+  <?php else: ?>
+    <div class="psa-event-card__media psa-event-card__media--placeholder" aria-hidden="true"></div>
+  <?php endif; ?>
+
+  <div class="psa-event-card__body">
+    <p class="psa-event-card__meta">
+      <time datetime="<?= $this->datetime ?>"><?= $this->date ?><?php if ($this->time): ?> · <?= $this->time ?><?php endif; ?></time>
+    </p>
+
+    <h2 class="psa-event-card__title">
+      <a
+        href="<?= $this->href ?>"
+        class="psa-event-card__stretched-link"
+        title="<?= $this->title ?> (<?php if ($this->day): ?><?= $this->day ?>, <?php endif; ?><?= $this->date ?><?php if ($this->time): ?> <?= $this->time ?><?php endif; ?>)"
+        <?= $this->target ?>
+      ><?= $this->link ?></a>
+    </h2>
+
+    <?php if ($this->location): ?>
+      <p class="psa-event-card__location"><?= $this->location ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($this->excerpt)): ?>
+      <p class="psa-event-card__excerpt"><?= $this->excerpt ?></p>
+    <?php endif; ?>
+
+    <?php if (($this->rsvpTotal ?? 0) > 0): ?>
+      <p class="psa-event-card__rsvp">
+        <span><?= (int) ($this->rsvpYes ?? 0) ?> <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going_short'] ?? 'going' ?></span>
+      </p>
+    <?php endif; ?>
+
+    <span class="psa-event-card__cta"><?= $GLOBALS['TL_LANG']['PSA']['event_view_details'] ?? 'View details' ?></span>
+  </div>
+</article>
+
+<?php
+
+if (!$this->hasReader) {
+    $this->addSchemaOrg($this->getSchemaOrgData());
+}

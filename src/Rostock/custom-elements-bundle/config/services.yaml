@@ -15,6 +15,9 @@ services:
     Rostock\CustomElementsBundle\Classes\PsaMemberFlash:
         autowire: true
 
+    Rostock\CustomElementsBundle\Classes\PsaEventRsvp:
+        autowire: true
+
     contao.security.frontend_user_provider:
         class: Rostock\CustomElementsBundle\Security\PsaFrontendUserProvider
         arguments:

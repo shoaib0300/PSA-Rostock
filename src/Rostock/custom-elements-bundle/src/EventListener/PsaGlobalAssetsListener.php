@@ -13,5 +13,6 @@ class PsaGlobalAssetsListener
     {
         $GLOBALS['TL_CSS']['psa_fonts'] = 'bundles/customelements/frontend/css/psa_fonts.css';
         $GLOBALS['TL_CSS']['psa_main'] = 'files/tpl/css/main.css';
+        $GLOBALS['TL_CSS']['psa_events'] = 'bundles/customelements/frontend/css/psa_events.css';
     }
 }

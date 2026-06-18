@@ -21,6 +21,7 @@ $GLOBALS['BE_MOD']['system']['copyright'] = array(
 */
 $GLOBALS['TL_MODELS']['tl_quickbooker'] = QuickBookerModel::class;
 $GLOBALS['TL_MODELS']['tl_copyright'] = CopyrightModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_event_rsvp'] = \Rostock\CustomElementsBundle\Models\PsaEventRsvpModel::class;
 
 $GLOBALS['TL_CTE']['includes']['files_copyright'] = ContentFilesCopyright::class;
 
@@ -33,3 +34,5 @@ System::loadLanguageFile('defaults', 'de');
 System::loadLanguageFile('defaults', 'en');
 System::loadLanguageFile('psa_member', 'de');
 System::loadLanguageFile('psa_member', 'en');
+System::loadLanguageFile('psa_events', 'de');
+System::loadLanguageFile('psa_events', 'en');

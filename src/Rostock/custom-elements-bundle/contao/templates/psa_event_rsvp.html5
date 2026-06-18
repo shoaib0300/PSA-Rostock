@@ -1,0 +1,60 @@
+<?php
+$yes = (int) ($this->counts['yes'] ?? 0);
+$no = (int) ($this->counts['no'] ?? 0);
+$loginUrl = htmlspecialchars((string) $this->loginUrl, ENT_QUOTES);
+$registerUrl = htmlspecialchars((string) $this->registerUrl, ENT_QUOTES);
+?>
+
+<section class="psa-event-rsvp block" aria-labelledby="psa-event-rsvp-title">
+  <h2 id="psa-event-rsvp-title" class="psa-event-rsvp__title"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_title'] ?? 'Are you coming?' ?></h2>
+
+  <div class="psa-event-rsvp__counts" aria-live="polite">
+    <span class="psa-event-rsvp__count psa-event-rsvp__count--yes">
+      <strong><?= $yes ?></strong>
+      <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going'] ?? 'coming' ?>
+    </span>
+    <span class="psa-event-rsvp__count psa-event-rsvp__count--no">
+      <strong><?= $no ?></strong>
+      <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_not_going'] ?? 'not coming' ?>
+    </span>
+  </div>
+
+  <?php if ($this->isLoggedIn): ?>
+    <form class="psa-event-rsvp__form" method="post">
+      <input type="hidden" name="FORM_SUBMIT" value="psa_event_rsvp">
+      <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+      <input type="hidden" name="event_id" value="<?= (int) $this->eventId ?>">
+
+      <div class="psa-event-rsvp__actions">
+        <button
+          type="submit"
+          name="status"
+          value="yes"
+          class="psa-button psa-button--primary psa-event-rsvp__btn<?= $this->memberVote === 'yes' ? ' is-active' : '' ?>"
+        >
+          <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_yes'] ?? "Yes, I'm coming" ?>
+        </button>
+        <button
+          type="submit"
+          name="status"
+          value="no"
+          class="psa-button psa-button--ghost psa-event-rsvp__btn<?= $this->memberVote === 'no' ? ' is-active' : '' ?>"
+        >
+          <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_no'] ?? "No, I can't make it" ?>
+        </button>
+      </div>
+
+      <?php if ($this->memberVote): ?>
+        <p class="psa-event-rsvp__hint"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_change'] ?? 'You can change your answer anytime.' ?></p>
+      <?php endif; ?>
+    </form>
+  <?php else: ?>
+    <p class="psa-event-rsvp__login">
+      <?= sprintf(
+          $GLOBALS['TL_LANG']['PSA']['event_login_rsvp'] ?? 'Please <a href="%s">log in</a> or <a href="%s">register</a> to vote on this event.',
+          $loginUrl,
+          $registerUrl,
+      ) ?>
+    </p>
+  <?php endif; ?>
+</section>

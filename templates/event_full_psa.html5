@@ -1,0 +1,70 @@
+
+<article class="psa-event-detail event layout_full block<?= $this->class ?>">
+  <?php if ($this->addImage): ?>
+    <div class="psa-event-detail__hero">
+      <?php $this->insert('image', $this->arrData); ?>
+    </div>
+  <?php endif; ?>
+
+  <div class="psa-event-detail__content">
+    <header class="psa-event-detail__header">
+      <p class="psa-event-detail__meta">
+        <?php if ($this->recurring): ?>
+          <span class="psa-event-detail__recurring"><?= $this->recurring ?></span>
+        <?php else: ?>
+          <time datetime="<?= $this->datetime ?>"><?= $this->date ?><?php if ($this->time): ?> · <?= $this->time ?><?php endif; ?></time>
+        <?php endif; ?>
+      </p>
+
+      <h1 class="psa-event-detail__title"><?= $this->title ?></h1>
+
+      <?php if ($this->location): ?>
+        <p class="psa-event-detail__location">
+          <span class="psa-event-detail__location-label"><?= $this->locationLabel ?? ($GLOBALS['TL_LANG']['MSC']['location'] ?? 'Location') ?>:</span>
+          <?= $this->location ?><?php if ($this->address): ?>, <?= $this->address ?><?php endif; ?>
+        </p>
+      <?php endif; ?>
+    </header>
+
+    <div class="psa-event-detail__body ce_text block">
+      <?php if ($this->details): ?>
+        <?= $this->details ?>
+      <?php else: ?>
+        <?php if (!$this->addBefore): ?>
+          <?= $this->cspInlineStyles($this->teaser) ?>
+        <?php endif; ?>
+
+        <?php if ($this->addBefore): ?>
+          <?= $this->cspInlineStyles($this->teaser) ?>
+        <?php endif; ?>
+      <?php endif; ?>
+    </div>
+
+    <?php if ($this->enclosure): ?>
+      <ul class="psa-event-detail__downloads enclosure">
+        <?php foreach ($this->enclosure as $enclosure): ?>
+          <li class="download-element ext-<?= $enclosure['extension'] ?>">
+            <a href="<?= $enclosure['href'] ?>" title="<?= $enclosure['title'] ?>"><?= $enclosure['link'] ?> <span class="size">(<?= $enclosure['filesize'] ?>)</span></a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </div>
+</article>
+
+<?php
+
+$schemaOrg = $this->getSchemaOrgData();
+
+if ($this->hasDetails) {
+    $schemaOrg['description'] = $this->rawHtmlToPlainText($this->details);
+}
+
+$this->addSchemaOrg($schemaOrg);
+
+if ($this->figure) {
+    $this->addSchemaOrg([
+        '@type' => 'WebPage',
+        'primaryImageOfPage' => $this->figure->getSchemaOrgData(),
+    ]);
+}

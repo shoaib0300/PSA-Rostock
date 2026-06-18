@@ -1,0 +1,29 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+  <?= $this->event ?>
+
+  <?php if ($this->rsvp): ?>
+    <?= $this->rsvp ?>
+  <?php endif; ?>
+
+  <?php if ($this->referer): ?>
+    <!-- indexer::stop -->
+    <p class="psa-event-detail__back">
+      <a class="psa-button psa-button--ghost" href="<?= $this->referer ?>" title="<?= $this->back ?>">← <?= $this->back ?></a>
+    </p>
+    <!-- indexer::continue -->
+  <?php endif; ?>
+
+  <?php if ($this->allowComments): ?>
+    <div class="ce_comments block psa-event-comments">
+      <<?= $this->hlc ?>><?= $this->hlcText ?></<?= $this->hlc ?>>
+      <?= implode('', $this->comments) ?>
+      <?= $this->pagination ?>
+      <<?= $this->hlc ?>><?= $this->addComment ?></<?= $this->hlc ?>>
+      <?php $this->insert('mod_comment_form_psa', $this->arrData); ?>
+    </div>
+  <?php endif; ?>
+
+<?php $this->endblock(); ?>
