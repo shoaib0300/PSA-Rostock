@@ -29,3 +29,5 @@ $GLOBALS['FE_MOD']['application']['registration'] = PsaModuleRegistration::class
 
 System::loadLanguageFile('defaults', 'de');
 System::loadLanguageFile('defaults', 'en');
+System::loadLanguageFile('psa_member', 'de');
+System::loadLanguageFile('psa_member', 'en');

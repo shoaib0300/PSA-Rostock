@@ -27,6 +27,12 @@ $this->wrapperAttributes = $this
             <?= $this->headline ?>
         <?php endif; ?>
 
+        <?php if ($this->psaFlashMessage): ?>
+            <div class="psa-member-form__message psa-member-form__message--<?= $this->psaFlashType === 'error' ? 'error' : 'success' ?>" role="status">
+                <?= $this->psaFlashMessage ?>
+            </div>
+        <?php endif; ?>
+
         <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" class="psa-member-form__form" method="post">
             <div class="formbody">
                 <?php if ($this->message): ?>

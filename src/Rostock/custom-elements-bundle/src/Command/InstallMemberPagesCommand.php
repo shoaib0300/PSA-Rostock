@@ -10,6 +10,7 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\MemberGroupModel;
 use Contao\ModuleModel;
 use Contao\PageModel;
+use Contao\System;
 use Rostock\CustomElementsBundle\Classes\PsaMemberAvatarStorage;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -74,12 +75,18 @@ class InstallMemberPagesCommand extends Command
         $loginPageId = $this->ensurePage($io, 'login', 'Login', false, null);
         $accountPageId = $this->ensurePage($io, 'account', 'My account', true, [$groupId]);
 
+        System::loadLanguageFile('psa_member', 'en');
+
+        $registrationEmailText = trim((string) ($GLOBALS['TL_LANG']['PSA']['registration_email'] ?? ''));
+
         $registrationModuleId = $this->ensureModule($io, 'PSA Registration', 'registration', [
             'editable' => serialize(self::REGISTRATION_FIELDS),
             'memberTpl' => 'member_grouped',
             'reg_groups' => serialize([$groupId]),
             'reg_allowLogin' => '1',
-            'reg_activate' => '0',
+            'reg_activate' => '1',
+            'reg_jumpTo' => $loginPageId,
+            'reg_text' => $registrationEmailText !== '' ? $registrationEmailText : null,
             'disableCaptcha' => '1',
             'jumpTo' => $loginPageId,
             'headline' => serialize(['unit' => 'h1', 'value' => 'Create your PSA account']),

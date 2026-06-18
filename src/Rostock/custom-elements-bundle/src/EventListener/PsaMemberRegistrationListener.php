@@ -7,13 +7,21 @@ namespace Rostock\CustomElementsBundle\EventListener;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\MemberModel;
 use Contao\ModuleRegistration;
+use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\PsaMemberFlash;
 
 #[AsHook('createNewUser')]
 class PsaMemberRegistrationListener
 {
+    public function __construct(private readonly PsaMemberFlash $flash)
+    {
+    }
+
     public function __invoke(int $id, array $arrData, ModuleRegistration $module): void
     {
         if ($module->reg_activate) {
+            $this->flash->set(PsaMemberFlash::TYPE_REGISTRATION_PENDING);
+
             return;
         }
 

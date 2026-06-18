@@ -7,4 +7,10 @@ services:
 
     Rostock\CustomElementsBundle\:
         resource: ../src
-        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements,Module}
+        exclude: ../src/{Classes,ContaoManager,DependencyInjection,Elements,Module,EventListener}
+
+    Rostock\CustomElementsBundle\EventListener\:
+        resource: ../src/EventListener
+
+    Rostock\CustomElementsBundle\Classes\PsaMemberFlash:
+        autowire: true
