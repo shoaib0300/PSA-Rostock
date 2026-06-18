@@ -14,3 +14,9 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['html_header'] =
     {protected_legend:hide},protected;
     {expert_legend:hide},cssID;
     {invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['psa_meetup'] =
+    '{title_legend},name,type;
+    {protected_legend:hide},protected;
+    {expert_legend:hide},cssID;
+    {invisible_legend:hide},invisible,start,stop';

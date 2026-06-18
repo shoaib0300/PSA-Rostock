@@ -1,0 +1,287 @@
+<?php
+
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+$lang = is_array($this->lang ?? null) ? $this->lang : [];
+$meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
+
+?>
+<div class="psa-meetups block" data-psa-meetups>
+  <header class="psa-meetups__header">
+    <div class="psa-meetups__header-row">
+      <div>
+        <h1 class="psa-meetups__title"><?= $lang['meetup_page_title'] ?? 'Meetups' ?></h1>
+        <p class="psa-meetups__intro"><?= $lang['meetup_page_intro'] ?? 'Plan an outing and invite others to join you.' ?></p>
+      </div>
+      <?php if ($this->isMember): ?>
+        <div class="psa-meetups__header-actions">
+          <?= CeHelpers::renderPsaButton($lang['meetup_create_open'] ?? 'Create meetup', [
+              'type' => 'button',
+              'class' => 'psa-meetups__create-open',
+              'attrs' => [
+                  'data-psa-meetup-open' => '',
+                  'aria-haspopup' => 'dialog',
+              ],
+          ]) ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </header>
+
+  <?php if (!$this->isMember): ?>
+    <p class="psa-meetups__login-note">
+      <?= sprintf(
+          $lang['meetup_login_required'] ?? 'Only members can create meetups and join. Please <a href="%s">log in</a> first.',
+          htmlspecialchars((string) $this->loginUrl, ENT_QUOTES),
+      ) ?>
+    </p>
+  <?php endif; ?>
+
+  <?php if ($this->isMember): ?>
+    <div class="psa-meetups-modal" data-psa-meetup-modal hidden>
+      <div class="psa-meetups-modal__backdrop" data-psa-meetup-close tabindex="-1" aria-hidden="true"></div>
+      <div
+        class="psa-meetups-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="psa-meetup-modal-title"
+        tabindex="-1"
+      >
+        <header class="psa-meetups-modal__header">
+          <h2 id="psa-meetup-modal-title" class="psa-meetups-modal__title"><?= $lang['meetup_create_title'] ?? 'Create' ?></h2>
+          <button type="button" class="psa-meetups-modal__close" data-psa-meetup-close aria-label="<?= htmlspecialchars((string) ($lang['meetup_modal_close'] ?? 'Close'), ENT_QUOTES) ?>">×</button>
+        </header>
+
+        <form class="psa-meetups__form" method="post">
+          <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_create">
+          <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+
+          <fieldset class="psa-meetups__type">
+            <legend class="psa-meetups__label"><?= $lang['meetup_type_label'] ?? 'What do you want to share?' ?></legend>
+            <label class="psa-meetups__type-option">
+              <input type="radio" name="post_type" value="meetup" checked data-psa-meetup-type>
+              <span><?= $lang['meetup_type_meetup'] ?? 'Meetup' ?></span>
+            </label>
+            <label class="psa-meetups__type-option">
+              <input type="radio" name="post_type" value="post" data-psa-meetup-type>
+              <span><?= $lang['meetup_type_post'] ?? 'Simple post' ?></span>
+            </label>
+          </fieldset>
+
+          <div class="psa-meetups__field">
+            <label class="psa-meetups__label" for="psa_meetup_title"><?= $lang['meetup_field_title'] ?? 'Title' ?> <span class="psa-meetups__required" aria-hidden="true">*</span></label>
+            <input class="psa-meetups__input" type="text" name="title" id="psa_meetup_title" required maxlength="255" placeholder="<?= htmlspecialchars((string) ($lang['meetup_field_title_placeholder'] ?? 'Evening walk by the harbor'), ENT_QUOTES) ?>">
+          </div>
+
+          <div class="psa-meetups__field">
+            <label class="psa-meetups__label" for="psa_meetup_description"><?= $lang['meetup_field_description'] ?? 'Details' ?></label>
+            <textarea class="psa-meetups__textarea" name="description" id="psa_meetup_description" rows="4" placeholder="<?= htmlspecialchars((string) ($lang['meetup_field_description_placeholder'] ?? 'Tell people more…'), ENT_QUOTES) ?>"></textarea>
+          </div>
+
+          <div class="psa-meetups__meetup-fields" data-psa-meetup-fields>
+            <div class="psa-meetups__row">
+              <div class="psa-meetups__field psa-meetups__field--half">
+                <label class="psa-meetups__label" for="psa_meetup_date"><?= $lang['meetup_field_date'] ?? 'When (optional)' ?></label>
+                <input class="psa-meetups__input" type="datetime-local" name="meetup_date" id="psa_meetup_date">
+              </div>
+              <div class="psa-meetups__field psa-meetups__field--half">
+                <label class="psa-meetups__label" for="psa_meetup_location"><?= $lang['meetup_field_location'] ?? 'Where (optional)' ?></label>
+                <input class="psa-meetups__input" type="text" name="location" id="psa_meetup_location" maxlength="255" placeholder="<?= htmlspecialchars((string) ($lang['meetup_field_location_placeholder'] ?? 'Meeting point'), ENT_QUOTES) ?>">
+              </div>
+            </div>
+          </div>
+
+          <div class="psa-meetups__poll-toggle">
+            <label class="psa-meetups__checkbox-label">
+              <input type="checkbox" name="add_poll" value="1" data-psa-meetup-poll-toggle>
+              <span><?= $lang['meetup_add_poll'] ?? 'Add a poll for members' ?></span>
+            </label>
+          </div>
+
+          <div class="psa-meetups__poll-fields" data-psa-meetup-poll hidden>
+            <div class="psa-meetups__field">
+              <label class="psa-meetups__label" for="psa_meetup_poll_question"><?= $lang['meetup_poll_question'] ?? 'Poll question' ?></label>
+              <input class="psa-meetups__input" type="text" name="poll_question" id="psa_meetup_poll_question" maxlength="255" placeholder="<?= htmlspecialchars((string) ($lang['meetup_poll_question_placeholder'] ?? 'Which day works best?'), ENT_QUOTES) ?>">
+            </div>
+
+            <div class="psa-meetups__poll-options" data-psa-meetup-poll-options>
+              <p class="psa-meetups__label"><?= $lang['meetup_poll_options'] ?? 'Options' ?></p>
+              <div class="psa-meetups__poll-option-row">
+                <input class="psa-meetups__input" type="text" name="poll_options[]" maxlength="255" placeholder="<?= htmlspecialchars((string) ($lang['meetup_poll_option_placeholder'] ?? 'Option'), ENT_QUOTES) ?> 1">
+              </div>
+              <div class="psa-meetups__poll-option-row">
+                <input class="psa-meetups__input" type="text" name="poll_options[]" maxlength="255" placeholder="<?= htmlspecialchars((string) ($lang['meetup_poll_option_placeholder'] ?? 'Option'), ENT_QUOTES) ?> 2">
+              </div>
+            </div>
+
+            <button type="button" class="psa-meetups__poll-add" data-psa-meetup-poll-add><?= $lang['meetup_poll_add_option'] ?? '+ Add option' ?></button>
+          </div>
+
+          <div class="psa-meetups-modal__actions">
+            <button type="button" class="psa-meetups-modal__cancel" data-psa-meetup-close><?= $lang['meetup_modal_cancel'] ?? 'Cancel' ?></button>
+            <?= CeHelpers::renderPsaButton($lang['meetup_create_submit'] ?? 'Post', ['type' => 'submit']) ?>
+          </div>
+        </form>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <section class="psa-meetups__feed" aria-labelledby="psa-meetup-feed-heading">
+    <h2 id="psa-meetup-feed-heading" class="psa-meetups__section-title"><?= $lang['meetup_feed_title'] ?? 'Community posts' ?></h2>
+
+    <?php if ($meetups === []): ?>
+      <p class="psa-meetups__empty"><?= $lang['meetup_feed_empty'] ?? 'No posts yet. Be the first!' ?></p>
+    <?php else: ?>
+      <div class="psa-meetups__list">
+        <?php foreach ($meetups as $meetup): ?>
+          <?php
+            $poll = is_array($meetup['poll'] ?? null) ? $meetup['poll'] : [];
+            $pollOptions = is_array($poll['options'] ?? null) ? $poll['options'] : [];
+            $hasPoll = ($poll['question'] ?? '') !== '' && $pollOptions !== [];
+          ?>
+          <article class="psa-meetup-card<?= !empty($meetup['isPost']) ? ' psa-meetup-card--post' : '' ?>" id="meetup-<?= (int) $meetup['id'] ?>">
+            <header class="psa-meetup-card__header">
+              <div class="psa-meetup-card__badges">
+                <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
+              </div>
+              <h3 class="psa-meetup-card__title"><?= htmlspecialchars((string) $meetup['title'], ENT_QUOTES) ?></h3>
+              <p class="psa-meetup-card__meta">
+                <?= htmlspecialchars((string) $meetup['author'], ENT_QUOTES) ?>
+                <span class="psa-meetup-card__sep" aria-hidden="true">·</span>
+                <?= htmlspecialchars((string) $meetup['postedAt'], ENT_QUOTES) ?>
+              </p>
+            </header>
+
+            <?php if ((string) $meetup['description'] !== ''): ?>
+              <div class="psa-meetup-card__description">
+                <?= nl2br(htmlspecialchars((string) $meetup['description'], ENT_QUOTES)) ?>
+              </div>
+            <?php endif; ?>
+
+            <?php if (!empty($meetup['isMeetup']) && ((string) $meetup['meetupDateFormatted'] !== '' || (string) $meetup['location'] !== '')): ?>
+              <ul class="psa-meetup-card__details">
+                <?php if ((string) $meetup['meetupDateFormatted'] !== ''): ?>
+                  <li class="psa-meetup-card__detail"><?= $lang['meetup_when'] ?? 'When' ?>: <?= htmlspecialchars((string) $meetup['meetupDateFormatted'], ENT_QUOTES) ?></li>
+                <?php endif; ?>
+                <?php if ((string) $meetup['location'] !== ''): ?>
+                  <li class="psa-meetup-card__detail"><?= $lang['meetup_where'] ?? 'Where' ?>: <?= htmlspecialchars((string) $meetup['location'], ENT_QUOTES) ?></li>
+                <?php endif; ?>
+              </ul>
+            <?php endif; ?>
+
+            <?php if ($hasPoll): ?>
+              <section class="psa-meetup-card__poll" aria-label="<?= htmlspecialchars((string) ($lang['meetup_poll'] ?? 'Poll'), ENT_QUOTES) ?>">
+                <h4 class="psa-meetup-card__poll-question"><?= htmlspecialchars((string) $poll['question'], ENT_QUOTES) ?></h4>
+                <ul class="psa-meetup-card__poll-list">
+                  <?php foreach ($pollOptions as $option): ?>
+                    <li class="psa-meetup-card__poll-item<?= (int) ($meetup['pollVote'] ?? 0) === (int) $option['id'] ? ' is-voted' : '' ?>">
+                      <?php if ($this->isMember): ?>
+                        <form class="psa-meetup-card__poll-form" method="post">
+                          <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_poll_vote">
+                          <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                          <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
+                          <input type="hidden" name="option_id" value="<?= (int) $option['id'] ?>">
+                          <button type="submit" class="psa-meetup-card__poll-btn">
+                            <span class="psa-meetup-card__poll-label"><?= htmlspecialchars((string) $option['label'], ENT_QUOTES) ?></span>
+                            <span class="psa-meetup-card__poll-meta"><?= (int) $option['votes'] ?> · <?= (int) $option['percent'] ?>%</span>
+                          </button>
+                        </form>
+                      <?php else: ?>
+                        <div class="psa-meetup-card__poll-result">
+                          <span class="psa-meetup-card__poll-label"><?= htmlspecialchars((string) $option['label'], ENT_QUOTES) ?></span>
+                          <span class="psa-meetup-card__poll-meta"><?= (int) $option['votes'] ?> · <?= (int) $option['percent'] ?>%</span>
+                        </div>
+                      <?php endif; ?>
+                      <div class="psa-meetup-card__poll-bar" aria-hidden="true">
+                        <span class="psa-meetup-card__poll-fill" style="width: <?= (int) $option['percent'] ?>%"></span>
+                      </div>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+                <p class="psa-meetup-card__poll-total">
+                  <?= sprintf($lang['meetup_poll_votes'] ?? '%d votes', (int) ($poll['totalVotes'] ?? 0)) ?>
+                </p>
+              </section>
+            <?php endif; ?>
+
+            <?php if (!empty($meetup['isMeetup'])): ?>
+              <div class="psa-meetup-card__join">
+                <?php if ($this->isMember): ?>
+                  <form class="psa-meetup-card__join-form" method="post">
+                    <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_join">
+                    <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                    <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
+                    <?= CeHelpers::renderPsaButton(
+                        !empty($meetup['isJoined'])
+                            ? ($lang['meetup_leave'] ?? 'Leave')
+                            : ($lang['meetup_join'] ?? "I'll join"),
+                        [
+                            'type' => 'submit',
+                            'class' => 'psa-meetup-card__join-btn'.(!empty($meetup['isJoined']) ? ' is-active' : ''),
+                        ],
+                    ) ?>
+                  </form>
+                <?php endif; ?>
+
+                <p class="psa-meetup-card__join-count">
+                  <?= sprintf($lang['meetup_join_count'] ?? '%d joining', (int) $meetup['joinCount']) ?>
+                </p>
+              </div>
+
+              <?php if (!empty($meetup['joiners'])): ?>
+                <p class="psa-meetup-card__joiners">
+                  <span class="psa-meetup-card__joiners-label"><?= $lang['meetup_joiners'] ?? 'Joining' ?>:</span>
+                  <?= htmlspecialchars(implode(', ', $meetup['joiners']), ENT_QUOTES) ?>
+                </p>
+              <?php endif; ?>
+            <?php endif; ?>
+
+            <section class="psa-meetup-card__comments" aria-label="<?= htmlspecialchars((string) ($lang['meetup_comments'] ?? 'Comments'), ENT_QUOTES) ?>">
+              <?php if (!empty($meetup['comments'])): ?>
+                <ul class="psa-meetup-card__comment-list">
+                  <?php foreach ($meetup['comments'] as $comment): ?>
+                    <li class="psa-meetup-card__comment">
+                      <div class="psa-meetup-card__comment-head">
+                        <strong class="psa-meetup-card__comment-author"><?= htmlspecialchars((string) $comment['author'], ENT_QUOTES) ?></strong>
+                        <time class="psa-meetup-card__comment-date" datetime="<?= date('c', (int) $comment['tstamp']) ?>"><?= htmlspecialchars((string) $comment['datim'], ENT_QUOTES) ?></time>
+                      </div>
+                      <p class="psa-meetup-card__comment-text"><?= nl2br(htmlspecialchars((string) $comment['comment'], ENT_QUOTES)) ?></p>
+                      <?php if ($this->isMember && (int) $comment['member_id'] === (int) $this->memberId): ?>
+                        <form class="psa-meetup-card__comment-delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['comment_delete_confirm'] ?? 'Delete this comment?'), ENT_QUOTES) ?>')">
+                          <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup_comment">
+                          <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                          <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
+                          <button type="submit" class="psa-meetup-card__comment-delete-btn"><?= $lang['comment_delete'] ?? 'Delete' ?></button>
+                        </form>
+                      <?php endif; ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+
+              <?php if ($this->isMember): ?>
+                <form class="psa-meetup-card__comment-form" method="post">
+                  <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_comment">
+                  <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                  <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
+                  <label class="psa-meetups__label" for="meetup-comment-<?= (int) $meetup['id'] ?>"><?= $lang['meetup_comment_label'] ?? 'Add a comment' ?></label>
+                  <textarea class="psa-meetups__textarea" name="comment" id="meetup-comment-<?= (int) $meetup['id'] ?>" rows="2" required placeholder="<?= htmlspecialchars((string) ($lang['meetup_comment_placeholder'] ?? 'Write a comment…'), ENT_QUOTES) ?>"></textarea>
+                  <div class="psa-meetups__actions">
+                    <?= CeHelpers::renderPsaButton($lang['meetup_comment_submit'] ?? 'Comment', ['type' => 'submit']) ?>
+                  </div>
+                </form>
+              <?php elseif (!$this->isLoggedIn): ?>
+                <p class="psa-meetup-card__login">
+                  <?= sprintf(
+                      $lang['meetup_login_comment'] ?? 'Log in to join or comment. <a href="%s">Sign in</a>',
+                      htmlspecialchars((string) $this->loginUrl, ENT_QUOTES),
+                  ) ?>
+                </p>
+              <?php endif; ?>
+            </section>
+          </article>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </section>
+</div>
