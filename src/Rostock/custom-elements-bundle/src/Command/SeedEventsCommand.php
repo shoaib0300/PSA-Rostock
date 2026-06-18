@@ -214,6 +214,7 @@ class SeedEventsCommand extends Command
         if ($reader !== null) {
             $reader->cal_template = 'event_full_psa';
             $reader->customTpl = 'mod_eventreader_psa';
+            $reader->com_template = 'com_default_psa';
             $reader->headline = '';
             $reader->tstamp = time();
             $reader->save();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\Classes;
 
 use Doctrine\DBAL\Connection;
-use Rostock\CustomElementsBundle\Models\PsaEventRsvpModel;
 
 final class PsaEventRsvp
 {
@@ -36,6 +35,35 @@ final class PsaEventRsvp
         return $counts;
     }
 
+    /**
+     * @return array{yes: list<string>, no: list<string>}
+     */
+    public function getVoterLists(int $eventId): array
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT r.status, m.nickname, m.firstname, m.lastname, m.username
+             FROM tl_psa_event_rsvp r
+             INNER JOIN tl_member m ON m.id = r.member_id
+             WHERE r.event_id = ?
+             ORDER BY r.tstamp ASC',
+            [$eventId],
+        );
+
+        $lists = ['yes' => [], 'no' => []];
+
+        foreach ($rows as $row) {
+            $status = (string) ($row['status'] ?? '');
+
+            if (!isset($lists[$status])) {
+                continue;
+            }
+
+            $lists[$status][] = $this->formatMemberName($row);
+        }
+
+        return $lists;
+    }
+
     public function getVote(int $eventId, int $memberId): ?string
     {
         $status = $this->connection->fetchOne(
@@ -56,23 +84,44 @@ final class PsaEventRsvp
             throw new \InvalidArgumentException('Invalid RSVP status.');
         }
 
-        $existing = PsaEventRsvpModel::findOneBy(
-            ['event_id' => $eventId, 'member_id' => $memberId],
+        $time = time();
+        $existingId = $this->connection->fetchOne(
+            'SELECT id FROM tl_psa_event_rsvp WHERE event_id = ? AND member_id = ?',
+            [$eventId, $memberId],
         );
 
-        if ($existing !== null) {
-            $existing->status = $status;
-            $existing->tstamp = time();
-            $existing->save();
+        if (\is_string($existingId) || is_int($existingId)) {
+            $this->connection->executeStatement(
+                'UPDATE tl_psa_event_rsvp SET status = ?, tstamp = ? WHERE id = ?',
+                [$status, $time, (int) $existingId],
+            );
 
             return;
         }
 
-        $rsvp = new PsaEventRsvpModel();
-        $rsvp->event_id = $eventId;
-        $rsvp->member_id = $memberId;
-        $rsvp->status = $status;
-        $rsvp->tstamp = time();
-        $rsvp->save();
+        $this->connection->executeStatement(
+            'INSERT INTO tl_psa_event_rsvp (tstamp, event_id, member_id, status) VALUES (?, ?, ?, ?)',
+            [$time, $eventId, $memberId, $status],
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     */
+    private function formatMemberName(array $row): string
+    {
+        $nickname = trim((string) ($row['nickname'] ?? ''));
+
+        if ($nickname !== '') {
+            return $nickname;
+        }
+
+        $fullName = trim((string) ($row['firstname'] ?? '').' '.(string) ($row['lastname'] ?? ''));
+
+        if ($fullName !== '') {
+            return $fullName;
+        }
+
+        return (string) ($row['username'] ?? 'Member');
     }
 }

@@ -73,6 +73,7 @@ class PsaEventTemplateListener
         $rsvpTemplate->loginUrl = PsaHeaderAuth::getPageUrl('login');
         $rsvpTemplate->registerUrl = PsaHeaderAuth::getPageUrl('register');
         $rsvpTemplate->counts = $this->rsvp->getCounts($eventId);
+        $rsvpTemplate->voters = $this->rsvp->getVoterLists($eventId);
         $rsvpTemplate->memberVote = $memberVote;
         $rsvpTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
@@ -158,14 +159,10 @@ class PsaEventTemplateListener
     private function buildLoginMessage(): string
     {
         $loginUrl = htmlspecialchars(PsaHeaderAuth::getPageUrl('login'), ENT_QUOTES);
-        $registerUrl = htmlspecialchars(PsaHeaderAuth::getPageUrl('register'), ENT_QUOTES);
-        $loginLabel = $GLOBALS['TL_LANG']['PSA']['event_login'] ?? 'Log in';
-        $registerLabel = $GLOBALS['TL_LANG']['PSA']['event_register'] ?? 'register';
 
         return \sprintf(
-            $GLOBALS['TL_LANG']['PSA']['event_login_comment'] ?? 'Please <a href="%s">log in</a> or <a href="%s">register</a> to comment on this event.',
+            $GLOBALS['TL_LANG']['PSA']['event_login_required'] ?? 'Only members can vote and comment. Please <a href="%s">log in</a> first if you want to vote or comment.',
             $loginUrl,
-            $registerUrl,
         );
     }
 }

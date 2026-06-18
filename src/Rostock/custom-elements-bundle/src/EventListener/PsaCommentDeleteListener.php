@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Rostock\CustomElementsBundle\EventListener;
 
-use Contao\CalendarEventsModel;
+use Contao\CommentsModel;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\FrontendUser;
-use Rostock\CustomElementsBundle\Classes\PsaEventRsvp;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -22,12 +20,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
 #[AsEventListener(event: KernelEvents::REQUEST, priority: -32)]
-final class PsaEventRsvpListener
+final class PsaCommentDeleteListener
 {
     public function __construct(
         private readonly ScopeMatcher $scopeMatcher,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly PsaEventRsvp $rsvp,
         private readonly ContaoCsrfTokenManager $csrfTokenManager,
         private readonly ContaoFramework $framework,
         private readonly TokenStorageInterface $tokenStorage,
@@ -48,23 +45,18 @@ final class PsaEventRsvpListener
             return;
         }
 
-        if ($request->request->get('FORM_SUBMIT') !== 'psa_event_rsvp') {
+        if ($request->request->get('FORM_SUBMIT') !== 'psa_delete_comment') {
             return;
         }
 
-        $eventId = (int) $request->request->get('event_id', 0);
-        $status = (string) $request->request->get('status', '');
+        $commentId = (int) $request->request->get('comment_id', 0);
         $token = (string) $request->request->get('REQUEST_TOKEN', '');
 
         if (
-            $eventId <= 0
-            || !\in_array($status, ['yes', 'no'], true)
+            $commentId <= 0
             || !$this->csrfTokenManager->isTokenValid(new CsrfToken($this->csrfTokenName, $token))
+            || !$this->authorizationChecker->isGranted('ROLE_MEMBER')
         ) {
-            return;
-        }
-
-        if (!$this->authorizationChecker->isGranted('ROLE_MEMBER')) {
             return;
         }
 
@@ -76,26 +68,24 @@ final class PsaEventRsvpListener
 
         $this->framework->initialize();
 
-        $calendarEvent = CalendarEventsModel::findByPk($eventId);
+        $comment = CommentsModel::findByPk($commentId);
 
-        if ($calendarEvent === null || !$calendarEvent->published) {
+        if (
+            $comment === null
+            || (int) $comment->member !== (int) $user->id
+            || $comment->source !== 'tl_calendar_events'
+        ) {
             return;
         }
 
-        $this->rsvp->vote($eventId, (int) $user->id, $status);
+        $comment->delete();
 
-        $event->setResponse(new RedirectResponse($this->resolveRedirectUrl($request), Response::HTTP_SEE_OTHER));
-    }
-
-    private function resolveRedirectUrl(Request $request): string
-    {
         $referer = $request->headers->get('Referer');
 
-        if (\is_string($referer) && $referer !== '') {
-            return $referer;
-        }
-
-        return $request->getSchemeAndHttpHost().$request->getRequestUri();
+        $event->setResponse(new RedirectResponse(
+            \is_string($referer) && $referer !== '' ? $referer : '/events',
+            Response::HTTP_SEE_OTHER,
+        ));
     }
 
     private function getFrontendUser(): ?FrontendUser

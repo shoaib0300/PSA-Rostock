@@ -38,7 +38,7 @@ class InstallEventsCommand extends Command
             'cal_calendar' => serialize([$calendarId]),
             'cal_template' => 'event_full_psa',
             'customTpl' => 'mod_eventreader_psa',
-            'com_template' => 'com_default',
+            'com_template' => 'com_default_psa',
             'headline' => '',
         ]);
         $listModuleId = $this->ensureModule($io, 'PSA Event List', 'eventlist', [

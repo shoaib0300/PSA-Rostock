@@ -1,0 +1,29 @@
+
+<div class="psa-comment comment_default" id="<?= $this->id ?>">
+  <header class="psa-comment__header">
+    <p class="psa-comment__author"><?= $this->authorName ?? $this->name ?></p>
+    <time datetime="<?= $this->datetime ?>" class="psa-comment__date"><?= $this->datim ?? $this->date ?></time>
+  </header>
+
+  <div class="psa-comment__body comment">
+    <?= $this->comment ?>
+  </div>
+
+  <?php if ($this->canDelete): ?>
+    <form class="psa-comment__delete" method="post">
+      <input type="hidden" name="FORM_SUBMIT" value="psa_delete_comment">
+      <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+      <input type="hidden" name="comment_id" value="<?= (int) $this->commentId ?>">
+      <button type="submit" class="psa-comment__delete-btn" onclick="return confirm(<?= json_encode($GLOBALS['TL_LANG']['PSA']['comment_delete_confirm'] ?? 'Delete this comment?', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)"><?= $GLOBALS['TL_LANG']['PSA']['comment_delete'] ?? 'Delete' ?></button>
+    </form>
+  <?php endif; ?>
+
+  <?php if ($this->addReply): ?>
+    <div class="psa-comment__reply reply">
+      <p class="psa-comment__reply-label"><?= $this->rby ?> <?= $this->author->name ?></p>
+      <div class="comment">
+        <?= $this->cspInlineStyles($this->reply) ?>
+      </div>
+    </div>
+  <?php endif; ?>
+</div>

@@ -1,29 +1,60 @@
+<?php
+
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+?>
 <?php $this->extend('block_searchable'); ?>
 
 <?php $this->block('content'); ?>
 
-  <?= $this->event ?>
+  <div class="psa-event-detail-page">
+    <div class="psa-event-detail-page__main">
+      <?= $this->event ?>
 
-  <?php if ($this->rsvp): ?>
-    <?= $this->rsvp ?>
-  <?php endif; ?>
+      <?php if ($this->referer): ?>
+        <!-- indexer::stop -->
+        <p class="psa-event-detail__back">
+          <?= CeHelpers::renderPsaButton('← ' . $this->back, [
+              'href' => $this->referer,
+              'class' => 'psa-event-detail__back-btn',
+              'attrs' => ['title' => $this->back],
+          ]) ?>
+        </p>
+        <!-- indexer::continue -->
+      <?php endif; ?>
 
-  <?php if ($this->referer): ?>
-    <!-- indexer::stop -->
-    <p class="psa-event-detail__back">
-      <a class="psa-button psa-button--ghost" href="<?= $this->referer ?>" title="<?= $this->back ?>">← <?= $this->back ?></a>
-    </p>
-    <!-- indexer::continue -->
-  <?php endif; ?>
+      <?php if ($this->allowComments): ?>
+        <div class="ce_comments block psa-event-comments">
+          <section class="psa-event-comments__compose" aria-labelledby="psa-event-comments-compose-title">
+            <?php if (empty($this->requireLogin)): ?>
+              <<?= $this->hlc ?> id="psa-event-comments-compose-title" class="psa-event-comments__compose-title"><?= $this->addComment ?></<?= $this->hlc ?>>
+            <?php else: ?>
+              <<?= $this->hlc ?> id="psa-event-comments-compose-title" class="psa-event-comments__compose-title"><?= $this->hlcText ?></<?= $this->hlc ?>>
+            <?php endif; ?>
 
-  <?php if ($this->allowComments): ?>
-    <div class="ce_comments block psa-event-comments">
-      <<?= $this->hlc ?>><?= $this->hlcText ?></<?= $this->hlc ?>>
-      <?= implode('', $this->comments) ?>
-      <?= $this->pagination ?>
-      <<?= $this->hlc ?>><?= $this->addComment ?></<?= $this->hlc ?>>
-      <?php $this->insert('mod_comment_form_psa', $this->arrData); ?>
+            <?php $this->insert('mod_comment_form_psa', $this->arrData); ?>
+          </section>
+
+          <?php if (!empty($this->comments)): ?>
+            <section class="psa-event-comments__thread" aria-labelledby="psa-event-comments-thread-title">
+              <<?= $this->hlc ?> id="psa-event-comments-thread-title" class="psa-event-comments__thread-title"><?= $this->hlcText ?></<?= $this->hlc ?>>
+
+              <div class="psa-event-comments__list">
+                <?= implode('', $this->comments) ?>
+              </div>
+
+              <?= $this->pagination ?>
+            </section>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
     </div>
-  <?php endif; ?>
+
+    <?php if ($this->rsvp): ?>
+      <aside class="psa-event-detail-page__sidebar" aria-label="<?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_title'] ?? 'Are you coming?' ?>">
+        <?= $this->rsvp ?>
+      </aside>
+    <?php endif; ?>
+  </div>
 
 <?php $this->endblock(); ?>

@@ -1,24 +1,53 @@
+<?php
 
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
+?>
 <!-- indexer::stop -->
-<div class="form">
+<div class="psa-comment-form">
   <?php if ($this->requireLogin): ?>
-    <p class="info psa-event-comments__login"><?= $this->login ?></p>
+    <div class="psa-comment-form__card psa-comment-form__card--login">
+      <p class="psa-comment-form__login"><?= $this->login ?></p>
+    </div>
   <?php else: ?>
     <?php if ($this->confirm): ?>
-      <p class="tl_confirm"><?= $this->confirm ?></p>
+      <div class="psa-comment-form__card psa-comment-form__card--success" role="status">
+        <p class="psa-comment-form__confirm"><?= $this->confirm ?></p>
+      </div>
     <?php elseif ($this->allowComments): ?>
-      <form id="<?= $this->formId ?>" method="post">
-        <div class="formbody">
-          <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
-          <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
-          <?php foreach ($this->fields as $field): ?>
-            <?= $field->parse() ?>
-          <?php endforeach; ?>
-          <div class="widget widget-submit">
-            <button type="submit" class="submit psa-button psa-button--primary"><?= $this->submit ?></button>
+      <div class="psa-comment-form__card">
+        <form id="<?= $this->formId ?>" class="psa-comment-form__form" method="post">
+          <div class="formbody">
+            <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+            <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+
+            <?php if (isset($this->fields['name'], $this->fields['email'])): ?>
+              <input type="hidden" name="name" value="<?= htmlspecialchars((string) $this->fields['name']->value, ENT_QUOTES) ?>">
+              <input type="hidden" name="email" value="<?= htmlspecialchars((string) $this->fields['email']->value, ENT_QUOTES) ?>">
+            <?php endif; ?>
+
+            <?php if (isset($this->fields['comment'])): ?>
+              <?php $commentField = $this->fields['comment']; ?>
+              <div class="psa-comment-form__field widget widget-textarea widget-comment">
+                <label for="ctrl_<?= $commentField->id ?>" class="psa-comment-form__label">
+                  <?= $commentField->label ?>
+                  <?php if ($commentField->mandatory): ?>
+                    <span class="psa-comment-form__required" aria-hidden="true">*</span>
+                  <?php endif; ?>
+                </label>
+                <?= $commentField->generateWithError() ?>
+              </div>
+            <?php endif; ?>
+
+            <div class="psa-comment-form__actions">
+              <?= CeHelpers::renderPsaButton($this->submit, [
+                  'type' => 'submit',
+                  'class' => 'psa-comment-form__submit',
+              ]) ?>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     <?php endif; ?>
   <?php endif; ?>
 </div>

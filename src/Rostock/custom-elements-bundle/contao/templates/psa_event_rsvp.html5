@@ -1,60 +1,81 @@
 <?php
+
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
 $yes = (int) ($this->counts['yes'] ?? 0);
 $no = (int) ($this->counts['no'] ?? 0);
+$going = $this->voters['yes'] ?? [];
+$notGoing = $this->voters['no'] ?? [];
 $loginUrl = htmlspecialchars((string) $this->loginUrl, ENT_QUOTES);
-$registerUrl = htmlspecialchars((string) $this->registerUrl, ENT_QUOTES);
+$loginMessage = sprintf(
+    $GLOBALS['TL_LANG']['PSA']['event_login_required'] ?? 'Only members can vote and comment. Please <a href="%s">log in</a> first if you want to vote or comment.',
+    $loginUrl,
+);
 ?>
 
 <section class="psa-event-rsvp block" aria-labelledby="psa-event-rsvp-title">
   <h2 id="psa-event-rsvp-title" class="psa-event-rsvp__title"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_title'] ?? 'Are you coming?' ?></h2>
 
-  <div class="psa-event-rsvp__counts" aria-live="polite">
-    <span class="psa-event-rsvp__count psa-event-rsvp__count--yes">
-      <strong><?= $yes ?></strong>
-      <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going'] ?? 'coming' ?>
-    </span>
-    <span class="psa-event-rsvp__count psa-event-rsvp__count--no">
-      <strong><?= $no ?></strong>
-      <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_not_going'] ?? 'not coming' ?>
-    </span>
+  <div class="psa-event-rsvp__vote">
+    <?php if ($this->isLoggedIn): ?>
+      <form class="psa-event-rsvp__form" method="post">
+        <input type="hidden" name="FORM_SUBMIT" value="psa_event_rsvp">
+        <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+        <input type="hidden" name="event_id" value="<?= (int) $this->eventId ?>">
+
+        <div class="psa-event-rsvp__actions">
+          <?= CeHelpers::renderPsaButton($GLOBALS['TL_LANG']['PSA']['event_rsvp_yes'] ?? "Yes, I'm coming", [
+              'type' => 'submit',
+              'class' => 'psa-event-rsvp__btn' . ($this->memberVote === 'yes' ? ' is-active' : ''),
+              'attrs' => ['name' => 'status', 'value' => 'yes'],
+          ]) ?>
+          <?= CeHelpers::renderPsaButton($GLOBALS['TL_LANG']['PSA']['event_rsvp_no'] ?? "No, I can't make it", [
+              'type' => 'submit',
+              'class' => 'psa-event-rsvp__btn' . ($this->memberVote === 'no' ? ' is-active' : ''),
+              'attrs' => ['name' => 'status', 'value' => 'no'],
+          ]) ?>
+        </div>
+
+        <?php if ($this->memberVote): ?>
+          <p class="psa-event-rsvp__hint"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_change'] ?? 'You can change your answer anytime.' ?></p>
+        <?php endif; ?>
+      </form>
+    <?php else: ?>
+      <p class="psa-event-rsvp__login"><?= $loginMessage ?></p>
+    <?php endif; ?>
   </div>
 
-  <?php if ($this->isLoggedIn): ?>
-    <form class="psa-event-rsvp__form" method="post">
-      <input type="hidden" name="FORM_SUBMIT" value="psa_event_rsvp">
-      <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
-      <input type="hidden" name="event_id" value="<?= (int) $this->eventId ?>">
-
-      <div class="psa-event-rsvp__actions">
-        <button
-          type="submit"
-          name="status"
-          value="yes"
-          class="psa-button psa-button--primary psa-event-rsvp__btn<?= $this->memberVote === 'yes' ? ' is-active' : '' ?>"
-        >
-          <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_yes'] ?? "Yes, I'm coming" ?>
-        </button>
-        <button
-          type="submit"
-          name="status"
-          value="no"
-          class="psa-button psa-button--ghost psa-event-rsvp__btn<?= $this->memberVote === 'no' ? ' is-active' : '' ?>"
-        >
-          <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_no'] ?? "No, I can't make it" ?>
-        </button>
-      </div>
-
-      <?php if ($this->memberVote): ?>
-        <p class="psa-event-rsvp__hint"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_change'] ?? 'You can change your answer anytime.' ?></p>
+  <div class="psa-event-rsvp__lists" aria-live="polite">
+    <div class="psa-event-rsvp__list-block">
+      <h3 class="psa-event-rsvp__list-title">
+        <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_going_list'] ?? 'Coming' ?>
+        <span class="psa-event-rsvp__list-count">(<?= $yes ?>)</span>
+      </h3>
+      <?php if ($going !== []): ?>
+        <ul class="psa-event-rsvp__list">
+          <?php foreach ($going as $name): ?>
+            <li><?= htmlspecialchars((string) $name, ENT_QUOTES) ?></li>
+          <?php endforeach; ?>
+        </ul>
+      <?php else: ?>
+        <p class="psa-event-rsvp__empty"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_nobody'] ?? 'Nobody yet' ?></p>
       <?php endif; ?>
-    </form>
-  <?php else: ?>
-    <p class="psa-event-rsvp__login">
-      <?= sprintf(
-          $GLOBALS['TL_LANG']['PSA']['event_login_rsvp'] ?? 'Please <a href="%s">log in</a> or <a href="%s">register</a> to vote on this event.',
-          $loginUrl,
-          $registerUrl,
-      ) ?>
-    </p>
-  <?php endif; ?>
+    </div>
+
+    <div class="psa-event-rsvp__list-block">
+      <h3 class="psa-event-rsvp__list-title">
+        <?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_not_going_list'] ?? 'Not coming' ?>
+        <span class="psa-event-rsvp__list-count">(<?= $no ?>)</span>
+      </h3>
+      <?php if ($notGoing !== []): ?>
+        <ul class="psa-event-rsvp__list">
+          <?php foreach ($notGoing as $name): ?>
+            <li><?= htmlspecialchars((string) $name, ENT_QUOTES) ?></li>
+          <?php endforeach; ?>
+        </ul>
+      <?php else: ?>
+        <p class="psa-event-rsvp__empty"><?= $GLOBALS['TL_LANG']['PSA']['event_rsvp_nobody'] ?? 'Nobody yet' ?></p>
+      <?php endif; ?>
+    </div>
+  </div>
 </section>
