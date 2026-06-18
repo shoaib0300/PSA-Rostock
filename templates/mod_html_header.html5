@@ -3,7 +3,7 @@ use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
 $assetLogo = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/images/psa-logo.svg') . '?v=2';
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=17';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=18';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
 

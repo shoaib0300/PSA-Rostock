@@ -205,10 +205,8 @@
   content: "";
   position: absolute;
   inset: -4px -8px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(34, 47, 48, 0.08);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 10px;
   z-index: -1;
 }
@@ -470,6 +468,13 @@
   font-size: 0.95rem;
   line-height: 1.4;
   text-align: center;
+}
+
+body.has-psa-hero:not(.psa-hero-sequence-done) .psa-header__logo-link::before {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(34, 47, 48, 0.08);
 }
 
 body.has-psa-header {

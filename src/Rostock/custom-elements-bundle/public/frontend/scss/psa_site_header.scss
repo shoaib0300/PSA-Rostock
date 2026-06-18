@@ -101,7 +101,8 @@
       content: '';
       position: absolute;
       inset: -4px -8px;
-      @include glass-panel;
+      background: transparent;
+      border: 1px solid transparent;
       border-radius: 10px;
       z-index: -1;
     }
@@ -415,6 +416,12 @@
     font-size: 0.95rem;
     line-height: 1.4;
     text-align: center;
+  }
+}
+
+body.has-psa-hero:not(.psa-hero-sequence-done) {
+  .psa-header__logo-link::before {
+    @include glass-panel;
   }
 }
 
