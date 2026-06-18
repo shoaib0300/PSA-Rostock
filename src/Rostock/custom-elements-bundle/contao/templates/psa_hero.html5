@@ -1,6 +1,6 @@
 <?php
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=32';
-$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=32';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_hero.css') . '?v=34';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=33';
 
 $headline = $this->headline ?: 'A community that feels like home.';
 $lede = $this->lede ?: 'Connect with fellow Pakistaniss in Rostock — events, meetups, culture, and belonging.';

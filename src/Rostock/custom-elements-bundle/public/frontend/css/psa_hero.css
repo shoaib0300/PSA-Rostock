@@ -78,7 +78,11 @@ body.has-psa-hero {
     z-index: 0;
 }
 
-.psa-hero--video-done .psa-hero__backdrop-holder,
+.psa-hero--video-done:not(.psa-hero--in-steps):not(.psa-hero--fixed-video) .psa-hero__backdrop {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .psa-hero--passed .psa-hero__backdrop-holder {
     height: 0;
     min-height: 0;
@@ -86,7 +90,6 @@ body.has-psa-hero {
     visibility: hidden;
 }
 
-.psa-hero--video-done .psa-hero__backdrop,
 .psa-hero--passed .psa-hero__backdrop {
     display: none;
 }
@@ -96,16 +99,14 @@ body.has-psa-hero {
     position: relative;
 }
 
-.psa-hero--in-steps .psa-hero__stage,
-.psa-hero--intro-done .psa-hero__stage,
-.psa-hero--video-done .psa-hero__stage,
-.psa-hero--passed .psa-hero__stage {
+.psa-hero--in-steps .psa-hero__stage {
     visibility: hidden;
     pointer-events: none;
 }
 
-.psa-hero--video-done .psa-hero__stage,
 .psa-hero--passed .psa-hero__stage {
+    visibility: hidden;
+    pointer-events: none;
     position: absolute;
     width: 0;
     height: 0;
@@ -125,46 +126,51 @@ body.has-psa-hero {
     color: var(--psa-hero-ink);
 }
 
-.psa-hero--video-done .psa-hero__below,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__below,
 .psa-hero--passed .psa-hero__below {
     color: var(--psa-hero-ink);
     background: var(--psa-hero-bone);
 }
 
-.psa-hero--video-done .psa-hero__scroller,
+.psa-hero--in-steps .psa-hero__below {
+    color: var(--psa-hero-white);
+    background: transparent;
+}
+
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__scroller,
 .psa-hero--passed .psa-hero__scroller {
     border-top-color: rgba(34, 47, 48, 0.12);
 }
 
-.psa-hero--video-done .psa-hero__scroller-label,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__scroller-label,
 .psa-hero--passed .psa-hero__scroller-label {
     background: rgba(34, 47, 48, 0.08);
     color: var(--psa-hero-ink);
 }
 
-.psa-hero--video-done .psa-hero__index,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__index,
 .psa-hero--passed .psa-hero__index {
     border-color: rgba(34, 47, 48, 0.2);
     color: var(--psa-hero-ink);
 }
 
-.psa-hero--video-done .psa-hero__scroll-title,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__scroll-title,
 .psa-hero--passed .psa-hero__scroll-title {
     color: var(--psa-hero-graphite);
 }
 
-.psa-hero--video-done .psa-hero__scroll-item p,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__scroll-item p,
 .psa-hero--passed .psa-hero__scroll-item p {
     color: var(--psa-hero-ink);
     text-shadow: none;
 }
 
-.psa-hero--video-done .psa-hero__progress,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__progress,
 .psa-hero--passed .psa-hero__progress {
     background: rgba(34, 47, 48, 0.15);
 }
 
-.psa-hero--video-done .psa-hero__progress-bar,
+.psa-hero--video-done:not(.psa-hero--in-steps) .psa-hero__progress-bar,
 .psa-hero--passed .psa-hero__progress-bar {
     background: var(--psa-hero-ink);
 }
@@ -543,11 +549,7 @@ body.has-psa-hero {
 
 .psa-hero__scroller-body {
     position: relative;
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: 0;
+    display: block;
     padding-top: 0;
 }
 

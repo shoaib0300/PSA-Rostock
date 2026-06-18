@@ -11,26 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const stepCount = items.length;
         let wasExpanded = false;
 
-        const isStepsComplete = (passed, ratio) => {
-            if (passed) {
-                return true;
-            }
-
-            if (stepCount >= 2 && runway) {
-                return ratio >= 0.995;
-            }
-
-            if (below) {
-                return below.getBoundingClientRect().bottom <= window.innerHeight * 0.15;
-            }
-
-            if (stage) {
-                return stage.getBoundingClientRect().bottom <= 0;
-            }
-
-            return false;
-        };
-
         const update = () => {
             const scrollY = window.scrollY;
             const viewportHeight = window.innerHeight;
@@ -39,6 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const passed = heroRect.bottom <= 0;
             let ratio = 0;
             let inSteps = false;
+            let introDone = false;
+
+            if (stage) {
+                const stageRect = stage.getBoundingClientRect();
+                introDone = stageRect.bottom <= viewportHeight * 0.12;
+            }
 
             if (scroller && runway && stepCount >= 2) {
                 const runwayRect = runway.getBoundingClientRect();
@@ -63,22 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     indexCurrent.textContent = String(activeIndex + 1).padStart(2, '0');
                 }
 
-                inSteps = runwayRect.top <= 1 && runwayRect.bottom > viewportHeight * 0.25;
+                inSteps = runwayRect.top <= 1
+                    && runwayRect.bottom > viewportHeight * 0.25
+                    && ratio < 0.995;
             }
 
-            const stepsComplete = isStepsComplete(passed, ratio);
+            const stepsComplete = scroller && runway && stepCount >= 2
+                ? ratio >= 0.995
+                : passed
+                    || (below !== null && below.getBoundingClientRect().bottom <= viewportHeight * 0.15)
+                    || (stage !== null && stage.getBoundingClientRect().bottom <= 0);
 
-            if (inSteps && stepsComplete) {
-                inSteps = false;
-            }
-
-            let introDone = false;
-
-            if (stage) {
-                const stageRect = stage.getBoundingClientRect();
-                introDone = stageRect.bottom <= viewportHeight * 0.12;
-                hero.classList.toggle('psa-hero--intro-done', introDone);
-            }
+            const sequenceReleased = stepsComplete && !inSteps;
 
             if (expanded !== wasExpanded) {
                 hero.style.setProperty('--psa-hero-frame-duration', expanded ? '1s' : '0.55s');
@@ -86,14 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             hero.classList.toggle('psa-hero--expanded', expanded);
+            hero.classList.toggle('psa-hero--intro-done', introDone);
             hero.classList.toggle('psa-hero--in-steps', inSteps);
             hero.classList.toggle('psa-hero--video-done', stepsComplete);
             hero.classList.toggle('psa-hero--fixed-video', expanded && !stepsComplete && !passed);
             hero.classList.toggle('psa-hero--passed', passed);
-            document.body.classList.toggle('psa-hero-sequence-done', stepsComplete || passed);
+            document.body.classList.toggle(
+                'psa-hero-sequence-done',
+                passed || (sequenceReleased && heroRect.bottom <= viewportHeight * 0.4)
+            );
 
             videos.forEach((video) => {
-                if (stepsComplete || passed) {
+                if ((stepsComplete && !inSteps) || passed) {
                     video.pause();
                     return;
                 }
