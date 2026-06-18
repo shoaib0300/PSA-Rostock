@@ -196,9 +196,14 @@ body.has-psa-hero {
         border-radius var(--psa-hero-frame-duration) var(--psa-hero-ease);
 }
 
-.psa-hero--expanded .psa-hero__media-frame {
-    inset: 0;
-    border-radius: 0;
+.psa-hero--released.psa-hero--intro-done .psa-hero__stage {
+    position: absolute;
+    width: 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .psa-hero__media-frame::after {
