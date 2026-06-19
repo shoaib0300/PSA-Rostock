@@ -40,6 +40,9 @@ class PsaMemberFormListener
 
         $attributes['extensions'] = 'jpg,jpeg,png,webp';
         $attributes['mandatory'] = false;
+        $attributes['blnSubmitInput'] = true;
+        $attributes['maxImageWidth'] = 4000;
+        $attributes['maxImageHeight'] = 4000;
 
         return $attributes;
     }

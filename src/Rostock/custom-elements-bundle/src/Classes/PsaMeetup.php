@@ -18,7 +18,7 @@ final class PsaMeetup
     public function getPublishedMeetups(): array
     {
         $rows = $this->connection->fetchAllAssociative(
-            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username
+            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username, mem.avatar
              FROM tl_psa_meetup m
              INNER JOIN tl_member mem ON mem.id = m.member_id
              WHERE m.published = ?
@@ -46,7 +46,7 @@ final class PsaMeetup
         }
 
         $rows = $this->connection->fetchAllAssociative(
-            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username
+            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username, mem.avatar
              FROM tl_psa_meetup m
              INNER JOIN tl_member mem ON mem.id = m.member_id
              WHERE m.member_id = ?
@@ -67,7 +67,7 @@ final class PsaMeetup
     public function getPublishedMeetup(int $id): ?array
     {
         $row = $this->connection->fetchAssociative(
-            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username
+            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username, mem.avatar
              FROM tl_psa_meetup m
              INNER JOIN tl_member mem ON mem.id = m.member_id
              WHERE m.id = ? AND m.published = ?',
@@ -342,7 +342,7 @@ final class PsaMeetup
     public function getComments(int $meetupId): array
     {
         $rows = $this->connection->fetchAllAssociative(
-            'SELECT c.*, m.nickname, m.firstname, m.lastname, m.username
+            'SELECT c.*, m.nickname, m.firstname, m.lastname, m.username, m.avatar
              FROM tl_psa_meetup_comment c
              INNER JOIN tl_member m ON m.id = c.member_id
              WHERE c.pid = ? AND c.published = ?
@@ -357,6 +357,7 @@ final class PsaMeetup
                 'id' => (int) $row['id'],
                 'member_id' => (int) $row['member_id'],
                 'author' => $this->formatMemberName($row),
+                'authorAvatarUrl' => PsaMemberAvatar::resolveFromRow($row) ?? '',
                 'comment' => (string) ($row['comment'] ?? ''),
                 'tstamp' => (int) $row['tstamp'],
                 'datim' => date('d.m.Y H:i', (int) $row['tstamp']),
@@ -479,6 +480,7 @@ final class PsaMeetup
             'id' => $id,
             'member_id' => (int) $row['member_id'],
             'author' => $this->formatMemberName($row),
+            'authorAvatarUrl' => PsaMemberAvatar::resolveFromRow($row) ?? '',
             'title' => (string) ($row['title'] ?? ''),
             'description' => (string) ($row['description'] ?? ''),
             'postType' => $postType,

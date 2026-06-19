@@ -6,10 +6,7 @@ namespace Rostock\CustomElementsBundle\Classes;
 
 use Contao\Config;
 use Contao\Date;
-use Contao\FilesModel;
 use Contao\FrontendUser;
-use Contao\StringUtil;
-use Contao\Validator;
 use Contao\System;
 
 final class PsaMemberAccountPresenter
@@ -142,22 +139,15 @@ final class PsaMemberAccountPresenter
             return '';
         }
 
-        $uuid = self::resolveAvatarUuid($value);
+        $path = PsaMemberAvatar::resolvePath($value);
 
-        if ($uuid === null) {
+        if ($path === null) {
             return '';
         }
 
-        $file = FilesModel::findByUuid($uuid);
-
-        if ($file === null || $file->path === '') {
-            return '';
-        }
-
-        $src = htmlspecialchars($file->path, ENT_QUOTES);
         $alt = htmlspecialchars((string) ($GLOBALS['TL_LANG']['tl_member']['avatar'][0] ?? 'Profile photo'), ENT_QUOTES);
 
-        return '<img class="psa-account-field__avatar" src="'.$src.'" alt="'.$alt.'" width="80" height="80" loading="lazy">';
+        return PsaMemberAvatar::render($path, $alt, 'psa-account-field__avatar', 80);
     }
 
     /**
@@ -178,20 +168,5 @@ final class PsaMemberAccountPresenter
         }
 
         return (string) $value;
-    }
-
-    private static function resolveAvatarUuid(mixed $value): ?string
-    {
-        if (\is_string($value) && $value !== '') {
-            if (Validator::isStringUuid($value)) {
-                return $value;
-            }
-
-            if (\strlen($value) === 16) {
-                return StringUtil::binToUuid($value);
-            }
-        }
-
-        return null;
     }
 }

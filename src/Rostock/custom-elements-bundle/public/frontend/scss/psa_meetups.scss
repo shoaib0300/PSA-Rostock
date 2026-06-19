@@ -329,9 +329,31 @@ body.psa-meetups-modal-open {
   }
 
   &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.5rem;
     margin: 0;
     font-size: 0.9rem;
     color: $psa-graphite;
+  }
+
+  &__author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  &__author-name {
+    font-weight: 600;
+    color: $psa-ink;
+  }
+
+  &__avatar {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    object-fit: cover;
   }
 
   &__sep {
@@ -505,11 +527,23 @@ body.psa-meetups-modal-open {
 
   &__comment-head {
     display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.35rem;
+  }
+
+  &__comment-avatar {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+
+  &__comment-meta {
+    display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 0.35rem 0.75rem;
-    margin-bottom: 0.35rem;
+    gap: 0.35rem 0.65rem;
+    min-width: 0;
   }
 
   &__comment-author {

@@ -24,4 +24,4 @@ $GLOBALS['TL_LANG']['tl_member']['familyInRostockOptions'] = [
 $GLOBALS['TL_LANG']['tl_member']['profileDetails'] = 'Community-Angaben';
 $GLOBALS['TL_LANG']['tl_member']['profileHint'] = 'Gib deine Universität oder an, ob du Familie in Rostock hast — beides ist nicht nötig.';
 $GLOBALS['TL_LANG']['tl_member']['nickname'] = ['Spitzname', 'Optionaler Anzeigename in der Community.'];
-$GLOBALS['TL_LANG']['tl_member']['avatar'] = ['Profilfoto', 'Optionales Foto (JPG, PNG oder WebP).'];
+$GLOBALS['TL_LANG']['tl_member']['avatar'] = ['Profilfoto', 'Quadratisches Foto (JPG, PNG oder WebP). Wird automatisch auf 400×400 px zugeschnitten.'];

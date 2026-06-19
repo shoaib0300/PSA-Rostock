@@ -1,8 +1,18 @@
 
+<?php use Rostock\CustomElementsBundle\Classes\PsaMemberAvatar; ?>
+
 <div class="psa-comment comment_default" id="<?= $this->id ?>">
   <header class="psa-comment__header">
-    <p class="psa-comment__author"><?= $this->authorName ?? $this->name ?></p>
-    <time datetime="<?= $this->datetime ?>" class="psa-comment__date"><?= $this->datim ?? $this->date ?></time>
+    <?= PsaMemberAvatar::render(
+        (string) ($this->authorAvatarUrl ?? '') !== '' ? (string) $this->authorAvatarUrl : null,
+        (string) ($this->authorName ?? $this->name ?? ''),
+        'psa-comment__avatar',
+        28,
+    ) ?>
+    <div class="psa-comment__meta">
+      <p class="psa-comment__author"><?= $this->authorName ?? $this->name ?></p>
+      <time datetime="<?= $this->datetime ?>" class="psa-comment__date"><?= $this->datim ?? $this->date ?></time>
+    </div>
   </header>
 
   <div class="psa-comment__body comment">

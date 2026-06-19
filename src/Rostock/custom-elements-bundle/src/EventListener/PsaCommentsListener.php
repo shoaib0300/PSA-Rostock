@@ -10,6 +10,7 @@ use Contao\FrontendUser;
 use Contao\MemberModel;
 use Contao\System;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\PsaMemberAvatar;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[AsHook('parseTemplate')]
@@ -40,6 +41,7 @@ class PsaCommentsListener
         $commentId = $this->resolveCommentId($template);
         $template->commentId = $commentId;
         $template->authorName = $this->resolveAuthorName($template);
+        $template->authorAvatarUrl = $this->resolveAuthorAvatarUrl($template);
         $template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
         $template->canDelete = $this->canDeleteComment($commentId, (int) ($template->member ?? 0));
     }
@@ -92,6 +94,23 @@ class PsaCommentsListener
         }
 
         return (string) ($template->name ?? '');
+    }
+
+    private function resolveAuthorAvatarUrl(Template $template): string
+    {
+        $memberId = (int) ($template->member ?? 0);
+
+        if ($memberId <= 0) {
+            return '';
+        }
+
+        $member = MemberModel::findById($memberId);
+
+        if ($member === null) {
+            return '';
+        }
+
+        return PsaMemberAvatar::resolvePath($member->avatar) ?? '';
     }
 
     private function canDeleteComment(int $commentId, int $memberId): bool

@@ -23,6 +23,28 @@ final class PsaMemberAvatarStorage
         if (FilesModel::findByPath(self::UPLOAD_PATH) === null && Dbafs::shouldBeSynchronized(self::UPLOAD_PATH)) {
             Dbafs::addResource(self::UPLOAD_PATH);
         }
+
+        self::ensurePublicSymlink();
+    }
+
+    private static function ensurePublicSymlink(): void
+    {
+        $projectDir = \Contao\System::getContainer()->getParameter('kernel.project_dir');
+        $sourceDir = $projectDir.'/files/members';
+        $publicFilesDir = $projectDir.'/public/files';
+        $publicLink = $publicFilesDir.'/members';
+
+        if (!is_dir($sourceDir)) {
+            return;
+        }
+
+        if (!is_dir($publicFilesDir)) {
+            mkdir($publicFilesDir, 0775, true);
+        }
+
+        if (!file_exists($publicLink)) {
+            symlink('../../files/members', $publicLink);
+        }
     }
 
     public static function getUploadFolderUuid(): ?string

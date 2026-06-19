@@ -14,11 +14,23 @@ final class PsaMemberDcaCallbacks
         if (\is_array($value)) {
             $uuid = $value['uuid'] ?? null;
 
-            return $uuid ? StringUtil::uuidToBin($uuid) : null;
+            if (!$uuid) {
+                return null;
+            }
+
+            PsaMemberAvatarProcessor::normalize((string) $uuid);
+
+            return StringUtil::uuidToBin((string) $uuid);
         }
 
         if (\is_string($value) && $value !== '') {
-            return Validator::isStringUuid($value) ? StringUtil::uuidToBin($value) : $value;
+            if (Validator::isStringUuid($value)) {
+                PsaMemberAvatarProcessor::normalize($value);
+
+                return StringUtil::uuidToBin($value);
+            }
+
+            return $value;
         }
 
         return null;

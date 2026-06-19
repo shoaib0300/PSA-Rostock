@@ -26,6 +26,7 @@ final class PsaHeaderAuth
      * @return array{
      *     isLoggedIn: bool,
      *     memberDisplayName: string,
+     *     memberAvatarUrl: string,
      *     accountUrl: string,
      *     loginUrl: string,
      *     logoutUrl: string,
@@ -44,6 +45,7 @@ final class PsaHeaderAuth
         $accountUrl = self::getPageUrl('account');
         $loginUrl = self::getPageUrl('login');
         $memberDisplayName = '';
+        $memberAvatarUrl = '';
 
         if ($isLoggedIn && ($username = $tokenChecker->getFrontendUsername())) {
             $user = FrontendUser::loadUserByIdentifier($username);
@@ -52,6 +54,7 @@ final class PsaHeaderAuth
                 $nickname = trim((string) ($user->nickname ?? ''));
                 $fullName = trim((string) ($user->firstname ?? '').' '.(string) ($user->lastname ?? ''));
                 $memberDisplayName = $nickname !== '' ? $nickname : ($fullName !== '' ? $fullName : (string) $user->username);
+                $memberAvatarUrl = PsaMemberAvatar::resolveFromUser($user) ?? '';
             }
         }
 
@@ -86,6 +89,7 @@ final class PsaHeaderAuth
         return [
             'isLoggedIn' => $isLoggedIn,
             'memberDisplayName' => $memberDisplayName,
+            'memberAvatarUrl' => $memberAvatarUrl,
             'accountUrl' => $accountUrl,
             'loginUrl' => $loginUrl,
             'logoutUrl' => $logoutUrl,

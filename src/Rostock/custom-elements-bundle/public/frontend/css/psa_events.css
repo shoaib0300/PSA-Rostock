@@ -456,11 +456,21 @@
 }
 .psa-comment__header {
   display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+.psa-comment__avatar {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  object-fit: cover;
+}
+.psa-comment__meta {
+  display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: 0.35rem 0.65rem;
+  min-width: 0;
 }
 .psa-comment__author {
   margin: 0;

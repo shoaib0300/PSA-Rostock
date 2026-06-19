@@ -1,6 +1,7 @@
 <?php
 
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
+use Rostock\CustomElementsBundle\Classes\PsaMemberAvatar;
 
 $lang = is_array($this->lang ?? null) ? $this->lang : [];
 $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
@@ -156,7 +157,15 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
               </div>
               <h3 class="psa-meetup-card__title"><?= htmlspecialchars((string) $meetup['title'], ENT_QUOTES) ?></h3>
               <p class="psa-meetup-card__meta">
-                <?= htmlspecialchars((string) $meetup['author'], ENT_QUOTES) ?>
+                <span class="psa-meetup-card__author">
+                  <?= PsaMemberAvatar::render(
+                      (string) ($meetup['authorAvatarUrl'] ?? '') !== '' ? (string) $meetup['authorAvatarUrl'] : null,
+                      (string) $meetup['author'],
+                      'psa-meetup-card__avatar',
+                      32,
+                  ) ?>
+                  <span class="psa-meetup-card__author-name"><?= htmlspecialchars((string) $meetup['author'], ENT_QUOTES) ?></span>
+                </span>
                 <span class="psa-meetup-card__sep" aria-hidden="true">·</span>
                 <?= htmlspecialchars((string) $meetup['postedAt'], ENT_QUOTES) ?>
               </p>
@@ -252,8 +261,16 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                   <?php foreach ($meetup['comments'] as $comment): ?>
                     <li class="psa-meetup-card__comment">
                       <div class="psa-meetup-card__comment-head">
-                        <strong class="psa-meetup-card__comment-author"><?= htmlspecialchars((string) $comment['author'], ENT_QUOTES) ?></strong>
-                        <time class="psa-meetup-card__comment-date" datetime="<?= date('c', (int) $comment['tstamp']) ?>"><?= htmlspecialchars((string) $comment['datim'], ENT_QUOTES) ?></time>
+                        <?= PsaMemberAvatar::render(
+                            (string) ($comment['authorAvatarUrl'] ?? '') !== '' ? (string) $comment['authorAvatarUrl'] : null,
+                            (string) $comment['author'],
+                            'psa-meetup-card__comment-avatar',
+                            28,
+                        ) ?>
+                        <div class="psa-meetup-card__comment-meta">
+                          <strong class="psa-meetup-card__comment-author"><?= htmlspecialchars((string) $comment['author'], ENT_QUOTES) ?></strong>
+                          <time class="psa-meetup-card__comment-date" datetime="<?= date('c', (int) $comment['tstamp']) ?>"><?= htmlspecialchars((string) $comment['datim'], ENT_QUOTES) ?></time>
+                        </div>
                       </div>
                       <p class="psa-meetup-card__comment-text"><?= nl2br(htmlspecialchars((string) $comment['comment'], ENT_QUOTES)) ?></p>
                       <?php if ($this->isMember && (int) $comment['member_id'] === (int) $this->memberId): ?>

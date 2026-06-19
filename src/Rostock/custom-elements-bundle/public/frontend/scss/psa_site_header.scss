@@ -231,6 +231,8 @@
   &__user-icon {
     display: block;
     flex: 0 0 auto;
+    border-radius: 999px;
+    object-fit: cover;
   }
 
   &__user-name {
