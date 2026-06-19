@@ -31,6 +31,22 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['cityGermany'] = [
     'search' => true,
 ];
 
+$GLOBALS['TL_DCA']['tl_member']['fields']['gender'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_member']['gender'],
+    'inputType' => 'select',
+    'options' => ['female', 'male', 'diverse', 'prefer_not_to_say'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_member']['genderOptions'],
+    'eval' => [
+        'mandatory' => true,
+        'feEditable' => true,
+        'feGroup' => 'personal',
+        'tl_class' => 'w50',
+        'includeBlankOption' => true,
+    ],
+    'sql' => "varchar(24) NOT NULL default ''",
+    'filter' => true,
+];
+
 $GLOBALS['TL_DCA']['tl_member']['fields']['nationality'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_member']['nationality'],
     'inputType' => 'select',
@@ -110,7 +126,8 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['mobile']['eval']['mandatory'] = true;
 PaletteManipulator::create()
     ->addField('cityPakistan', 'city', PaletteManipulator::POSITION_AFTER)
     ->addField('cityGermany', 'cityPakistan', PaletteManipulator::POSITION_AFTER)
-    ->addField('nationality', 'dateOfBirth', PaletteManipulator::POSITION_AFTER)
+    ->addField('gender', 'dateOfBirth', PaletteManipulator::POSITION_AFTER)
+    ->addField('nationality', 'gender', PaletteManipulator::POSITION_AFTER)
     ->addField('university', 'country', PaletteManipulator::POSITION_AFTER)
     ->addField('familyInRostock', 'university', PaletteManipulator::POSITION_AFTER)
     ->addField('nickname', 'familyInRostock', PaletteManipulator::POSITION_AFTER)

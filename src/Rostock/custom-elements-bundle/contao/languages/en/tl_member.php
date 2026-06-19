@@ -2,6 +2,13 @@
 
 $GLOBALS['TL_LANG']['tl_member']['cityPakistan'] = ['City (Pakistan)', 'Your city or hometown in Pakistan.'];
 $GLOBALS['TL_LANG']['tl_member']['cityGermany'] = ['City (Germany)', 'Your current city in Germany.'];
+$GLOBALS['TL_LANG']['tl_member']['gender'] = ['Gender', 'How you identify.'];
+$GLOBALS['TL_LANG']['tl_member']['genderOptions'] = [
+    'female' => 'Female',
+    'male' => 'Male',
+    'diverse' => 'Diverse',
+    'prefer_not_to_say' => 'Prefer not to say',
+];
 $GLOBALS['TL_LANG']['tl_member']['nationality'] = ['Nationality', 'Your nationality or background.'];
 $GLOBALS['TL_LANG']['tl_member']['nationalityOptions'] = [
     'pakistan' => 'Pakistan',
