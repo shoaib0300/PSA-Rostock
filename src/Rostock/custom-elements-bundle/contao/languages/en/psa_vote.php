@@ -65,7 +65,7 @@ $GLOBALS['TL_LANG']['tl_psa_vote_campaign'] = [
     'description' => ['Description', 'Intro text for voters'],
     'startDate' => ['Start', 'Pick voting start date in the calendar (empty = immediately)'],
     'endDate' => ['End', 'Pick voting end date in the calendar (empty = no end)'],
-    'showResults' => ['Show results', 'When members can see vote counts'],
+    'showResults' => ['Show results', 'When vote counts and leaders are visible'],
     'published' => ['Publish campaign', 'Make this campaign visible on the frontend'],
     'ballotCount' => '%d votes',
     'statusRef' => [
@@ -75,9 +75,9 @@ $GLOBALS['TL_LANG']['tl_psa_vote_campaign'] = [
         'ended' => 'Ended',
     ],
     'showResultsRef' => [
-        'after_vote' => 'After member voted',
+        'after_vote' => 'During active voting (public live results)',
         'after_end' => 'After campaign ends',
-        'always' => 'Always',
+        'always' => 'Always (including upcoming)',
         'never' => 'Never (admin only)',
     ],
 ];

@@ -75,9 +75,9 @@ $GLOBALS['TL_LANG']['tl_psa_vote_campaign'] = [
         'ended' => 'Beendet',
     ],
     'showResultsRef' => [
-        'after_vote' => 'Nach eigener Stimmabgabe',
+        'after_vote' => 'Während aktiver Abstimmung (öffentliche Live-Ergebnisse)',
         'after_end' => 'Nach Kampagnenende',
-        'always' => 'Immer',
+        'always' => 'Immer (auch geplant)',
         'never' => 'Nie (nur Admin)',
     ],
 ];

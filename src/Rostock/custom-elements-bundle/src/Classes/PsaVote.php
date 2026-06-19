@@ -477,7 +477,9 @@ final class PsaVote
             'always' => true,
             'never' => false,
             'after_end' => $status === 'ended',
-            default => $memberHasVoted || $status === 'ended',
+            // Live tallies are public during active voting; login is only required to cast a ballot.
+            'after_vote' => \in_array($status, ['active', 'ended'], true) || $memberHasVoted,
+            default => \in_array($status, ['active', 'ended'], true) || $memberHasVoted,
         };
     }
 

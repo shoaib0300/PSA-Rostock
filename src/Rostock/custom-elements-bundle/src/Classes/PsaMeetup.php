@@ -660,6 +660,7 @@ final class PsaMeetup
             'meetupDate' => $meetupDate,
             'meetupDateFormatted' => $meetupDate > 0 ? date('d.m.Y H:i', $meetupDate) : '',
             'location' => (string) ($row['location'] ?? ''),
+            'pollQuestion' => $pollQuestion,
             'tstamp' => (int) $row['tstamp'],
             'postedAt' => date('d.m.Y H:i', (int) $row['tstamp']),
             'isPublished' => (string) ($row['published'] ?? '') === '1',
