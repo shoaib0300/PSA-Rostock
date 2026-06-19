@@ -1,0 +1,48 @@
+@use '../../../../../../files/tpl/scss/variables' as *;
+
+.psa-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(18rem, 55vh, 32rem);
+  padding: $psa-section-padding-y $psa-container-gutter;
+  font-family: $psa-font-sans;
+  text-align: center;
+
+  &__inner {
+    width: min(100%, 36rem);
+    margin: 0 auto;
+  }
+
+  &__code {
+    margin: 0 0 0.75rem;
+    font-size: clamp(4rem, 14vw, 7rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: rgba($psa-ink, 0.12);
+  }
+
+  &__title {
+    margin: 0 0 1rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: $psa-ink;
+  }
+
+  &__message {
+    margin: 0 0 2rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: $psa-graphite;
+  }
+
+  .psa-button {
+    margin-inline: auto;
+  }
+}
+
+#main > .inside > .mod_article:only-child .psa-error {
+  min-height: clamp(22rem, 62vh, 36rem);
+}

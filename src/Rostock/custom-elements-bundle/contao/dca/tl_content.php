@@ -19,6 +19,8 @@ $GLOBALS['TL_DCA'][$strName]['palettes']['psa_hero'] = '{psa_overlay_legend},typ
 
 $GLOBALS['TL_DCA'][$strName]['palettes']['psa_lookback'] = '{type_legend},type,headline,subline;{lookback_legend},lookback_calendar,lookback_jumpTo,lookback_scope,lookback_year;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+$GLOBALS['TL_DCA'][$strName]['palettes']['psa_error'] = '{type_legend},type;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['addButton'] = 'button_label,button_link,button_target';
 
 $GLOBALS['TL_DCA'][$strName]['fields']['button_type'] = [

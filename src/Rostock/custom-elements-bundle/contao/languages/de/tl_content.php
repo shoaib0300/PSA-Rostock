@@ -27,6 +27,7 @@ $GLOBALS['TL_LANG'][$strName]['claim_text_image'] = ['Text-Bild-Element', 'Text 
 $GLOBALS['TL_LANG'][$strName]['ce_text_double'] = ['Doppelte Textelemente', 'Zwei nebeneinander liegende Textelemente.'];
 $GLOBALS['TL_LANG'][$strName]['psa_hero'] = ['PSA Hero', 'Hero-Bereich für die PSA Rostock Community.'];
 $GLOBALS['TL_LANG'][$strName]['psa_lookback'] = ['PSA Lookback', 'Zeitleisten-Slider mit Kalender-Events nach Monat und Jahr.'];
+$GLOBALS['TL_LANG'][$strName]['psa_error'] = ['PSA Fehlerseite', 'Gestaltete Fehlermeldung für 404-, 403- oder 503-Seiten.'];
 $GLOBALS['TL_LANG'][$strName]['lookback_legend'] = 'Lookback-Einstellungen';
 $GLOBALS['TL_LANG'][$strName]['lookback_calendar'] = ['Kalender', 'Kalender als Event-Quelle.'];
 $GLOBALS['TL_LANG'][$strName]['lookback_jumpTo'] = ['Event-Leserseite', 'Seite für Event-Detail-Links, meist /events.'];

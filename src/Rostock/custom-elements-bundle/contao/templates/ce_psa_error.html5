@@ -1,0 +1,24 @@
+<?php
+
+$code = (int) ($this->code ?? 0);
+
+?>
+<section class="psa-error block<?= $this->class ? ' '.$this->class : '' ?>" <?= $this->cssID ?>>
+  <div class="psa-error__inner">
+    <?php if ($code > 0): ?>
+      <p class="psa-error__code" aria-hidden="true"><?= $code ?></p>
+    <?php endif; ?>
+
+    <h1 class="psa-error__title"><?= htmlspecialchars((string) ($this->title ?? ''), ENT_QUOTES) ?></h1>
+
+    <?php if (!empty($this->message)): ?>
+      <p class="psa-error__message"><?= htmlspecialchars((string) $this->message, ENT_QUOTES) ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($this->homeUrl)): ?>
+      <?= \Rostock\CustomElementsBundle\Classes\CeHelpers::renderPsaButton((string) ($this->homeLabel ?? 'Back to home'), [
+          'href' => (string) $this->homeUrl,
+      ]) ?>
+    <?php endif; ?>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+.psa-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(18rem, 55vh, 32rem);
+  padding: clamp(2.5rem, 4vw, 5rem) 1.5rem;
+  font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+  text-align: center;
+}
+.psa-error__inner {
+  width: min(100%, 36rem);
+  margin: 0 auto;
+}
+.psa-error__code {
+  margin: 0 0 0.75rem;
+  font-size: clamp(4rem, 14vw, 7rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: rgba(34, 47, 48, 0.12);
+}
+.psa-error__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #222f30;
+}
+.psa-error__message {
+  margin: 0 0 2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4d5757;
+}
+.psa-error .psa-button {
+  margin-inline: auto;
+}
+
+#main > .inside > .mod_article:only-child .psa-error {
+  min-height: clamp(22rem, 62vh, 36rem);
+}

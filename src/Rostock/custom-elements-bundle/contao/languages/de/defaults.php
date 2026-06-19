@@ -15,5 +15,6 @@ $GLOBALS['TL_LANG']['CTE']['PSA Rostock']        = ['PSA Rostock', 'Community-El
 $GLOBALS['TL_LANG']['CTE']['ce_text_double']   = ['Text 2-Spaltig', ''];
 $GLOBALS['TL_LANG']['CTE']['psa_hero']         = ['Hero-Bereich', 'Überschrift + Subline auf dem Bild, Medien unter Quellen, Button unten. Scroll-Einträge für Überschrift- und Textzeilen im Scroll-Bereich.'];
 $GLOBALS['TL_LANG']['CTE']['psa_lookback']     = ['Lookback-Slider', 'Horizontaler Event-Zeitstrahl mit Monats-/Jahresnavigation und Bildern.'];
+$GLOBALS['TL_LANG']['CTE']['psa_error']        = ['Fehlerseite', 'PSA-gestaltete 404-, 403- oder 503-Fehlerseite.'];
 $GLOBALS['TL_LANG']['CTE']['claim_text_image']    = ['Text-Bild Element', 'Text und Bild im Claim-Design.'];
 $GLOBALS['TL_LANG']['CTE']['ce_slider_main']   = ['Haupt-Slider', 'Konfiguration für den Haupt-Slider.'];

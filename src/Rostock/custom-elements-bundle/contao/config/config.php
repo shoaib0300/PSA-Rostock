@@ -59,3 +59,5 @@ System::loadLanguageFile('psa_meetups', 'de');
 System::loadLanguageFile('psa_meetups', 'en');
 System::loadLanguageFile('psa_team', 'de');
 System::loadLanguageFile('psa_team', 'en');
+System::loadLanguageFile('psa_errors', 'de');
+System::loadLanguageFile('psa_errors', 'en');
