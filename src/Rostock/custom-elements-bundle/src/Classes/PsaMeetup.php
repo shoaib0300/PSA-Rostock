@@ -308,15 +308,24 @@ final class PsaMeetup
             throw new \InvalidArgumentException('Invalid comment.');
         }
 
-        $existingId = $this->connection->fetchOne(
-            'SELECT id FROM tl_psa_meetup_comment_reaction WHERE comment_id = ? AND member_id = ? AND emoji = ?',
-            [$commentId, $memberId, $emoji],
+        $existing = $this->connection->fetchAssociative(
+            'SELECT id, emoji FROM tl_psa_meetup_comment_reaction WHERE comment_id = ? AND member_id = ?',
+            [$commentId, $memberId],
         );
 
-        if (\is_string($existingId) || is_int($existingId)) {
+        if ($existing !== false) {
+            if ((string) ($existing['emoji'] ?? '') === $emoji) {
+                $this->connection->executeStatement(
+                    'DELETE FROM tl_psa_meetup_comment_reaction WHERE id = ?',
+                    [(int) $existing['id']],
+                );
+
+                return;
+            }
+
             $this->connection->executeStatement(
-                'DELETE FROM tl_psa_meetup_comment_reaction WHERE id = ?',
-                [(int) $existingId],
+                'UPDATE tl_psa_meetup_comment_reaction SET tstamp = ?, emoji = ? WHERE id = ?',
+                [time(), $emoji, (int) $existing['id']],
             );
 
             return;
@@ -432,26 +441,65 @@ final class PsaMeetup
             return [];
         }
 
-        $commentIds = array_map(static fn (array $row): int => (int) $row['id'], $rows);
-        $reactions = $this->getCommentReactionsForIds($commentIds, $memberId);
-
         $comments = [];
 
         foreach ($rows as $row) {
-            $commentId = (int) $row['id'];
-            $comments[] = [
-                'id' => $commentId,
-                'member_id' => (int) $row['member_id'],
-                'author' => $this->formatMemberName($row),
-                'authorAvatarUrl' => PsaMemberAvatar::resolveFromRow($row) ?? '',
-                'comment' => (string) ($row['comment'] ?? ''),
-                'tstamp' => (int) $row['tstamp'],
-                'datim' => date('d.m.Y H:i', (int) $row['tstamp']),
-                'reactions' => $reactions[$commentId] ?? [],
-            ];
+            $comments[] = $this->formatCommentRow($row, $memberId);
         }
 
         return $comments;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getComment(int $commentId, int $memberId = 0): ?array
+    {
+        $row = $this->connection->fetchAssociative(
+            'SELECT c.*, m.nickname, m.firstname, m.lastname, m.username, m.avatar
+             FROM tl_psa_meetup_comment c
+             INNER JOIN tl_member m ON m.id = c.member_id
+             WHERE c.id = ? AND c.published = ?',
+            [$commentId, '1'],
+        );
+
+        if ($row === false) {
+            return null;
+        }
+
+        return $this->formatCommentRow($row, $memberId);
+    }
+
+    /**
+     * @return list<array{emoji: string, count: int, memberReacted: bool}>
+     */
+    public function getCommentReactions(int $commentId, int $memberId): array
+    {
+        $reactions = $this->getCommentReactionsForIds([$commentId], $memberId);
+
+        return $reactions[$commentId] ?? [];
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     *
+     * @return array<string, mixed>
+     */
+    private function formatCommentRow(array $row, int $memberId): array
+    {
+        $commentId = (int) $row['id'];
+        $reactions = $this->getCommentReactionsForIds([$commentId], $memberId);
+
+        return [
+            'id' => $commentId,
+            'member_id' => (int) $row['member_id'],
+            'author' => $this->formatMemberName($row),
+            'authorAvatarUrl' => PsaMemberAvatar::resolveFromRow($row) ?? '',
+            'comment' => (string) ($row['comment'] ?? ''),
+            'tstamp' => (int) $row['tstamp'],
+            'datim' => date('d.m.Y H:i', (int) $row['tstamp']),
+            'reactions' => $reactions[$commentId] ?? [],
+        ];
     }
 
     /**

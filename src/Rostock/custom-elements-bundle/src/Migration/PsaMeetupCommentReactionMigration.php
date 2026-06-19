@@ -29,7 +29,7 @@ class PsaMeetupCommentReactionMigration extends AbstractMigration
                 member_id int(10) unsigned NOT NULL DEFAULT 0,
                 emoji varchar(16) NOT NULL DEFAULT '',
                 PRIMARY KEY (id),
-                UNIQUE KEY comment_member_emoji (comment_id, member_id, emoji),
+                UNIQUE KEY comment_member (comment_id, member_id),
                 KEY comment_id (comment_id),
                 KEY member_id (member_id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC

@@ -10,8 +10,10 @@ use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\FrontendUser;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 use Rostock\CustomElementsBundle\Classes\PsaMeetup;
+use Rostock\CustomElementsBundle\Classes\PsaMeetupJsonPresenter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +30,7 @@ final class PsaMeetupActionListener
         private readonly ScopeMatcher $scopeMatcher,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly PsaMeetup $meetup,
+        private readonly PsaMeetupJsonPresenter $jsonPresenter,
         private readonly ContaoCsrfTokenManager $csrfTokenManager,
         private readonly ContaoFramework $framework,
         private readonly TokenStorageInterface $tokenStorage,
@@ -65,10 +68,18 @@ final class PsaMeetupActionListener
         $token = (string) $request->request->get('REQUEST_TOKEN', '');
 
         if (!$this->csrfTokenManager->isTokenValid(new CsrfToken($this->csrfTokenName, $token))) {
+            if ($this->wantsJson($request)) {
+                $event->setResponse(new JsonResponse(['ok' => false, 'error' => 'Invalid token.'], Response::HTTP_FORBIDDEN));
+            }
+
             return;
         }
 
         if (!$this->authorizationChecker->isGranted('ROLE_MEMBER')) {
+            if ($this->wantsJson($request)) {
+                $event->setResponse(new JsonResponse(['ok' => false, 'error' => 'Login required.'], Response::HTTP_UNAUTHORIZED));
+            }
+
             return;
         }
 
@@ -80,9 +91,10 @@ final class PsaMeetupActionListener
 
         $this->framework->initialize();
         $memberId = (int) $user->id;
+        $wantsJson = $this->wantsJson($request);
 
         try {
-            match ($formSubmit) {
+            $payload = match ($formSubmit) {
                 'psa_meetup_create' => $this->handleCreate($request, $memberId),
                 'psa_meetup_join' => $this->handleJoin($request, $memberId),
                 'psa_meetup_comment' => $this->handleComment($request, $memberId),
@@ -91,14 +103,27 @@ final class PsaMeetupActionListener
                 'psa_meetup_poll_vote' => $this->handlePollVote($request, $memberId),
                 'psa_meetup_comment_reaction' => $this->handleCommentReaction($request, $memberId),
             };
-        } catch (\InvalidArgumentException) {
+        } catch (\InvalidArgumentException $exception) {
+            if ($wantsJson) {
+                $event->setResponse(new JsonResponse(['ok' => false, 'error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST));
+            }
+
+            return;
+        }
+
+        if ($wantsJson) {
+            $event->setResponse(new JsonResponse(['ok' => true] + $payload));
+
             return;
         }
 
         $event->setResponse(new RedirectResponse($this->resolveRedirectUrl($request), Response::HTTP_SEE_OTHER));
     }
 
-    private function handleCreate(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleCreate(Request $request, int $memberId): array
     {
         $title = (string) $request->request->get('title', '');
         $description = (string) $request->request->get('description', '');
@@ -123,7 +148,7 @@ final class PsaMeetupActionListener
             $pollOptions = [];
         }
 
-        $this->meetup->createMeetup(
+        $meetupId = $this->meetup->createMeetup(
             $memberId,
             $title,
             $description,
@@ -133,9 +158,14 @@ final class PsaMeetupActionListener
             $pollQuestion,
             \is_array($pollOptions) ? $pollOptions : [],
         );
+
+        return ['redirect' => $request->getSchemeAndHttpHost().'/meetups#meetup-'.$meetupId];
     }
 
-    private function handlePollVote(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handlePollVote(Request $request, int $memberId): array
     {
         $meetupId = (int) $request->request->get('meetup_id', 0);
         $optionId = (int) $request->request->get('option_id', 0);
@@ -145,9 +175,17 @@ final class PsaMeetupActionListener
         }
 
         $this->meetup->votePoll($meetupId, $optionId, $memberId);
+
+        return [
+            'meetupId' => $meetupId,
+            'poll' => $this->jsonPresenter->poll($meetupId, $memberId),
+        ];
     }
 
-    private function handleJoin(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleJoin(Request $request, int $memberId): array
     {
         $meetupId = (int) $request->request->get('meetup_id', 0);
         $status = (string) $request->request->get('join_status', '');
@@ -163,9 +201,17 @@ final class PsaMeetupActionListener
         }
 
         $this->meetup->setJoinStatus($meetupId, $memberId, $status);
+
+        return [
+            'meetupId' => $meetupId,
+            'rsvp' => $this->jsonPresenter->rsvp($meetupId, $memberId),
+        ];
     }
 
-    private function handleCommentReaction(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleCommentReaction(Request $request, int $memberId): array
     {
         $commentId = (int) $request->request->get('comment_id', 0);
         $emoji = (string) $request->request->get('emoji', '');
@@ -175,9 +221,17 @@ final class PsaMeetupActionListener
         }
 
         $this->meetup->toggleCommentReaction($commentId, $memberId, $emoji);
+
+        return [
+            'commentId' => $commentId,
+            'reactions' => $this->jsonPresenter->commentReactions($commentId, $memberId),
+        ];
     }
 
-    private function handleComment(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleComment(Request $request, int $memberId): array
     {
         $meetupId = (int) $request->request->get('meetup_id', 0);
         $comment = (string) $request->request->get('comment', '');
@@ -186,25 +240,51 @@ final class PsaMeetupActionListener
             throw new \InvalidArgumentException('Invalid meetup.');
         }
 
-        $this->meetup->addComment($meetupId, $memberId, $comment);
+        $commentId = $this->meetup->addComment($meetupId, $memberId, $comment);
+        $commentData = $this->jsonPresenter->comment($commentId, $memberId);
+
+        if ($commentData === null) {
+            throw new \InvalidArgumentException('Comment could not be saved.');
+        }
+
+        return [
+            'meetupId' => $meetupId,
+            'comment' => $commentData,
+        ];
     }
 
-    private function handleDeleteComment(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleDeleteComment(Request $request, int $memberId): array
     {
         $commentId = (int) $request->request->get('comment_id', 0);
 
         if ($commentId <= 0 || !$this->meetup->deleteComment($commentId, $memberId)) {
             throw new \InvalidArgumentException('Cannot delete comment.');
         }
+
+        return ['commentId' => $commentId];
     }
 
-    private function handleDeleteMeetup(Request $request, int $memberId): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function handleDeleteMeetup(Request $request, int $memberId): array
     {
         $meetupId = (int) $request->request->get('meetup_id', 0);
 
         if ($meetupId <= 0 || !$this->meetup->deleteMeetup($meetupId, $memberId)) {
             throw new \InvalidArgumentException('Cannot delete meetup.');
         }
+
+        return ['meetupId' => $meetupId];
+    }
+
+    private function wantsJson(Request $request): bool
+    {
+        return $request->headers->get('X-Requested-With') === 'XMLHttpRequest'
+            || str_contains((string) $request->headers->get('Accept', ''), 'application/json');
     }
 
     private function resolveRedirectUrl(Request $request): string

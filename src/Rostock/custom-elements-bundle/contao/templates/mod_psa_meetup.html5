@@ -5,9 +5,26 @@ use Rostock\CustomElementsBundle\Classes\PsaMemberAvatar;
 
 $lang = is_array($this->lang ?? null) ? $this->lang : [];
 $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
+$reactionEmojis = is_array($this->reactionEmojis ?? null) ? $this->reactionEmojis : [];
+$ajaxLang = [
+    'joinCountShort' => $lang['meetup_join_count_short'] ?? 'coming',
+    'declineCountShort' => $lang['meetup_decline_count_short'] ?? 'not coming',
+    'joinersLabel' => $lang['meetup_joiners'] ?? 'Joining',
+    'pollVotes' => $lang['meetup_poll_votes'] ?? '%d votes',
+    'reactionsLabel' => $lang['meetup_reactions_label'] ?? 'Reactions',
+    'commentDelete' => $lang['comment_delete'] ?? 'Delete',
+    'commentDeleteConfirm' => $lang['comment_delete_confirm'] ?? 'Delete this comment?',
+];
 
 ?>
-<div class="psa-meetups block" data-psa-meetups>
+<div
+  class="psa-meetups block"
+  data-psa-meetups
+  data-psa-request-token="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>"
+  data-psa-member-id="<?= (int) ($this->memberId ?? 0) ?>"
+  data-psa-reaction-emojis="<?= htmlspecialchars(json_encode($reactionEmojis, JSON_UNESCAPED_UNICODE), ENT_QUOTES) ?>"
+  data-psa-lang="<?= htmlspecialchars(json_encode($ajaxLang, JSON_UNESCAPED_UNICODE), ENT_QUOTES) ?>"
+>
   <header class="psa-meetups__header">
     <div class="psa-meetups__header-row">
       <div>
@@ -140,7 +157,7 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
             $pollOptions = is_array($poll['options'] ?? null) ? $poll['options'] : [];
             $hasPoll = ($poll['question'] ?? '') !== '' && $pollOptions !== [];
           ?>
-          <article class="psa-meetup-card<?= !empty($meetup['isPost']) ? ' psa-meetup-card--post' : '' ?>" id="meetup-<?= (int) $meetup['id'] ?>">
+          <article class="psa-meetup-card<?= !empty($meetup['isPost']) ? ' psa-meetup-card--post' : '' ?>" id="meetup-<?= (int) $meetup['id'] ?>" data-meetup-id="<?= (int) $meetup['id'] ?>">
             <header class="psa-meetup-card__header">
               <div class="psa-meetup-card__header-top">
                 <div class="psa-meetup-card__badges">
@@ -193,13 +210,13 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
             <?php endif; ?>
 
             <?php if ($hasPoll): ?>
-              <section class="psa-meetup-card__poll" aria-label="<?= htmlspecialchars((string) ($lang['meetup_poll'] ?? 'Poll'), ENT_QUOTES) ?>">
+              <section class="psa-meetup-card__poll" data-psa-poll aria-label="<?= htmlspecialchars((string) ($lang['meetup_poll'] ?? 'Poll'), ENT_QUOTES) ?>">
                 <h4 class="psa-meetup-card__poll-question"><?= htmlspecialchars((string) $poll['question'], ENT_QUOTES) ?></h4>
                 <ul class="psa-meetup-card__poll-list">
                   <?php foreach ($pollOptions as $option): ?>
-                    <li class="psa-meetup-card__poll-item<?= (int) ($meetup['pollVote'] ?? 0) === (int) $option['id'] ? ' is-voted' : '' ?>">
+                    <li class="psa-meetup-card__poll-item<?= (int) ($meetup['pollVote'] ?? 0) === (int) $option['id'] ? ' is-voted' : '' ?>" data-poll-option-id="<?= (int) $option['id'] ?>">
                       <?php if ($this->isMember): ?>
-                        <form class="psa-meetup-card__poll-form" method="post">
+                        <form class="psa-meetup-card__poll-form" method="post" data-psa-meetup-ajax>
                           <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_poll_vote">
                           <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
                           <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
@@ -221,7 +238,7 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                     </li>
                   <?php endforeach; ?>
                 </ul>
-                <p class="psa-meetup-card__poll-total">
+                <p class="psa-meetup-card__poll-total" data-psa-poll-total>
                   <?= sprintf($lang['meetup_poll_votes'] ?? '%d votes', (int) ($poll['totalVotes'] ?? 0)) ?>
                 </p>
               </section>
@@ -229,10 +246,10 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
 
             <?php if (!empty($meetup['isMeetup'])): ?>
               <?php $joinStatus = (string) ($meetup['joinStatus'] ?? ''); ?>
-              <div class="psa-meetup-card__rsvp">
+              <div class="psa-meetup-card__rsvp" data-psa-rsvp>
                 <?php if ($this->isMember): ?>
                   <div class="psa-meetup-card__rsvp-vote" role="group" aria-label="<?= htmlspecialchars((string) ($lang['meetup_rsvp_label'] ?? 'Your response'), ENT_QUOTES) ?>">
-                    <form class="psa-meetup-card__rsvp-form" method="post">
+                    <form class="psa-meetup-card__rsvp-form" method="post" data-psa-meetup-ajax>
                       <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_join">
                       <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
                       <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
@@ -246,7 +263,7 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
                       </button>
                     </form>
-                    <form class="psa-meetup-card__rsvp-form" method="post">
+                    <form class="psa-meetup-card__rsvp-form" method="post" data-psa-meetup-ajax>
                       <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_join">
                       <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
                       <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
@@ -264,28 +281,25 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                 <?php endif; ?>
 
                 <div class="psa-meetup-card__rsvp-counts">
-                  <span class="psa-meetup-card__rsvp-count psa-meetup-card__rsvp-count--up">
+                  <span class="psa-meetup-card__rsvp-count psa-meetup-card__rsvp-count--up" data-psa-join-count>
                     <?= (int) ($meetup['joinCount'] ?? 0) ?> <?= $lang['meetup_join_count_short'] ?? 'coming' ?>
                   </span>
-                  <span class="psa-meetup-card__rsvp-count psa-meetup-card__rsvp-count--down">
+                  <span class="psa-meetup-card__rsvp-count psa-meetup-card__rsvp-count--down" data-psa-decline-count>
                     <?= (int) ($meetup['declineCount'] ?? 0) ?> <?= $lang['meetup_decline_count_short'] ?? 'not coming' ?>
                   </span>
                 </div>
               </div>
 
-              <?php if (!empty($meetup['joiners'])): ?>
-                <p class="psa-meetup-card__joiners">
-                  <span class="psa-meetup-card__joiners-label"><?= $lang['meetup_joiners'] ?? 'Joining' ?>:</span>
-                  <?= htmlspecialchars(implode(', ', $meetup['joiners']), ENT_QUOTES) ?>
-                </p>
-              <?php endif; ?>
+              <p class="psa-meetup-card__joiners" data-psa-joiners<?= empty($meetup['joiners']) ? ' hidden' : '' ?>>
+                <span class="psa-meetup-card__joiners-label"><?= $lang['meetup_joiners'] ?? 'Joining' ?>:</span>
+                <span data-psa-joiners-list><?= htmlspecialchars(implode(', ', $meetup['joiners'] ?? []), ENT_QUOTES) ?></span>
+              </p>
             <?php endif; ?>
 
             <section class="psa-meetup-card__comments" aria-label="<?= htmlspecialchars((string) ($lang['meetup_comments'] ?? 'Comments'), ENT_QUOTES) ?>">
-              <?php if (!empty($meetup['comments'])): ?>
-                <ul class="psa-meetup-card__comment-list">
-                  <?php foreach ($meetup['comments'] as $comment): ?>
-                    <li class="psa-meetup-card__comment">
+              <ul class="psa-meetup-card__comment-list" data-psa-comment-list>
+                <?php foreach ($meetup['comments'] ?? [] as $comment): ?>
+                    <li class="psa-meetup-card__comment" data-comment-id="<?= (int) ($comment['id'] ?? 0) ?>">
                       <div class="psa-meetup-card__comment-head">
                         <?= PsaMemberAvatar::render(
                             (string) ($comment['authorAvatarUrl'] ?? '') !== '' ? (string) $comment['authorAvatarUrl'] : null,
@@ -309,45 +323,42 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                             }
                         }
 
-                        $reactionEmojis = is_array($this->reactionEmojis ?? null) ? $this->reactionEmojis : [];
                       ?>
-                      <?php if ($reactionEmojis !== [] || $commentReactions !== []): ?>
-                        <div class="psa-meetup-card__reactions" aria-label="<?= htmlspecialchars((string) ($lang['meetup_reactions_label'] ?? 'Reactions'), ENT_QUOTES) ?>">
-                          <?php foreach ($reactionEmojis as $emoji): ?>
-                            <?php
-                              $reaction = $reactionMap[$emoji] ?? ['count' => 0, 'memberReacted' => false];
-                              $count = (int) ($reaction['count'] ?? 0);
-                              $memberReacted = !empty($reaction['memberReacted']);
-                            ?>
-                            <?php if ($this->isMember): ?>
-                              <form class="psa-meetup-card__reaction-form" method="post">
-                                <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_comment_reaction">
-                                <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
-                                <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
-                                <input type="hidden" name="emoji" value="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>">
-                                <button
-                                  type="submit"
-                                  class="psa-meetup-card__reaction-btn<?= $memberReacted ? ' is-active' : '' ?><?= $count === 0 ? ' is-empty' : '' ?>"
-                                  aria-label="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>"
-                                  title="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>"
-                                >
-                                  <span class="psa-meetup-card__reaction-emoji" aria-hidden="true"><?= $emoji ?></span>
-                                  <?php if ($count > 0): ?>
-                                    <span class="psa-meetup-card__reaction-count"><?= $count ?></span>
-                                  <?php endif; ?>
-                                </button>
-                              </form>
-                            <?php elseif ($count > 0): ?>
-                              <span class="psa-meetup-card__reaction-btn is-readonly">
+                      <div class="psa-meetup-card__reactions" data-psa-reactions aria-label="<?= htmlspecialchars((string) ($lang['meetup_reactions_label'] ?? 'Reactions'), ENT_QUOTES) ?>">
+                        <?php foreach ($reactionEmojis as $emoji): ?>
+                          <?php
+                            $reaction = $reactionMap[$emoji] ?? ['count' => 0, 'memberReacted' => false];
+                            $count = (int) ($reaction['count'] ?? 0);
+                            $memberReacted = !empty($reaction['memberReacted']);
+                          ?>
+                          <?php if ($this->isMember): ?>
+                            <form class="psa-meetup-card__reaction-form" method="post" data-psa-meetup-ajax>
+                              <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_comment_reaction">
+                              <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                              <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
+                              <input type="hidden" name="emoji" value="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>">
+                              <button
+                                type="submit"
+                                class="psa-meetup-card__reaction-btn<?= $memberReacted ? ' is-active' : '' ?><?= $count === 0 ? ' is-empty' : '' ?>"
+                                aria-label="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>"
+                                title="<?= htmlspecialchars($emoji, ENT_QUOTES) ?>"
+                              >
                                 <span class="psa-meetup-card__reaction-emoji" aria-hidden="true"><?= $emoji ?></span>
-                                <span class="psa-meetup-card__reaction-count"><?= $count ?></span>
-                              </span>
-                            <?php endif; ?>
-                          <?php endforeach; ?>
-                        </div>
-                      <?php endif; ?>
+                                <?php if ($count > 0): ?>
+                                  <span class="psa-meetup-card__reaction-count"><?= $count ?></span>
+                                <?php endif; ?>
+                              </button>
+                            </form>
+                          <?php elseif ($count > 0): ?>
+                            <span class="psa-meetup-card__reaction-btn is-readonly">
+                              <span class="psa-meetup-card__reaction-emoji" aria-hidden="true"><?= $emoji ?></span>
+                              <span class="psa-meetup-card__reaction-count"><?= $count ?></span>
+                            </span>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </div>
                       <?php if ($this->isMember && (int) $comment['member_id'] === (int) $this->memberId): ?>
-                        <form class="psa-meetup-card__comment-delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['comment_delete_confirm'] ?? 'Delete this comment?'), ENT_QUOTES) ?>')">
+                        <form class="psa-meetup-card__comment-delete" method="post" data-psa-meetup-ajax data-confirm="<?= htmlspecialchars((string) ($lang['comment_delete_confirm'] ?? 'Delete this comment?'), ENT_QUOTES) ?>">
                           <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup_comment">
                           <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
                           <input type="hidden" name="comment_id" value="<?= (int) $comment['id'] ?>">
@@ -357,10 +368,9 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                     </li>
                   <?php endforeach; ?>
                 </ul>
-              <?php endif; ?>
 
               <?php if ($this->isMember): ?>
-                <form class="psa-meetup-card__comment-form" method="post">
+                <form class="psa-meetup-card__comment-form" method="post" data-psa-meetup-ajax>
                   <input type="hidden" name="FORM_SUBMIT" value="psa_meetup_comment">
                   <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
                   <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">

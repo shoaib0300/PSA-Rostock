@@ -21,6 +21,9 @@ services:
     Rostock\CustomElementsBundle\Classes\PsaMeetup:
         autowire: true
 
+    Rostock\CustomElementsBundle\Classes\PsaMeetupJsonPresenter:
+        autowire: true
+
     Rostock\CustomElementsBundle\Classes\PsaTeam:
         autowire: true
 
