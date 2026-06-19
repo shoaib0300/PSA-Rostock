@@ -11,6 +11,8 @@
         let isDragging = false;
         let dragStartX = 0;
         let scrollStart = 0;
+        let dragDistance = 0;
+        let suppressClick = false;
         let activeMonth = '';
 
         function setActiveMonth(monthKey) {
@@ -83,6 +85,8 @@
             isDragging = true;
             dragStartX = event.pageX;
             scrollStart = slider.scrollLeft;
+            dragDistance = 0;
+            suppressClick = false;
             slider.classList.add('is-dragging');
         });
 
@@ -92,6 +96,7 @@
             }
 
             const delta = event.pageX - dragStartX;
+            dragDistance = Math.max(dragDistance, Math.abs(delta));
 
             slider.scrollLeft = scrollStart - delta;
         });
@@ -102,9 +107,20 @@
             }
 
             isDragging = false;
+            suppressClick = dragDistance > 6;
             slider.classList.remove('is-dragging');
             updateActiveFromScroll();
         });
+
+        slider.addEventListener('click', (event) => {
+            if (!suppressClick) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+            suppressClick = false;
+        }, true);
 
         slider.addEventListener('wheel', (event) => {
             if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {

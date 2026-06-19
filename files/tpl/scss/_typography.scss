@@ -1,0 +1,127 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Responsive type scale as CSS custom properties (desktop p = 22px at >= 1366px)
+@mixin psa-type-root-vars {
+  --psa-font-h1: 2.75rem;
+  --psa-font-h2: 2.25rem;
+  --psa-font-h3: 1.75rem;
+  --psa-font-h4: 1.5rem;
+  --psa-font-h5: 1.25rem;
+  --psa-font-h6: 1.125rem;
+  --psa-font-body: 1.375rem;
+  --psa-font-small: 1rem;
+  --psa-line-height-heading: 1.2;
+  --psa-line-height-body: 1.6;
+}
+
+:root {
+  @include psa-type-root-vars;
+}
+
+@include max-container {
+  :root {
+    --psa-font-h1: 2.5rem;
+    --psa-font-h2: 2rem;
+    --psa-font-h3: 1.625rem;
+    --psa-font-h4: 1.375rem;
+    --psa-font-h5: 1.125rem;
+    --psa-font-h6: 1.0625rem;
+    --psa-font-body: 1.25rem;
+    --psa-font-small: 0.9375rem;
+  }
+}
+
+@include max-nav {
+  :root {
+    --psa-font-h1: 2.125rem;
+    --psa-font-h2: 1.75rem;
+    --psa-font-h3: 1.5rem;
+    --psa-font-h4: 1.25rem;
+    --psa-font-h5: 1.0625rem;
+    --psa-font-h6: 1rem;
+    --psa-font-body: 1.125rem;
+    --psa-font-small: 0.875rem;
+  }
+}
+
+@include max-mobile {
+  :root {
+    --psa-font-h1: 1.875rem;
+    --psa-font-h2: 1.5rem;
+    --psa-font-h3: 1.3125rem;
+    --psa-font-h4: 1.125rem;
+    --psa-font-h5: 1rem;
+    --psa-font-h6: 0.9375rem;
+    --psa-font-body: 1rem;
+    --psa-font-small: 0.8125rem;
+  }
+}
+
+@mixin psa-type-content {
+  font-size: var(--psa-font-body);
+  line-height: var(--psa-line-height-body);
+
+  h1,
+  .h1 {
+    font-size: var(--psa-font-h1);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  h2,
+  .h2 {
+    font-size: var(--psa-font-h2);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--psa-font-h3);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  h4,
+  .h4 {
+    font-size: var(--psa-font-h4);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  h5,
+  .h5 {
+    font-size: var(--psa-font-h5);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  h6,
+  .h6 {
+    font-size: var(--psa-font-h6);
+    line-height: var(--psa-line-height-heading);
+  }
+
+  p,
+  li,
+  dd,
+  dt,
+  blockquote,
+  figcaption,
+  label,
+  span,
+  a,
+  td,
+  th {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  small,
+  .small {
+    font-size: var(--psa-font-small);
+  }
+}
+
+#main,
+#main .inside,
+.mod_article,
+.mod_article > .inside {
+  @include psa-type-content;
+}

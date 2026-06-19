@@ -30,6 +30,12 @@
   }
 }
 
+@mixin max-container {
+  @media (max-width: $psa-bp-container-max) {
+    @content;
+  }
+}
+
 @mixin max-header-compact {
   @media (max-width: $psa-bp-header-compact) {
     @content;
@@ -79,6 +85,9 @@
   --psa-graphite: #{$psa-graphite};
   --psa-lichen: #{$psa-lichen};
   --psa-lime: #{$psa-lime};
+  --psa-surface: #{$psa-surface};
+  --psa-surface-card: #{$psa-surface-card};
+  --psa-surface-muted: #{$psa-surface-muted};
   --psa-header-height: #{$psa-header-height};
   --psa-header-height-desktop: #{$psa-header-height-desktop};
   --psa-header-top: #{$psa-header-top};

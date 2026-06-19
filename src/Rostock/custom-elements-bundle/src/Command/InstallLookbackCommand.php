@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'psa:install-lookback',
-    description: 'Adds the PSA Lookback content element to the /events page.',
+    description: 'Adds or updates PSA Lookback content elements (events page and any missing jumpTo).',
 )]
 class InstallLookbackCommand extends Command
 {

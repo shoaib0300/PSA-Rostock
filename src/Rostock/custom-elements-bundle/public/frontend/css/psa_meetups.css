@@ -1,7 +1,9 @@
 .psa-meetups {
-  max-width: 820px;
+  width: 100%;
+  max-width: 1366px;
   margin: 0 auto;
-  padding: 2rem 1.25rem 3rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem 3rem;
+  box-sizing: border-box;
 }
 .psa-meetups__header {
   margin-bottom: 2rem;
@@ -18,26 +20,26 @@
 }
 .psa-meetups__title {
   margin: 0 0 0.5rem;
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: var(--psa-font-h2, clamp(1.75rem, 4vw, 2.25rem));
   color: #222f30;
 }
 .psa-meetups__intro {
   margin: 0;
   color: #4d5757;
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: var(--psa-font-body, 1.05rem);
+  line-height: var(--psa-line-height-body, 1.6);
 }
 .psa-meetups__section-title {
   margin: 0 0 1rem;
-  font-size: 1.25rem;
+  font-size: var(--psa-font-h5, 1.25rem);
   color: #222f30;
 }
 .psa-meetups__create {
   margin-bottom: 2.5rem;
   padding: 1.5rem;
-  border: 1px solid rgba(34, 47, 48, 0.1);
+  border: 1px solid rgba(34, 47, 48, 0.12);
   border-radius: 1rem;
-  background: #ffffff;
+  background: var(--psa-surface-card, #e4e8e0);
 }
 .psa-meetups__type {
   margin: 0 0 1.25rem;
@@ -237,9 +239,10 @@ body.psa-meetups-modal-open {
 
 .psa-meetup-card {
   padding: 1.5rem;
-  border: 1px solid rgba(34, 47, 48, 0.1);
+  border: 1px solid rgba(34, 47, 48, 0.12);
   border-radius: 1rem;
-  background: #ffffff;
+  background: var(--psa-surface-card, #e4e8e0);
+  color: #222f30;
 }
 .psa-meetup-card__badges {
   margin-bottom: 0.5rem;
@@ -325,12 +328,13 @@ body.psa-meetups-modal-open {
 }
 .psa-meetup-card__title {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: var(--psa-font-h4, 1.2rem);
   color: #222f30;
-  line-height: 1.35;
+  line-height: var(--psa-line-height-heading, 1.35);
 }
 .psa-meetup-card__description {
   margin: 0.85rem 0 0;
+  font-size: var(--psa-font-body, 1rem);
   line-height: 1.6;
   color: #222f30;
 }
@@ -338,11 +342,11 @@ body.psa-meetups-modal-open {
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 0.75rem;
-  background: rgba(34, 47, 48, 0.03);
+  background: var(--psa-surface, #f0f2ed);
 }
 .psa-meetup-card__poll-question {
   margin: 0 0 0.85rem;
-  font-size: 1rem;
+  font-size: var(--psa-font-body, 1rem);
   color: #222f30;
 }
 .psa-meetup-card__poll-list {
@@ -502,7 +506,7 @@ body.psa-meetups-modal-open {
 .psa-meetup-card__comment {
   padding: 0.85rem 1rem;
   border-radius: 0.65rem;
-  background: rgba(34, 47, 48, 0.03);
+  background: var(--psa-surface, #f0f2ed);
 }
 .psa-meetup-card__comment-head {
   display: flex;

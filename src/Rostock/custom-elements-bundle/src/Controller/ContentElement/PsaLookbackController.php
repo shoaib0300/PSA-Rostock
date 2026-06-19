@@ -46,7 +46,7 @@ final class PsaLookbackController extends AbstractContentElementController
         );
 
         $headline = StringUtil::deserialize($model->headline, true);
-        $readerPage = $model->lookback_jumpTo ? PageModel::findById((int) $model->lookback_jumpTo) : null;
+        $readerPage = $this->resolveEventReaderPage((int) ($model->lookback_jumpTo ?? 0));
         $eventBaseUrl = $readerPage ? rtrim($this->generateContentUrl($readerPage), '/') : '';
         $year = trim((string) ($model->lookback_year ?? ''));
 
@@ -70,5 +70,26 @@ final class PsaLookbackController extends AbstractContentElementController
         $template->set('lang', $GLOBALS['TL_LANG']['PSA'] ?? []);
 
         return $template->getResponse();
+    }
+
+    private function resolveEventReaderPage(int $jumpToId): ?PageModel
+    {
+        if ($jumpToId > 0) {
+            $page = PageModel::findByPk($jumpToId);
+
+            if ($page !== null) {
+                return $page;
+            }
+        }
+
+        $rootId = (int) (PageModel::findByPk(1)?->id ?? 1);
+
+        foreach (PageModel::findBy('alias', 'events') ?? [] as $page) {
+            if ((int) $page->pid === $rootId) {
+                return $page;
+            }
+        }
+
+        return null;
     }
 }

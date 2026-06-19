@@ -12,6 +12,9 @@
   --psa-section-padding-y: clamp(2.5rem, 4vw, 5rem);
   --psa-section-padding-y-sm: clamp(1.5rem, 3vw, 2.5rem);
   --psa-container-gutter: 1.5rem;
+  --psa-surface: #f0f2ed;
+  --psa-surface-card: #e4e8e0;
+  --psa-surface-muted: #d8ddd4;
   --psa-site-rail: 12px;
   --psa-site-rail-x: 14px;
   --psa-site-logo-pad-x: 14px;
@@ -108,6 +111,9 @@
   --psa-graphite: #4d5757;
   --psa-lichen: #c9cbbe;
   --psa-lime: #cef79e;
+  --psa-surface: #f0f2ed;
+  --psa-surface-card: #e4e8e0;
+  --psa-surface-muted: #d8ddd4;
   --psa-header-height: 64px;
   --psa-header-height-desktop: 54px;
   --psa-header-top: 20px;

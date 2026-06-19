@@ -8,6 +8,11 @@ $psa-paper: #ffffff;
 $psa-lichen: #c9cbbe;
 $psa-lime: #cef79e;
 
+// Surfaces (cards, panels — slightly darker than page for contrast)
+$psa-surface: #f0f2ed;
+$psa-surface-card: #e4e8e0;
+$psa-surface-muted: #d8ddd4;
+
 // —— Typography ——
 $psa-font-sans: 'Aspekta', -apple-system, BlinkMacSystemFont, 'avenir next', avenir, 'segoe ui',
   'helvetica neue', helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
@@ -53,3 +58,4 @@ $psa-bp-mobile: 600px;
 $psa-bp-header-compact: 480px;
 $psa-bp-tablet-max: 991px;
 $psa-bp-nav-mid-max: 1399px;
+$psa-bp-container-max: 1365px; // max-width for “under desktop container” type scale
