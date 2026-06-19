@@ -176,7 +176,12 @@ final class PsaVote
         $status = $this->resolveStatus($row);
         $memberVotes = $memberId > 0 ? $this->getMemberVotes($id, $memberId) : [];
         $showResults = $this->shouldShowResults($row, $status, $memberVotes !== []);
-        $positions = $this->getCampaignPositions($id, $showResults);
+        $positions = $this->getCampaignPositions($id, $showResults, $status);
+        $candidateCount = 0;
+
+        foreach ($positions as $position) {
+            $candidateCount += \count($position['candidates'] ?? []);
+        }
 
         return [
             'id' => $id,
@@ -193,14 +198,17 @@ final class PsaVote
             'memberVotes' => $memberVotes,
             'hasVoted' => $memberVotes !== [],
             'positions' => $positions,
+            'positionCount' => \count($positions),
+            'candidateCount' => $candidateCount,
             'totalVoters' => $this->countDistinctVoters($id),
+            'totalBallots' => $this->countBallots($id),
         ];
     }
 
     /**
      * @return list<array<string, mixed>>
      */
-    private function getCampaignPositions(int $campaignId, bool $showResults): array
+    private function getCampaignPositions(int $campaignId, bool $showResults, string $status = 'active'): array
     {
         $rows = $this->connection->fetchAllAssociative(
             'SELECT c.*, r.title AS reason_title, r.description AS reason_description, r.photo AS reason_photo
@@ -244,6 +252,8 @@ final class PsaVote
         }
 
         if ($showResults) {
+            $isFinal = $status === 'ended';
+
             foreach ($grouped as &$position) {
                 $totalVotes = array_sum(array_column($position['candidates'], 'votes'));
                 $maxVotes = 0;
@@ -252,22 +262,39 @@ final class PsaVote
                     $maxVotes = max($maxVotes, (int) $candidate['votes']);
                 }
 
-                $winnerNames = [];
+                $topNames = [];
 
                 foreach ($position['candidates'] as &$candidate) {
                     $candidate['percent'] = $totalVotes > 0
                         ? (int) round(($candidate['votes'] / $totalVotes) * 100)
                         : 0;
-                    $candidate['isWinner'] = $maxVotes > 0 && (int) $candidate['votes'] === $maxVotes;
+                    $isTop = $maxVotes > 0 && (int) $candidate['votes'] === $maxVotes;
 
-                    if ($candidate['isWinner']) {
-                        $winnerNames[] = $candidate['name'];
+                    if ($isFinal) {
+                        $candidate['isWinner'] = $isTop;
+                        $candidate['isLeading'] = false;
+                    } else {
+                        $candidate['isWinner'] = false;
+                        $candidate['isLeading'] = $isTop;
+                    }
+
+                    if ($isTop) {
+                        $topNames[] = $candidate['name'];
                     }
                 }
                 unset($candidate);
 
-                $position['winnerNames'] = $winnerNames;
-                $position['hasWinner'] = $winnerNames !== [];
+                if ($isFinal) {
+                    $position['winnerNames'] = $topNames;
+                    $position['hasWinner'] = $topNames !== [];
+                    $position['leaderNames'] = [];
+                    $position['hasLeader'] = false;
+                } else {
+                    $position['leaderNames'] = $topNames;
+                    $position['hasLeader'] = $topNames !== [];
+                    $position['winnerNames'] = [];
+                    $position['hasWinner'] = false;
+                }
             }
             unset($position);
         }
@@ -374,6 +401,14 @@ final class PsaVote
     {
         return (int) $this->connection->fetchOne(
             'SELECT COUNT(DISTINCT member_id) FROM tl_psa_vote_ballot WHERE campaign_id = ?',
+            [$campaignId],
+        );
+    }
+
+    private function countBallots(int $campaignId): int
+    {
+        return (int) $this->connection->fetchOne(
+            'SELECT COUNT(*) FROM tl_psa_vote_ballot WHERE campaign_id = ?',
             [$campaignId],
         );
     }

@@ -1,8 +1,16 @@
 .psa-vote {
+  width: 100%;
   max-width: 1366px;
   margin: 0 auto;
   padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem 3rem;
   font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+.psa-vote *,
+.psa-vote *::before,
+.psa-vote *::after {
+  box-sizing: border-box;
 }
 .psa-vote__title {
   margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
@@ -17,13 +25,143 @@
   color: #4d5757;
   font-style: italic;
 }
-.psa-vote__campaigns {
+.psa-vote__layout {
   display: grid;
-  gap: clamp(2rem, 5vw, 3rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 1.5rem);
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+.psa-vote__main {
+  min-width: 0;
+  width: 100%;
+}
+
+.psa-vote-sidebar {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.85rem;
+  border: 1px solid rgba(34, 47, 48, 0.12);
+  border-radius: 0.75rem;
+  background: rgba(34, 47, 48, 0.04);
+  overflow: hidden;
+}
+.psa-vote-sidebar__title {
+  margin: 0 0 0.65rem;
+  padding: 0 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4d5757;
+}
+.psa-vote-sidebar__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+  min-width: 0;
+}
+.psa-vote-sidebar__item {
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+}
+.psa-vote-sidebar__btn {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid rgba(34, 47, 48, 0.1);
+  border-radius: 0.55rem;
+  background: #ffffff;
+  color: #222f30;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.psa-vote-sidebar__btn:hover {
+  border-color: rgba(34, 47, 48, 0.25);
+}
+.psa-vote-sidebar__btn.is-active {
+  border-color: #222f30;
+  box-shadow: inset 0 0 0 1px #222f30;
+  background: rgba(206, 247, 158, 0.18);
+}
+.psa-vote-sidebar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  min-width: 0;
+  width: 100%;
+}
+.psa-vote-sidebar__name {
+  flex: 1 1 100%;
+  min-width: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.psa-vote-sidebar__badge {
+  flex: 0 0 auto;
+  max-width: 100%;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.psa-vote-sidebar__badge--active {
+  background: rgba(206, 247, 158, 0.55);
+  color: #222f30;
+}
+.psa-vote-sidebar__badge--upcoming {
+  background: rgba(34, 47, 48, 0.1);
+  color: #222f30;
+}
+.psa-vote-sidebar__badge--ended {
+  background: rgba(34, 47, 48, 0.06);
+  color: #4d5757;
+}
+.psa-vote-sidebar__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.35rem;
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #4d5757;
+  overflow-wrap: anywhere;
+}
+.psa-vote-sidebar__voted {
+  font-weight: 600;
+  color: #222f30;
 }
 
 .psa-vote-campaign {
-  padding: clamp(1.25rem, 3vw, 2rem);
+  display: none;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.psa-vote-campaign.is-visible {
+  display: block;
+}
+.psa-vote-campaign {
+  padding: clamp(1rem, 3vw, 2rem);
   border: 1px solid rgba(34, 47, 48, 0.12);
   border-radius: 0.75rem;
   background: #ffffff;
@@ -36,13 +174,45 @@
 }
 .psa-vote-campaign__title {
   margin: 0 0 0.35rem;
-  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
   color: #222f30;
+  overflow-wrap: anywhere;
+}
+.psa-vote-campaign__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  margin-bottom: 0.35rem;
+}
+.psa-vote-campaign__stat {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4d5757;
+}
+.psa-vote-campaign__stat--active {
+  color: #222f30;
+}
+.psa-vote-campaign__stat--upcoming {
+  color: #4d5757;
+}
+.psa-vote-campaign__stat--ended {
+  color: #4d5757;
 }
 .psa-vote-campaign__meta, .psa-vote-campaign__hint {
   margin: 0.35rem 0 0;
   color: #4d5757;
   font-size: 0.95rem;
+}
+.psa-vote-campaign__meta--countdown {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.35rem;
+}
+.psa-vote-campaign__countdown-remaining {
+  font-weight: 600;
+  color: #222f30;
+  white-space: nowrap;
 }
 .psa-vote-campaign__hint {
   margin-bottom: 1rem;
@@ -108,7 +278,7 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-  min-width: 12rem;
+  width: min(100%, 18rem);
 }
 .psa-vote-campaign__submit:hover:not(:disabled) {
   filter: brightness(0.95);
@@ -156,28 +326,35 @@
   font-weight: 600;
   color: #222f30;
 }
-.psa-vote-position__winner {
+.psa-vote-position__winner, .psa-vote-position__leader {
   margin: 0 0 1rem;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  background: rgba(206, 247, 158, 0.45);
-  color: #222f30;
   font-weight: 600;
   font-size: 0.95rem;
 }
+.psa-vote-position__winner {
+  background: rgba(206, 247, 158, 0.45);
+  color: #222f30;
+}
+.psa-vote-position__leader {
+  background: rgba(34, 47, 48, 0.08);
+  color: #222f30;
+}
 
 .psa-vote-candidates {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
-  justify-content: center;
+  width: 100%;
 }
 
 .psa-vote-candidate {
   position: relative;
-  flex: 1 1 100%;
   width: 100%;
+  min-width: 0;
   max-width: 25rem;
+  justify-self: center;
 }
 .psa-vote-candidate__input {
   position: absolute;
@@ -205,19 +382,25 @@
   transform: translateY(-0.25rem);
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
-.psa-vote-candidate__winner-badge {
+.psa-vote-candidate__winner-badge, .psa-vote-candidate__leader-badge {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
   z-index: 2;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
-  background: #222f30;
-  color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+.psa-vote-candidate__winner-badge {
+  background: #222f30;
+  color: #ffffff;
+}
+.psa-vote-candidate__leader-badge {
+  background: rgba(34, 47, 48, 0.12);
+  color: #222f30;
 }
 .psa-vote-candidate__card {
   height: 100%;
@@ -240,6 +423,10 @@
 .psa-vote-candidate.is-selected .psa-vote-candidate__badge {
   opacity: 1;
   transform: translateY(0);
+}
+.psa-vote-candidate.is-leading .psa-vote-candidate__card {
+  border-color: rgba(34, 47, 48, 0.45);
+  box-shadow: 0 0 0 2px rgba(34, 47, 48, 0.18);
 }
 .psa-vote-candidate.is-winner .psa-vote-candidate__card {
   border-color: #222f30;
@@ -302,8 +489,53 @@
 }
 
 @media (min-width: 640px) {
+  .psa-vote-candidates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .psa-vote-candidate {
-    flex-basis: calc(50% - 0.5rem);
-    max-width: 25rem;
+    max-width: none;
+    justify-self: stretch;
+  }
+}
+@media (min-width: 900px) {
+  .psa-vote {
+    padding-inline: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  .psa-vote__layout {
+    grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr);
+  }
+  .psa-vote-sidebar {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+  }
+  .psa-vote-sidebar__name {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .psa-vote-sidebar__row {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 599px) {
+  .psa-vote {
+    padding-inline: 1rem;
+  }
+  .psa-vote-sidebar,
+  .psa-vote-campaign {
+    padding: 0.85rem;
+  }
+  .psa-vote-candidate__photo,
+  .psa-vote-candidate__placeholder {
+    height: clamp(12rem, 52vw, 16rem);
+  }
+  .psa-vote-campaign__stats {
+    gap: 0.25rem 0.5rem;
+  }
+  .psa-vote-campaign__stat {
+    font-size: 0.72rem;
   }
 }

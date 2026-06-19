@@ -42,9 +42,9 @@ final class VoteModuleController extends AbstractFrontendModuleController
         $memberId = $user instanceof FrontendUser ? (int) $user->id : 0;
         $headline = \Contao\StringUtil::deserialize($model->headline, true);
 
-        $GLOBALS['TL_CSS']['psa_vote'] = 'bundles/customelements/frontend/css/psa_vote.css';
+        $GLOBALS['TL_CSS']['psa_vote'] = 'bundles/customelements/frontend/css/psa_vote.css?v=3';
         $GLOBALS['TL_BODY']['psa_vote'] = \Contao\FrontendTemplate::generateScriptTag(
-            'bundles/customelements/frontend/js/psa_vote.js',
+            'bundles/customelements/frontend/js/psa_vote.js?v=3',
         );
 
         $template->set('headline', CeHelpers::plainText($headline['value'] ?? ''));
