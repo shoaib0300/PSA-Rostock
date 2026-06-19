@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace Rostock\CustomElementsBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\FrontendTemplate;
+use Contao\FrontendUser;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
+use Rostock\CustomElementsBundle\Classes\PsaMeetup;
 use Rostock\CustomElementsBundle\Classes\PsaMemberAccountPresenter;
 
 #[AsHook('parseTemplate')]
 class PsaMemberTemplateListener
 {
+    public function __construct(private readonly PsaMeetup $meetup)
+    {
+    }
+
     public function __invoke(Template $template): void
     {
         if (!str_starts_with($template->getName(), 'member_')) {
@@ -35,6 +43,16 @@ class PsaMemberTemplateListener
             $categories,
             (string) $template->profileDetails,
             (string) $template->profileHint,
+        );
+
+        $memberId = (int) (FrontendUser::getInstance()->id ?? 0);
+
+        $template->showMemberPostsSection = $memberId > 0;
+        $template->memberPosts = $memberId > 0 ? $this->meetup->getMeetupsByMember($memberId) : [];
+        $template->meetupsUrl = PsaHeaderAuth::getPageUrl('meetups');
+
+        $GLOBALS['TL_BODY']['psa_member_account'] = FrontendTemplate::generateScriptTag(
+            'bundles/customelements/frontend/js/psa_member_account.js',
         );
     }
 }

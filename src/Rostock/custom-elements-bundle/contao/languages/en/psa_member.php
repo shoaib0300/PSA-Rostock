@@ -17,6 +17,15 @@ $GLOBALS['TL_LANG']['PSA']['account_required_empty'] = 'Please fill in';
 $GLOBALS['TL_LANG']['PSA']['account_empty_value'] = '—';
 $GLOBALS['TL_LANG']['PSA']['account_password_masked'] = '••••••••';
 $GLOBALS['TL_LANG']['PSA']['account_avatar_set'] = 'Photo uploaded';
+$GLOBALS['TL_LANG']['PSA']['account_posts_title'] = 'My posts & meetups';
+$GLOBALS['TL_LANG']['PSA']['account_posts_show'] = 'Show my posts & meetups';
+$GLOBALS['TL_LANG']['PSA']['account_posts_hide'] = 'Hide my posts & meetups';
+$GLOBALS['TL_LANG']['PSA']['account_posts_empty'] = 'You have not created any posts or meetups yet.';
+$GLOBALS['TL_LANG']['PSA']['account_posts_create'] = 'Create a post on Meetups';
+$GLOBALS['TL_LANG']['PSA']['account_posts_view'] = 'View on Meetups';
+$GLOBALS['TL_LANG']['PSA']['account_posts_draft'] = 'Draft';
+$GLOBALS['TL_LANG']['PSA']['account_posts_count'] = '%s item';
+$GLOBALS['TL_LANG']['PSA']['account_posts_count_plural'] = '%s items';
 
 $GLOBALS['TL_LANG']['PSA']['password_reset_email'] = <<<'TEXT'
 Dear ##firstname## ##lastname##,

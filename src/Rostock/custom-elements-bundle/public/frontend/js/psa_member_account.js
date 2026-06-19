@@ -86,7 +86,7 @@
         });
 
         form.querySelectorAll('.psa-account-field__save').forEach(function (button) {
-            button.addEventListener('click', function (event) {
+            button.addEventListener('click', function () {
                 const row = button.closest('[data-psa-account-field]');
 
                 if (!row) {
@@ -98,9 +98,49 @@
         });
     }
 
+    function initMemberPosts() {
+        const section = document.querySelector('[data-psa-account-posts]');
+
+        if (!section || section.tagName !== 'DETAILS') {
+            return;
+        }
+
+        const label = section.querySelector('[data-psa-account-posts-label]');
+        const countNode = section.querySelector('.psa-member-account__posts-count');
+        const showLabel = section.dataset.labelShow || '';
+        const hideLabel = section.dataset.labelHide || '';
+
+        if (!label || !showLabel || !hideLabel) {
+            return;
+        }
+
+        function updateLabel() {
+            label.textContent = '';
+
+            label.appendChild(document.createTextNode(section.open ? hideLabel : showLabel));
+
+            if (countNode) {
+                label.appendChild(document.createTextNode(' '));
+                label.appendChild(countNode);
+            }
+        }
+
+        section.addEventListener('toggle', updateLabel);
+    }
+
+    function init() {
+        initMemberPosts();
+
+        try {
+            initMemberAccount();
+        } catch (error) {
+            console.error('PSA member account init failed:', error);
+        }
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMemberAccount);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initMemberAccount();
+        init();
     }
 })();

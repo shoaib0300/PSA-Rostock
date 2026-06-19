@@ -378,3 +378,139 @@
 .psa-account-field__cancel:hover, .psa-account-field__cancel:focus-visible {
   color: #222f30;
 }
+
+.psa-member-account__posts {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid rgba(34, 47, 48, 0.1);
+  border-radius: 16px;
+  background: rgba(206, 247, 158, 0.08);
+}
+.psa-member-account__posts-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  list-style: none;
+  cursor: pointer;
+}
+.psa-member-account__posts-head::-webkit-details-marker {
+  display: none;
+}
+.psa-member-account__posts-head::marker {
+  content: "";
+}
+.psa-member-account__posts-title {
+  margin: 0;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 600;
+  color: #222f30;
+}
+.psa-member-account__posts-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(34, 47, 48, 0.18);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #222f30;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.psa-member-account__posts[open] .psa-member-account__posts-head .psa-member-account__posts-toggle {
+  border-color: #222f30;
+  background: rgba(206, 247, 158, 0.25);
+}
+.psa-member-account__posts-head:hover .psa-member-account__posts-toggle, .psa-member-account__posts-head:focus-visible .psa-member-account__posts-toggle {
+  border-color: #222f30;
+  background: rgba(206, 247, 158, 0.25);
+}
+.psa-member-account__posts-count {
+  font-weight: 500;
+  color: #4d5757;
+}
+.psa-member-account__posts-panel {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(34, 47, 48, 0.08);
+}
+.psa-member-account__posts-empty {
+  margin: 0 0 1rem;
+  color: #4d5757;
+  line-height: 1.5;
+}
+.psa-member-account__posts-actions {
+  margin: 0;
+}
+.psa-member-account__posts-list {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.psa-member-account__post {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(34, 47, 48, 0.08);
+  border-radius: 12px;
+  background: #ffffff;
+}
+.psa-member-account__post-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.psa-member-account__post-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(34, 47, 48, 0.08);
+  color: #222f30;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.psa-member-account__post-badge--draft {
+  background: rgba(77, 87, 87, 0.12);
+  color: #4d5757;
+}
+.psa-member-account__post-date {
+  margin-left: auto;
+  color: #4d5757;
+  font-size: 0.85rem;
+}
+.psa-member-account__post-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+.psa-member-account__post-title a {
+  color: #222f30;
+  text-decoration: none;
+}
+.psa-member-account__post-title a:hover, .psa-member-account__post-title a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.psa-member-account__post-meta, .psa-member-account__post-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 0;
+  color: #4d5757;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.psa-member-account__post-stats {
+  margin-top: 0.5rem;
+}

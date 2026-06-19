@@ -2,11 +2,16 @@
 
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_member_forms.css') . '?v=2';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_member_forms.css') . '?v=4';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
-$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_member_account.js') . '?v=1';
 $lang = $GLOBALS['TL_LANG']['PSA'] ?? [];
 $groups = is_array($this->accountGroups ?? null) ? $this->accountGroups : [];
+$memberPosts = is_array($this->memberPosts ?? null) ? $this->memberPosts : [];
+$meetupsUrl = (string) ($this->meetupsUrl ?? '/meetups');
+$postCount = \count($memberPosts);
+$postCountLabel = $postCount === 1
+    ? sprintf($lang['account_posts_count'] ?? '%s item', (string) $postCount)
+    : sprintf($lang['account_posts_count_plural'] ?? '%s items', (string) $postCount);
 
 ?>
 <?php $this->extend('block_unsearchable'); ?>
@@ -26,7 +31,6 @@ $this->wrapperAttributes = $this
 
 <link rel="stylesheet" href="<?= $assetCss ?>">
 <link rel="stylesheet" href="<?= $assetButtonCss ?>">
-<script src="<?= $assetJs ?>" defer></script>
 
 <section class="psa-member-form__shell">
     <div class="<?= CeHelpers::psaContainerClass(false) ?>">
@@ -44,6 +48,86 @@ $this->wrapperAttributes = $this
             <div class="psa-member-form__message psa-member-form__message--error" role="alert">
                 <?= $this->trans('ERR.form') ?>
             </div>
+        <?php endif; ?>
+
+        <?php if (!empty($this->showMemberPostsSection)): ?>
+            <details
+                class="psa-member-account__posts"
+                data-psa-account-posts
+                data-label-show="<?= htmlspecialchars((string) ($lang['account_posts_show'] ?? 'Show my posts & meetups'), ENT_QUOTES) ?>"
+                data-label-hide="<?= htmlspecialchars((string) ($lang['account_posts_hide'] ?? 'Hide my posts & meetups'), ENT_QUOTES) ?>"
+            >
+                <summary class="psa-member-account__posts-head">
+                    <h2 class="psa-member-account__posts-title"><?= $lang['account_posts_title'] ?? 'My posts & meetups' ?></h2>
+                    <span class="psa-member-account__posts-toggle" data-psa-account-posts-label>
+                        <?= $lang['account_posts_show'] ?? 'Show my posts & meetups' ?>
+                        <?php if ($postCount > 0): ?>
+                            <span class="psa-member-account__posts-count">(<?= htmlspecialchars($postCountLabel, ENT_QUOTES) ?>)</span>
+                        <?php endif; ?>
+                    </span>
+                </summary>
+
+                <div
+                    id="psa-member-account-posts-panel"
+                    class="psa-member-account__posts-panel"
+                    data-psa-account-posts-panel
+                >
+                    <?php if ($memberPosts === []): ?>
+                        <p class="psa-member-account__posts-empty"><?= $lang['account_posts_empty'] ?? 'You have not created any posts or meetups yet.' ?></p>
+                        <p class="psa-member-account__posts-actions">
+                            <a class="psa-button psa-button--secondary" href="<?= htmlspecialchars($meetupsUrl, ENT_QUOTES) ?>">
+                                <?= $lang['account_posts_create'] ?? 'Create a post on Meetups' ?>
+                            </a>
+                        </p>
+                    <?php else: ?>
+                        <ul class="psa-member-account__posts-list">
+                            <?php foreach ($memberPosts as $post): ?>
+                                <?php
+                                    $postUrl = rtrim($meetupsUrl, '/') . '#meetup-' . (int) ($post['id'] ?? 0);
+                                    $badge = !empty($post['isPost'])
+                                        ? ($lang['meetup_badge_post'] ?? 'Post')
+                                        : ($lang['meetup_badge_meetup'] ?? 'Meetup');
+                                ?>
+                                <li class="psa-member-account__post">
+                                    <div class="psa-member-account__post-head">
+                                        <span class="psa-member-account__post-badge"><?= htmlspecialchars($badge, ENT_QUOTES) ?></span>
+                                        <?php if (empty($post['isPublished'])): ?>
+                                            <span class="psa-member-account__post-badge psa-member-account__post-badge--draft"><?= $lang['account_posts_draft'] ?? 'Draft' ?></span>
+                                        <?php endif; ?>
+                                        <time class="psa-member-account__post-date" datetime="<?= htmlspecialchars(date('c', (int) ($post['tstamp'] ?? 0)), ENT_QUOTES) ?>">
+                                            <?= htmlspecialchars((string) ($post['postedAt'] ?? ''), ENT_QUOTES) ?>
+                                        </time>
+                                    </div>
+                                    <h3 class="psa-member-account__post-title">
+                                        <a href="<?= htmlspecialchars($postUrl, ENT_QUOTES) ?>"><?= htmlspecialchars((string) ($post['title'] ?? ''), ENT_QUOTES) ?></a>
+                                    </h3>
+                                    <?php if (!empty($post['isMeetup']) && ((string) ($post['meetupDateFormatted'] ?? '') !== '' || (string) ($post['location'] ?? '') !== '')): ?>
+                                        <p class="psa-member-account__post-meta">
+                                            <?php if ((string) ($post['meetupDateFormatted'] ?? '') !== ''): ?>
+                                                <span><?= htmlspecialchars((string) $post['meetupDateFormatted'], ENT_QUOTES) ?></span>
+                                            <?php endif; ?>
+                                            <?php if ((string) ($post['location'] ?? '') !== ''): ?>
+                                                <span><?= htmlspecialchars((string) $post['location'], ENT_QUOTES) ?></span>
+                                            <?php endif; ?>
+                                        </p>
+                                    <?php endif; ?>
+                                    <p class="psa-member-account__post-stats">
+                                        <?php if (!empty($post['isMeetup'])): ?>
+                                            <span><?= (int) ($post['joinCount'] ?? 0) ?> <?= $lang['meetup_joiners'] ?? 'joining' ?></span>
+                                        <?php endif; ?>
+                                        <span><?= (int) ($post['commentCount'] ?? 0) ?> <?= $lang['meetup_comments'] ?? 'comments' ?></span>
+                                    </p>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <p class="psa-member-account__posts-actions">
+                            <a class="psa-button psa-button--secondary" href="<?= htmlspecialchars($meetupsUrl, ENT_QUOTES) ?>">
+                                <?= $lang['account_posts_view'] ?? 'View on Meetups' ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </details>
         <?php endif; ?>
 
         <form id="<?= $this->formId ?>" class="psa-member-form__form psa-member-account__form" method="post" enctype="<?= $this->enctype ?>" data-psa-member-account>

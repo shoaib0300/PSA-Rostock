@@ -337,7 +337,6 @@
     align-items: stretch;
     width: 100%;
     height: 100%;
-    padding: 0 24px;
     overflow: auto;
     scrollbar-width: none;
 
@@ -456,11 +455,12 @@ body.has-psa-header {
 
     &__nav {
       gap: clamp(4px, 0.8vw, 12px);
-      padding: 4px clamp(4px, 0.5vw, 6px) 4px clamp(6px, 1vw, 12px);
+      padding: 4px 0 4px clamp(6px, 1vw, 12px);
       @include glass-panel;
       border-radius: 12px;
       flex: 1 1 auto;
       min-width: 0;
+      border: none !important;
       max-width: fit-content;
     }
 

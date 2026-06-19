@@ -17,6 +17,15 @@ $GLOBALS['TL_LANG']['PSA']['account_required_empty'] = 'Bitte ausfüllen';
 $GLOBALS['TL_LANG']['PSA']['account_empty_value'] = '—';
 $GLOBALS['TL_LANG']['PSA']['account_password_masked'] = '••••••••';
 $GLOBALS['TL_LANG']['PSA']['account_avatar_set'] = 'Foto hochgeladen';
+$GLOBALS['TL_LANG']['PSA']['account_posts_title'] = 'Meine Beiträge & Treffen';
+$GLOBALS['TL_LANG']['PSA']['account_posts_show'] = 'Meine Beiträge & Treffen anzeigen';
+$GLOBALS['TL_LANG']['PSA']['account_posts_hide'] = 'Meine Beiträge & Treffen ausblenden';
+$GLOBALS['TL_LANG']['PSA']['account_posts_empty'] = 'Du hast noch keine Beiträge oder Treffen erstellt.';
+$GLOBALS['TL_LANG']['PSA']['account_posts_create'] = 'Beitrag auf Meetups erstellen';
+$GLOBALS['TL_LANG']['PSA']['account_posts_view'] = 'Auf Meetups ansehen';
+$GLOBALS['TL_LANG']['PSA']['account_posts_draft'] = 'Entwurf';
+$GLOBALS['TL_LANG']['PSA']['account_posts_count'] = '%s Eintrag';
+$GLOBALS['TL_LANG']['PSA']['account_posts_count_plural'] = '%s Einträge';
 
 $GLOBALS['TL_LANG']['PSA']['password_reset_email'] = <<<'TEXT'
 Hallo ##firstname## ##lastname##,

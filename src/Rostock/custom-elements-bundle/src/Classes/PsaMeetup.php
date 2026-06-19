@@ -36,6 +36,34 @@ final class PsaMeetup
         return $meetups;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function getMeetupsByMember(int $memberId): array
+    {
+        if ($memberId <= 0) {
+            return [];
+        }
+
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username
+             FROM tl_psa_meetup m
+             INNER JOIN tl_member mem ON mem.id = m.member_id
+             WHERE m.member_id = ?
+             ORDER BY m.tstamp DESC',
+            [$memberId],
+        );
+
+        $meetups = [];
+
+        foreach ($rows as $row) {
+            $id = (int) $row['id'];
+            $meetups[] = $this->enrichMeetupRow($row, $id);
+        }
+
+        return $meetups;
+    }
+
     public function getPublishedMeetup(int $id): ?array
     {
         $row = $this->connection->fetchAssociative(
@@ -461,6 +489,7 @@ final class PsaMeetup
             'location' => (string) ($row['location'] ?? ''),
             'tstamp' => (int) $row['tstamp'],
             'postedAt' => date('d.m.Y H:i', (int) $row['tstamp']),
+            'isPublished' => (string) ($row['published'] ?? '') === '1',
             'joinCount' => $postType === 'meetup' ? $this->getJoinCount($id) : 0,
             'joiners' => $postType === 'meetup' ? $this->getJoinerNames($id) : [],
             'comments' => $this->getComments($id),
