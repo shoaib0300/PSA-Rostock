@@ -5,8 +5,8 @@ $assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 $assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_hero.js') . '?v=44';
 
-$headline = $this->headline ?: 'A community that feels like home.';
-$lede = $this->lede ?: 'Connect with fellow Pakistaniss in Rostock — events, meetups, culture, and belonging.';
+$headline = CeHelpers::plainText($this->headline ?: 'A community that feels like home.');
+$lede = CeHelpers::plainText($this->lede ?: 'Connect with fellow Pakistaniss in Rostock — events, meetups, culture, and belonging.');
 $ctaHref = $this->addButton ? ($this->button_link ?? '/events') : '/events';
 $ctaLabel = $this->addButton ? ($this->button_label ?: 'Explore Events') : 'Explore Events';
 $ctaTarget = ($this->addButton && $this->button_target) ? $this->button_target : '';
@@ -51,11 +51,11 @@ $ctaTarget = ($this->addButton && $this->button_target) ? $this->button_target :
         <div class="psa-hero__stage">
             <div class="psa-hero__panel">
                 <div class="psa-hero__container">
-                    <<?= $this->hl ?: 'h1' ?> class="psa-hero__heading"><?= $headline ?></<?= $this->hl ?: 'h1' ?>>
+                    <<?= $this->hl ?: 'h1' ?> class="psa-hero__heading"><?= CeHelpers::esc($headline) ?></<?= $this->hl ?: 'h1' ?>>
 
                     <div class="psa-hero__bottom">
                         <?php if ($lede): ?>
-                            <p class="psa-hero__lede"><?= $lede ?></p>
+                            <p class="psa-hero__lede"><?= CeHelpers::esc($lede) ?></p>
                         <?php endif; ?>
 
                         <?= CeHelpers::renderPsaButton($ctaLabel, [

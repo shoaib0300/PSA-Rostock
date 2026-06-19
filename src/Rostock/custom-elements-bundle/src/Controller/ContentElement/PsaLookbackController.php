@@ -14,6 +14,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Rostock\CustomElementsBundle\Classes\PsaLookback;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,9 +60,9 @@ final class PsaLookbackController extends AbstractContentElementController
         $months = $data['months'];
         $splitAt = (int) ceil(\count($months) / 2);
 
-        $template->set('headline', $headline['value'] ?? 'The Lookback');
+        $template->set('headline', CeHelpers::plainText($headline['value'] ?? 'The Lookback'));
         $template->set('hl', $headline['unit'] ?? 'h2');
-        $template->set('lede', trim((string) ($model->subline ?? '')));
+        $template->set('lede', CeHelpers::plainText((string) ($model->subline ?? '')));
         $template->set('year', $data['year']);
         $template->set('monthsLeft', \array_slice($months, 0, $splitAt));
         $template->set('monthsRight', \array_slice($months, $splitAt));

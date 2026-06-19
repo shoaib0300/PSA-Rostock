@@ -1,5 +1,7 @@
 <?php
 
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
 $lang = is_array($this->lang ?? null) ? $this->lang : [];
 $members = is_array($this->members ?? null) ? $this->members : [];
 $borderVariants = [
@@ -11,7 +13,7 @@ $borderVariants = [
 ?>
 <div class="psa-team block" data-psa-team>
   <?php if ($this->headline): ?>
-    <<?= $this->hl ?> class="psa-team__title"><?= htmlspecialchars((string) $this->headline, ENT_QUOTES) ?></<?= $this->hl ?>>
+    <<?= $this->hl ?> class="psa-team__title"><?= CeHelpers::esc($this->headline ?? '') ?></<?= $this->hl ?>>
   <?php endif; ?>
 
   <?php if ($members === []): ?>

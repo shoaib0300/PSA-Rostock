@@ -34,11 +34,11 @@ class PsaHeroController extends AbstractContentElementController
 
             $headline = StringUtil::deserialize($model->headline, true);
 
-            $template->set('headline', $headline['value'] ?? '');
+            $template->set('headline', CeHelpers::plainText($headline['value'] ?? ''));
             $template->set('hl', $headline['unit'] ?? 'h1');
-            $template->set('lede', trim((string) ($model->subline ?? '')));
+            $template->set('lede', CeHelpers::plainText((string) ($model->subline ?? '')));
             $template->set('addButton', (bool) $model->addButton);
-            $template->set('button_label', (string) ($model->button_label ?? ''));
+            $template->set('button_label', CeHelpers::plainText((string) ($model->button_label ?? '')));
             $template->set('button_link', (string) ($model->button_link ?? ''));
             $template->set('button_target', (bool) $model->button_target);
             $template->set('slides', $this->buildSlides($model));

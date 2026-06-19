@@ -32,7 +32,7 @@ class PsaHeroDcaListener
             'exclude' => false,
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => ['rows' => 2, 'tl_class' => 'clr'],
+            'eval' => ['rows' => 2, 'tl_class' => 'clr', 'decodeEntities' => true],
             'sql' => 'text NULL',
         ];
 

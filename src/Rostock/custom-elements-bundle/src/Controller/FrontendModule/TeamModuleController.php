@@ -8,6 +8,7 @@ use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\ModuleModel;
 use Contao\Template;
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaTeam;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ final class TeamModuleController extends AbstractFrontendModuleController
 
         $headline = \Contao\StringUtil::deserialize($model->headline, true);
 
-        $template->set('headline', $headline['value'] ?? '');
+        $template->set('headline', CeHelpers::plainText($headline['value'] ?? ''));
         $template->set('hl', $headline['unit'] ?? 'h1');
         $template->set('members', $this->team->getPublishedMembers());
         $template->set('lang', $GLOBALS['TL_LANG']['PSA'] ?? []);

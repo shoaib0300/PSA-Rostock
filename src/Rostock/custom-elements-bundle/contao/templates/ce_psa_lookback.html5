@@ -1,5 +1,7 @@
 <?php
 
+use Rostock\CustomElementsBundle\Classes\CeHelpers;
+
 $lang = is_array($this->lang ?? null) ? $this->lang : [];
 $monthsLeft = is_array($this->monthsLeft ?? null) ? $this->monthsLeft : [];
 $monthsRight = is_array($this->monthsRight ?? null) ? $this->monthsRight : [];
@@ -11,12 +13,12 @@ $year = (int) ($this->year ?? date('Y'));
   <div class="psa-lookback__header">
     <div class="psa-lookback__intro">
       <?php if ($this->lede): ?>
-        <p class="psa-lookback__eyebrow"><?= htmlspecialchars((string) $this->lede, ENT_QUOTES) ?></p>
+        <p class="psa-lookback__eyebrow"><?= CeHelpers::esc($this->lede ?? '') ?></p>
       <?php endif; ?>
 
-      <<?= $this->hl ?> class="psa-lookback__title" aria-label="<?= htmlspecialchars((string) $this->headline, ENT_QUOTES) ?>">
-        <?php foreach (preg_split('//u', (string) $this->headline, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $char): ?>
-          <span><?= htmlspecialchars($char, ENT_QUOTES) ?></span>
+      <<?= $this->hl ?> class="psa-lookback__title" aria-label="<?= CeHelpers::esc($this->headline ?? '') ?>">
+        <?php foreach (preg_split('//u', CeHelpers::plainText((string) ($this->headline ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $char): ?>
+          <span><?= CeHelpers::esc($char) ?></span>
         <?php endforeach; ?>
       </<?= $this->hl ?>>
 

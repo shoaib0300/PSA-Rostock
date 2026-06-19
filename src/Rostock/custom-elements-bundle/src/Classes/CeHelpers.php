@@ -57,6 +57,22 @@ class CeHelpers
         return '<' . $hl . '>' . $headline . '</' . $hl_end_tag . '>';
     }
 
+    /**
+     * Decode text stored with HTML entities from the Contao backend.
+     */
+    public static function plainText(string|null $value): string
+    {
+        return StringUtil::decodeEntities(trim((string) $value));
+    }
+
+    /**
+     * Decode Contao entity storage, then escape for safe HTML output.
+     */
+    public static function esc(string|null $value): string
+    {
+        return htmlspecialchars(self::plainText($value), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
+
     public static function generateMultiLangItems($serializedMultiLangItems) {
         $arrTmpMultiLangItems = StringUtil::deserialize($serializedMultiLangItems);
         $arrItemKeys = array_keys($arrTmpMultiLangItems[0]);
