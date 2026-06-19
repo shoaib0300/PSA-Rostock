@@ -15,6 +15,7 @@ $GLOBALS['TL_LANG']['PSA']['vote_winner'] = 'Winner';
 $GLOBALS['TL_LANG']['PSA']['vote_winner_for'] = 'Winner for %s: %s';
 $GLOBALS['TL_LANG']['PSA']['vote_leading'] = 'Leading';
 $GLOBALS['TL_LANG']['PSA']['vote_leading_for'] = 'Leading for %s: %s';
+$GLOBALS['TL_LANG']['PSA']['vote_ticker_label'] = 'Live results';
 $GLOBALS['TL_LANG']['PSA']['vote_results_hidden'] = 'Results will be announced by the organisers.';
 $GLOBALS['TL_LANG']['PSA']['vote_results_visible'] = 'Results are visible.';
 $GLOBALS['TL_LANG']['PSA']['vote_campaign_upcoming'] = 'This campaign has not started yet.';

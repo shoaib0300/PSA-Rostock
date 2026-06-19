@@ -22,9 +22,42 @@ if ($defaultCampaignId === 0 && $campaigns !== []) {
     $defaultCampaignId = (int) ($campaigns[0]['id'] ?? 0);
 }
 
+$tickerItems = [];
+
+foreach ($campaigns as $campaign) {
+    if (empty($campaign['showResults'])) {
+        continue;
+    }
+
+    $campaignId = (int) ($campaign['id'] ?? 0);
+    $campaignTitle = trim((string) ($campaign['title'] ?? ''));
+    $status = (string) ($campaign['status'] ?? '');
+    $positions = is_array($campaign['positions'] ?? null) ? $campaign['positions'] : [];
+
+    foreach ($positions as $position) {
+        if ($status === 'ended' && !empty($position['hasWinner'])) {
+            $tickerItems[] = [
+                'campaignId' => $campaignId,
+                'campaign' => $campaignTitle,
+                'position' => trim((string) ($position['title'] ?? '')),
+                'names' => implode(', ', $position['winnerNames'] ?? []),
+                'kind' => 'winner',
+            ];
+        } elseif ($status !== 'ended' && !empty($position['hasLeader'])) {
+            $tickerItems[] = [
+                'campaignId' => $campaignId,
+                'campaign' => $campaignTitle,
+                'position' => trim((string) ($position['title'] ?? '')),
+                'names' => implode(', ', $position['leaderNames'] ?? []),
+                'kind' => 'leading',
+            ];
+        }
+    }
+}
+
 ?>
 <div
-  class="psa-vote block"
+  class="psa-vote block<?= $tickerItems !== [] ? ' psa-vote--has-ticker' : '' ?>"
   data-psa-vote
   data-countdown-left="<?= htmlspecialchars(sprintf($lang['vote_countdown_left'] ?? '%s left', '%s'), ENT_QUOTES) ?>"
   data-countdown-starts-in="<?= htmlspecialchars(sprintf($lang['vote_countdown_starts_in'] ?? 'Opens in %s', '%s'), ENT_QUOTES) ?>"
@@ -349,6 +382,45 @@ if ($defaultCampaignId === 0 && $campaigns !== []) {
             <?php endif; ?>
           </article>
         <?php endforeach; ?>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($tickerItems !== []): ?>
+    <div
+      class="psa-vote-ticker"
+      data-psa-vote-ticker
+      role="region"
+      aria-label="<?= htmlspecialchars((string) ($lang['vote_ticker_label'] ?? 'Live results'), ENT_QUOTES) ?>"
+    >
+      <div class="psa-vote-ticker__label" aria-hidden="true">
+        <?= $lang['vote_ticker_label'] ?? 'Live results' ?>
+      </div>
+      <div class="psa-vote-ticker__viewport">
+        <div class="psa-vote-ticker__track" data-psa-vote-ticker-track>
+          <?php for ($copy = 0; $copy < 2; ++$copy): ?>
+            <div class="psa-vote-ticker__group"<?= $copy > 0 ? ' aria-hidden="true"' : '' ?>>
+              <?php foreach ($tickerItems as $item): ?>
+                <button
+                  type="button"
+                  class="psa-vote-ticker__item psa-vote-ticker__item--<?= htmlspecialchars((string) $item['kind'], ENT_QUOTES) ?>"
+                  data-psa-vote-tab="<?= (int) $item['campaignId'] ?>"
+                >
+                  <span class="psa-vote-ticker__campaign"><?= htmlspecialchars((string) $item['campaign'], ENT_QUOTES) ?></span>
+                  <span class="psa-vote-ticker__sep" aria-hidden="true">·</span>
+                  <span class="psa-vote-ticker__position"><?= htmlspecialchars((string) $item['position'], ENT_QUOTES) ?></span>
+                  <span class="psa-vote-ticker__sep" aria-hidden="true">·</span>
+                  <span class="psa-vote-ticker__name"><?= htmlspecialchars((string) $item['names'], ENT_QUOTES) ?></span>
+                  <span class="psa-vote-ticker__badge">
+                    <?= $item['kind'] === 'winner'
+                        ? ($lang['vote_winner'] ?? 'Winner')
+                        : ($lang['vote_leading'] ?? 'Leading') ?>
+                  </span>
+                </button>
+              <?php endforeach; ?>
+            </div>
+          <?php endfor; ?>
+        </div>
       </div>
     </div>
   <?php endif; ?>
