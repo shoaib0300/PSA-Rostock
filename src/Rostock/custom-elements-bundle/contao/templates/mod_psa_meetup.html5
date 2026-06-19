@@ -146,46 +146,50 @@ $meetups = is_array($this->meetups ?? null) ? $this->meetups : [];
                 <div class="psa-meetup-card__badges">
                   <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
                 </div>
-                <?php if ($this->isMember && !empty($meetup['isAuthor'])): ?>
-                  <form class="psa-meetup-card__delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['meetup_delete_confirm'] ?? 'Delete this post?'), ENT_QUOTES) ?>')">
-                    <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup">
-                    <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
-                    <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
-                    <button type="submit" class="psa-meetup-card__delete-btn"><?= $lang['meetup_delete'] ?? 'Delete' ?></button>
-                  </form>
-                <?php endif; ?>
+                <div class="psa-meetup-card__header-actions">
+                  <?php if ($this->isMember && !empty($meetup['isAuthor'])): ?>
+                    <form class="psa-meetup-card__delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['meetup_delete_confirm'] ?? 'Delete this post?'), ENT_QUOTES) ?>')">
+                      <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup">
+                      <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                      <input type="hidden" name="meetup_id" value="<?= (int) $meetup['id'] ?>">
+                      <button type="submit" class="psa-meetup-card__delete-btn"><?= $lang['meetup_delete'] ?? 'Delete' ?></button>
+                    </form>
+                  <?php endif; ?>
+                  <time class="psa-meetup-card__posted" datetime="<?= htmlspecialchars(date('c', (int) ($meetup['tstamp'] ?? 0)), ENT_QUOTES) ?>">
+                    <?= htmlspecialchars((string) $meetup['postedAt'], ENT_QUOTES) ?>
+                  </time>
+                </div>
               </div>
+
+              <div class="psa-meetup-card__lead">
+                <?= PsaMemberAvatar::render(
+                    (string) ($meetup['authorAvatarUrl'] ?? '') !== '' ? (string) $meetup['authorAvatarUrl'] : null,
+                    (string) $meetup['author'],
+                    'psa-meetup-card__lead-avatar',
+                    48,
+                ) ?>
+                <div class="psa-meetup-card__lead-meta">
+                  <p class="psa-meetup-card__author-name"><?= htmlspecialchars((string) $meetup['author'], ENT_QUOTES) ?></p>
+                  <?php if (!empty($meetup['isMeetup']) && (string) ($meetup['meetupDateFormatted'] ?? '') !== ''): ?>
+                    <p class="psa-meetup-card__event-detail">
+                      <?= $lang['meetup_when'] ?? 'When' ?>: <?= htmlspecialchars((string) $meetup['meetupDateFormatted'], ENT_QUOTES) ?>
+                    </p>
+                  <?php endif; ?>
+                  <?php if (!empty($meetup['isMeetup']) && (string) ($meetup['location'] ?? '') !== ''): ?>
+                    <p class="psa-meetup-card__event-detail">
+                      <?= $lang['meetup_where'] ?? 'Where' ?>: <?= htmlspecialchars((string) $meetup['location'], ENT_QUOTES) ?>
+                    </p>
+                  <?php endif; ?>
+                </div>
+              </div>
+
               <h3 class="psa-meetup-card__title"><?= htmlspecialchars((string) $meetup['title'], ENT_QUOTES) ?></h3>
-              <p class="psa-meetup-card__meta">
-                <span class="psa-meetup-card__author">
-                  <?= PsaMemberAvatar::render(
-                      (string) ($meetup['authorAvatarUrl'] ?? '') !== '' ? (string) $meetup['authorAvatarUrl'] : null,
-                      (string) $meetup['author'],
-                      'psa-meetup-card__avatar',
-                      32,
-                  ) ?>
-                  <span class="psa-meetup-card__author-name"><?= htmlspecialchars((string) $meetup['author'], ENT_QUOTES) ?></span>
-                </span>
-                <span class="psa-meetup-card__sep" aria-hidden="true">·</span>
-                <?= htmlspecialchars((string) $meetup['postedAt'], ENT_QUOTES) ?>
-              </p>
             </header>
 
             <?php if ((string) $meetup['description'] !== ''): ?>
               <div class="psa-meetup-card__description">
                 <?= nl2br(htmlspecialchars((string) $meetup['description'], ENT_QUOTES)) ?>
               </div>
-            <?php endif; ?>
-
-            <?php if (!empty($meetup['isMeetup']) && ((string) $meetup['meetupDateFormatted'] !== '' || (string) $meetup['location'] !== '')): ?>
-              <ul class="psa-meetup-card__details">
-                <?php if ((string) $meetup['meetupDateFormatted'] !== ''): ?>
-                  <li class="psa-meetup-card__detail"><?= $lang['meetup_when'] ?? 'When' ?>: <?= htmlspecialchars((string) $meetup['meetupDateFormatted'], ENT_QUOTES) ?></li>
-                <?php endif; ?>
-                <?php if ((string) $meetup['location'] !== ''): ?>
-                  <li class="psa-meetup-card__detail"><?= $lang['meetup_where'] ?? 'Where' ?>: <?= htmlspecialchars((string) $meetup['location'], ENT_QUOTES) ?></li>
-                <?php endif; ?>
-              </ul>
             <?php endif; ?>
 
             <?php if ($hasPoll): ?>

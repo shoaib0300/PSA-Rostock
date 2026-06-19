@@ -257,10 +257,18 @@ body.psa-meetups-modal-open {
 }
 .psa-meetup-card__header-top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.psa-meetup-card__header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  text-align: right;
 }
 .psa-meetup-card__delete {
   margin: 0;
@@ -278,52 +286,53 @@ body.psa-meetups-modal-open {
 .psa-meetup-card__delete-btn:hover {
   color: #842029;
 }
-.psa-meetup-card__title {
-  margin: 0 0 0.35rem;
-  font-size: 1.2rem;
-  color: #222f30;
-}
-.psa-meetup-card__meta {
+.psa-meetup-card__lead {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  margin: 0;
-  font-size: 0.9rem;
-  color: #4d5757;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
-.psa-meetup-card__author {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
-.psa-meetup-card__author-name {
-  font-weight: 600;
-  color: #222f30;
-}
-.psa-meetup-card__avatar {
+.psa-meetup-card__lead-avatar {
   flex: 0 0 auto;
   border-radius: 999px;
   object-fit: cover;
 }
-.psa-meetup-card__sep {
-  padding: 0 0.35rem;
+.psa-meetup-card__lead-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  padding-top: 0.1rem;
+}
+.psa-meetup-card__author-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222f30;
+  line-height: 1.3;
+}
+.psa-meetup-card__posted {
+  font-size: 0.85rem;
+  color: #4d5757;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.psa-meetup-card__event-detail {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4d5757;
+  line-height: 1.45;
+}
+.psa-meetup-card__title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #222f30;
+  line-height: 1.35;
 }
 .psa-meetup-card__description {
-  margin: 1rem 0 0;
+  margin: 0.85rem 0 0;
   line-height: 1.6;
   color: #222f30;
-}
-.psa-meetup-card__details {
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  font-size: 0.95rem;
-  color: #4d5757;
 }
 .psa-meetup-card__poll {
   margin-top: 1rem;

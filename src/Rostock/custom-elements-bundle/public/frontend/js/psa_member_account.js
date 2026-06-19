@@ -126,6 +126,11 @@
         }
 
         section.addEventListener('toggle', updateLabel);
+
+        if (window.location.hash === '#psa-member-account-posts') {
+            section.open = true;
+            updateLabel();
+        }
     }
 
     function init() {

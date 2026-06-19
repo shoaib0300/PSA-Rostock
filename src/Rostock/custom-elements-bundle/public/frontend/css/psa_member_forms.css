@@ -465,8 +465,22 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem 0.75rem;
   margin-bottom: 0.35rem;
+}
+.psa-member-account__post-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.psa-member-account__post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-left: auto;
 }
 .psa-member-account__post-badge {
   display: inline-flex;
@@ -485,9 +499,24 @@
   color: #4d5757;
 }
 .psa-member-account__post-date {
-  margin-left: auto;
   color: #4d5757;
   font-size: 0.85rem;
+}
+.psa-member-account__post-delete {
+  margin: 0;
+}
+.psa-member-account__post-delete-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #4d5757;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.psa-member-account__post-delete-btn:hover, .psa-member-account__post-delete-btn:focus-visible {
+  color: #842029;
 }
 .psa-member-account__post-title {
   margin: 0 0 0.35rem;

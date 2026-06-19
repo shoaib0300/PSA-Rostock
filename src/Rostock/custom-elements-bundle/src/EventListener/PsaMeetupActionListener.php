@@ -8,6 +8,7 @@ use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\FrontendUser;
+use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 use Rostock\CustomElementsBundle\Classes\PsaMeetup;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -193,6 +194,10 @@ final class PsaMeetupActionListener
 
     private function resolveRedirectUrl(Request $request): string
     {
+        if ($request->request->get('return_to') === 'account') {
+            return PsaHeaderAuth::getPageUrl('account').'#psa-member-account-posts';
+        }
+
         $referer = $request->headers->get('Referer');
 
         if (\is_string($referer) && $referer !== '') {

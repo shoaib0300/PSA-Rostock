@@ -53,6 +53,7 @@ $this->wrapperAttributes = $this
         <?php if (!empty($this->showMemberPostsSection)): ?>
             <details
                 class="psa-member-account__posts"
+                id="psa-member-account-posts"
                 data-psa-account-posts
                 data-label-show="<?= htmlspecialchars((string) ($lang['account_posts_show'] ?? 'Show my posts & meetups'), ENT_QUOTES) ?>"
                 data-label-hide="<?= htmlspecialchars((string) ($lang['account_posts_hide'] ?? 'Hide my posts & meetups'), ENT_QUOTES) ?>"
@@ -90,13 +91,30 @@ $this->wrapperAttributes = $this
                                 ?>
                                 <li class="psa-member-account__post">
                                     <div class="psa-member-account__post-head">
-                                        <span class="psa-member-account__post-badge"><?= htmlspecialchars($badge, ENT_QUOTES) ?></span>
-                                        <?php if (empty($post['isPublished'])): ?>
-                                            <span class="psa-member-account__post-badge psa-member-account__post-badge--draft"><?= $lang['account_posts_draft'] ?? 'Draft' ?></span>
-                                        <?php endif; ?>
-                                        <time class="psa-member-account__post-date" datetime="<?= htmlspecialchars(date('c', (int) ($post['tstamp'] ?? 0)), ENT_QUOTES) ?>">
-                                            <?= htmlspecialchars((string) ($post['postedAt'] ?? ''), ENT_QUOTES) ?>
-                                        </time>
+                                        <div class="psa-member-account__post-labels">
+                                            <span class="psa-member-account__post-badge"><?= htmlspecialchars($badge, ENT_QUOTES) ?></span>
+                                            <?php if (empty($post['isPublished'])): ?>
+                                                <span class="psa-member-account__post-badge psa-member-account__post-badge--draft"><?= $lang['account_posts_draft'] ?? 'Draft' ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="psa-member-account__post-actions">
+                                            <time class="psa-member-account__post-date" datetime="<?= htmlspecialchars(date('c', (int) ($post['tstamp'] ?? 0)), ENT_QUOTES) ?>">
+                                                <?= htmlspecialchars((string) ($post['postedAt'] ?? ''), ENT_QUOTES) ?>
+                                            </time>
+                                            <form
+                                                class="psa-member-account__post-delete"
+                                                method="post"
+                                                onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['meetup_delete_confirm'] ?? 'Delete this post? This cannot be undone.'), ENT_QUOTES) ?>')"
+                                            >
+                                                <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup">
+                                                <input type="hidden" name="REQUEST_TOKEN" value="<?= htmlspecialchars((string) $this->requestToken, ENT_QUOTES) ?>">
+                                                <input type="hidden" name="meetup_id" value="<?= (int) ($post['id'] ?? 0) ?>">
+                                                <input type="hidden" name="return_to" value="account">
+                                                <button type="submit" class="psa-member-account__post-delete-btn">
+                                                    <?= $lang['meetup_delete'] ?? 'Delete' ?>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                     <h3 class="psa-member-account__post-title">
                                         <a href="<?= htmlspecialchars($postUrl, ENT_QUOTES) ?>"><?= htmlspecialchars((string) ($post['title'] ?? ''), ENT_QUOTES) ?></a>

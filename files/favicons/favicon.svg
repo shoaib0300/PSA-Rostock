@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="PSA Rostock">
+  <defs>
+    <linearGradient id="psa-sea" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0057A4"/>
+      <stop offset="100%" stop-color="#00A3D9"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="55" fill="url(#psa-sea)"/>
+  <path d="M15 80 C35 65, 50 95, 70 80 C90 65, 105 95, 120 80" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M60 25 L60 75 L90 75 Z" fill="#ffffff"/>
+  <line x1="60" y1="25" x2="60" y2="90" stroke="#ffffff" stroke-width="4"/>
+</svg>

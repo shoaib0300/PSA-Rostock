@@ -297,10 +297,19 @@ body.psa-meetups-modal-open {
 
   &__header-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    text-align: right;
   }
 
   &__delete {
@@ -322,59 +331,60 @@ body.psa-meetups-modal-open {
     }
   }
 
-  &__title {
-    margin: 0 0 0.35rem;
-    font-size: 1.2rem;
-    color: $psa-ink;
-  }
-
-  &__meta {
+  &__lead {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.35rem 0.5rem;
-    margin: 0;
-    font-size: 0.9rem;
-    color: $psa-graphite;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
 
-  &__author {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 0;
-  }
-
-  &__author-name {
-    font-weight: 600;
-    color: $psa-ink;
-  }
-
-  &__avatar {
+  &__lead-avatar {
     flex: 0 0 auto;
     border-radius: 999px;
     object-fit: cover;
   }
 
-  &__sep {
-    padding: 0 0.35rem;
+  &__lead-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    padding-top: 0.1rem;
+  }
+
+  &__author-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $psa-ink;
+    line-height: 1.3;
+  }
+
+  &__posted {
+    font-size: 0.85rem;
+    color: $psa-graphite;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
+  &__event-detail {
+    margin: 0;
+    font-size: 0.9rem;
+    color: $psa-graphite;
+    line-height: 1.45;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: $psa-ink;
+    line-height: 1.35;
   }
 
   &__description {
-    margin: 1rem 0 0;
+    margin: 0.85rem 0 0;
     line-height: 1.6;
     color: $psa-ink;
-  }
-
-  &__details {
-    margin: 1rem 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    font-size: 0.95rem;
-    color: $psa-graphite;
   }
 
   &__poll {

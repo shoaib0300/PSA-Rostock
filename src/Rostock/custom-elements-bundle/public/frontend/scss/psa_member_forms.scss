@@ -401,8 +401,24 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem 0.75rem;
     margin-bottom: 0.35rem;
+  }
+
+  &-labels {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-left: auto;
   }
 
   &-badge {
@@ -424,9 +440,27 @@
   }
 
   &-date {
-    margin-left: auto;
     color: $psa-graphite;
     font-size: 0.85rem;
+  }
+
+  &-delete {
+    margin: 0;
+  }
+
+  &-delete-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: $psa-graphite;
+    font: inherit;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    cursor: pointer;
+
+    @include focus-hover {
+      color: #842029;
+    }
   }
 
   &-title {
