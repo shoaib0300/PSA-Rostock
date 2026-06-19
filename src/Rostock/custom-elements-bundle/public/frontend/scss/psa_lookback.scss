@@ -256,14 +256,6 @@
   }
 }
 
-@media (max-width: $psa-bp-mobile) {
-  .psa-lookback {
-    &__months {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .psa-lookback__slide-frame,
   .psa-lookback__month {

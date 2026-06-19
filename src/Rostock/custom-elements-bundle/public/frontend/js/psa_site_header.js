@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (popup) {
                 popup.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
             }
+            if (!isOpen) {
+                updateLogoOverHero();
+            }
         };
 
         const closeMenu = () => setOpen(false);
@@ -58,6 +61,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bar) {
             bar.style.pointerEvents = 'auto';
+        }
+
+        const logoLink = header.querySelector('.psa-header__logo-link');
+        const hero = document.querySelector('[data-psa-hero]');
+        let logoHeroFrame = 0;
+
+        function rectsOverlap(a, b) {
+            return a.bottom > b.top && a.top < b.bottom && a.right > b.left && a.left < b.right;
+        }
+
+        function updateLogoOverHero() {
+            if (!logoLink || header.dataset.navigationStatus === 'active') {
+                return;
+            }
+
+            if (!hero) {
+                logoLink.dataset.logoOverHero = 'false';
+                return;
+            }
+
+            const overHero = rectsOverlap(logoLink.getBoundingClientRect(), hero.getBoundingClientRect());
+            logoLink.dataset.logoOverHero = overHero ? 'true' : 'false';
+        }
+
+        function scheduleLogoOverHeroUpdate() {
+            if (!logoLink) {
+                return;
+            }
+
+            if (logoHeroFrame) {
+                return;
+            }
+
+            logoHeroFrame = window.requestAnimationFrame(() => {
+                logoHeroFrame = 0;
+                updateLogoOverHero();
+            });
+        }
+
+        if (logoLink) {
+            updateLogoOverHero();
+            window.addEventListener('scroll', scheduleLogoOverHeroUpdate, { passive: true });
+            window.addEventListener('resize', scheduleLogoOverHeroUpdate);
+            window.addEventListener('load', updateLogoOverHero);
         }
     });
 });

@@ -101,10 +101,16 @@
       content: '';
       position: absolute;
       inset: -4px -8px;
-      background: transparent;
-      border: 1px solid transparent;
+      background: $psa-paper;
+      border: 1px solid rgba($psa-ink, 0.08);
       border-radius: 10px;
       z-index: -1;
+      transition: background-color 0.35s $psa-ease, border-color 0.35s $psa-ease,
+        backdrop-filter 0.35s $psa-ease, -webkit-backdrop-filter 0.35s $psa-ease;
+    }
+
+    &[data-logo-over-hero='true']::before {
+      @include glass-panel;
     }
   }
 
@@ -417,12 +423,6 @@
     font-size: 0.95rem;
     line-height: 1.4;
     text-align: center;
-  }
-}
-
-body.has-psa-hero:not(.psa-hero-sequence-done) {
-  .psa-header__logo-link::before {
-    @include glass-panel;
   }
 }
 

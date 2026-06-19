@@ -4,9 +4,9 @@ use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 use Rostock\CustomElementsBundle\Classes\PsaMemberAvatar;
 
 $assetLogo = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/images/psa-logo.svg') . '?v=2';
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=19';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_header.css') . '?v=20';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
-$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=6';
+$assetJs = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/js/psa_site_header.js') . '?v=7';
 
 $headerAuth = PsaHeaderAuth::resolve();
 $isLoggedIn = $headerAuth['isLoggedIn'];

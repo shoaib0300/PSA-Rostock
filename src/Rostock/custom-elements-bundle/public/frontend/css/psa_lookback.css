@@ -213,11 +213,6 @@
     width: 100%;
   }
 }
-@media (max-width: 600px) {
-  .psa-lookback__months {
-    grid-template-columns: 1fr;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .psa-lookback__slide-frame,
   .psa-lookback__month {
