@@ -39,11 +39,12 @@ final class MeetupModuleController extends AbstractFrontendModuleController
         $isMember = $this->authorizationChecker->isGranted('ROLE_MEMBER');
         $user = $this->tokenStorage->getToken()?->getUser();
         $memberId = $user instanceof FrontendUser ? (int) $user->id : 0;
-        $meetups = $this->meetup->getPublishedMeetups();
+        $meetups = $this->meetup->getPublishedMeetups($memberId);
 
         foreach ($meetups as &$item) {
             $meetupId = (int) $item['id'];
-            $item['isJoined'] = $memberId > 0 && $this->meetup->isJoined($meetupId, $memberId);
+            $item['joinStatus'] = $memberId > 0 ? $this->meetup->getMemberJoinStatus($meetupId, $memberId) : null;
+            $item['isJoined'] = ($item['joinStatus'] ?? null) === 'join';
             $item['isAuthor'] = $memberId > 0 && (int) $item['member_id'] === $memberId;
             $item['pollVote'] = $memberId > 0 ? $this->meetup->getMemberPollVote($meetupId, $memberId) : null;
         }
@@ -55,6 +56,7 @@ final class MeetupModuleController extends AbstractFrontendModuleController
         $template->set('loginUrl', $auth['loginUrl']);
         $template->set('memberDisplayName', $auth['memberDisplayName']);
         $template->set('meetups', $meetups);
+        $template->set('reactionEmojis', PsaMeetup::REACTION_EMOJIS);
         $template->set('requestToken', $this->csrfTokenManager->getToken($this->csrfTokenName)?->getValue() ?? '');
         $template->set('lang', $GLOBALS['TL_LANG']['PSA'] ?? []);
 

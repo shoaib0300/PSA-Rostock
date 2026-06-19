@@ -415,18 +415,66 @@ body.psa-meetups-modal-open {
   padding-top: 1rem;
   border-top: 1px solid rgba(34, 47, 48, 0.08);
 }
-.psa-meetup-card__join-form {
+.psa-meetup-card__rsvp {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(34, 47, 48, 0.08);
+}
+.psa-meetup-card__rsvp-vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem;
+  border: 1px solid rgba(34, 47, 48, 0.12);
+  border-radius: 999px;
+  background: #fff;
+}
+.psa-meetup-card__rsvp-form {
   margin: 0;
 }
-.psa-meetup-card__join-btn.is-active .psa-hero__btn {
-  background: #222f30;
-  color: #ffffff;
+.psa-meetup-card__rsvp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #4d5757;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-.psa-meetup-card__join-count {
-  margin: 0;
+.psa-meetup-card__rsvp-btn:hover {
+  background: rgba(34, 47, 48, 0.06);
+  color: #222f30;
+}
+.psa-meetup-card__rsvp-btn--up.is-active {
+  background: rgba(25, 135, 84, 0.14);
+  color: #198754;
+}
+.psa-meetup-card__rsvp-btn--down.is-active {
+  background: rgba(132, 32, 41, 0.12);
+  color: #842029;
+}
+.psa-meetup-card__rsvp-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
   color: #222f30;
+}
+.psa-meetup-card__rsvp-count--up {
+  color: #198754;
+}
+.psa-meetup-card__rsvp-count--down {
+  color: #842029;
 }
 .psa-meetup-card__joiners {
   margin: 0.75rem 0 0;
@@ -487,6 +535,50 @@ body.psa-meetups-modal-open {
   line-height: 1.55;
   color: #222f30;
   font-size: 0.95rem;
+}
+.psa-meetup-card__reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+}
+.psa-meetup-card__reaction-form {
+  margin: 0;
+}
+.psa-meetup-card__reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 1.9rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid rgba(34, 47, 48, 0.1);
+  border-radius: 999px;
+  background: #fff;
+  color: #222f30;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.psa-meetup-card__reaction-btn:hover {
+  border-color: rgba(34, 47, 48, 0.22);
+  background: rgba(34, 47, 48, 0.04);
+}
+.psa-meetup-card__reaction-btn.is-active {
+  border-color: rgba(34, 47, 48, 0.28);
+  background: rgba(206, 247, 158, 0.45);
+}
+.psa-meetup-card__reaction-btn.is-empty {
+  opacity: 0.72;
+}
+.psa-meetup-card__reaction-btn.is-readonly {
+  cursor: default;
+}
+.psa-meetup-card__reaction-count {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4d5757;
 }
 .psa-meetup-card__comment-delete {
   margin: 0.5rem 0 0;

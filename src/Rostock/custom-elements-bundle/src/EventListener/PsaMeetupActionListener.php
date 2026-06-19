@@ -57,6 +57,7 @@ final class PsaMeetupActionListener
             'psa_delete_meetup_comment',
             'psa_delete_meetup',
             'psa_meetup_poll_vote',
+            'psa_meetup_comment_reaction',
         ], true)) {
             return;
         }
@@ -88,6 +89,7 @@ final class PsaMeetupActionListener
                 'psa_delete_meetup_comment' => $this->handleDeleteComment($request, $memberId),
                 'psa_delete_meetup' => $this->handleDeleteMeetup($request, $memberId),
                 'psa_meetup_poll_vote' => $this->handlePollVote($request, $memberId),
+                'psa_meetup_comment_reaction' => $this->handleCommentReaction($request, $memberId),
             };
         } catch (\InvalidArgumentException) {
             return;
@@ -148,18 +150,31 @@ final class PsaMeetupActionListener
     private function handleJoin(Request $request, int $memberId): void
     {
         $meetupId = (int) $request->request->get('meetup_id', 0);
+        $status = (string) $request->request->get('join_status', '');
 
-        if ($meetupId <= 0) {
+        if ($meetupId <= 0 || !\in_array($status, ['join', 'decline'], true)) {
             throw new \InvalidArgumentException('Invalid meetup.');
         }
 
-        $meetup = $this->meetup->getPublishedMeetup($meetupId);
+        $meetup = $this->meetup->getPublishedMeetup($meetupId, $memberId);
 
         if ($meetup === null || empty($meetup['isMeetup'])) {
             throw new \InvalidArgumentException('Invalid meetup.');
         }
 
-        $this->meetup->toggleJoin($meetupId, $memberId);
+        $this->meetup->setJoinStatus($meetupId, $memberId, $status);
+    }
+
+    private function handleCommentReaction(Request $request, int $memberId): void
+    {
+        $commentId = (int) $request->request->get('comment_id', 0);
+        $emoji = (string) $request->request->get('emoji', '');
+
+        if ($commentId <= 0 || $emoji === '') {
+            throw new \InvalidArgumentException('Invalid reaction.');
+        }
+
+        $this->meetup->toggleCommentReaction($commentId, $memberId, $emoji);
     }
 
     private function handleComment(Request $request, int $memberId): void
@@ -167,7 +182,7 @@ final class PsaMeetupActionListener
         $meetupId = (int) $request->request->get('meetup_id', 0);
         $comment = (string) $request->request->get('comment', '');
 
-        if ($meetupId <= 0 || $this->meetup->getPublishedMeetup($meetupId) === null) {
+        if ($meetupId <= 0 || $this->meetup->getPublishedMeetup($meetupId, $memberId) === null) {
             throw new \InvalidArgumentException('Invalid meetup.');
         }
 

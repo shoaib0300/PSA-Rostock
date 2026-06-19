@@ -8,6 +8,8 @@ use Doctrine\DBAL\Connection;
 
 final class PsaMeetup
 {
+    public const REACTION_EMOJIS = ['👍', '❤️', '😂', '🎉', '👏', '🔥'];
+
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -15,7 +17,7 @@ final class PsaMeetup
     /**
      * @return list<array<string, mixed>>
      */
-    public function getPublishedMeetups(): array
+    public function getPublishedMeetups(int $viewerMemberId = 0): array
     {
         $rows = $this->connection->fetchAllAssociative(
             'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username, mem.avatar
@@ -30,7 +32,7 @@ final class PsaMeetup
 
         foreach ($rows as $row) {
             $id = (int) $row['id'];
-            $meetups[] = $this->enrichMeetupRow($row, $id);
+            $meetups[] = $this->enrichMeetupRow($row, $id, $viewerMemberId);
         }
 
         return $meetups;
@@ -58,13 +60,13 @@ final class PsaMeetup
 
         foreach ($rows as $row) {
             $id = (int) $row['id'];
-            $meetups[] = $this->enrichMeetupRow($row, $id);
+            $meetups[] = $this->enrichMeetupRow($row, $id, $memberId);
         }
 
         return $meetups;
     }
 
-    public function getPublishedMeetup(int $id): ?array
+    public function getPublishedMeetup(int $id, int $viewerMemberId = 0): ?array
     {
         $row = $this->connection->fetchAssociative(
             'SELECT m.*, mem.nickname, mem.firstname, mem.lastname, mem.username, mem.avatar
@@ -78,7 +80,7 @@ final class PsaMeetup
             return null;
         }
 
-        return $this->enrichMeetupRow($row, $id);
+        return $this->enrichMeetupRow($row, $id, $viewerMemberId);
     }
 
     /**
@@ -198,42 +200,64 @@ final class PsaMeetup
         return (int) $optionId;
     }
 
-    public function toggleJoin(int $meetupId, int $memberId): bool
+    public function setJoinStatus(int $meetupId, int $memberId, string $status): void
     {
-        $existingId = $this->connection->fetchOne(
-            'SELECT id FROM tl_psa_meetup_join WHERE pid = ? AND member_id = ?',
+        if (!\in_array($status, ['join', 'decline'], true)) {
+            throw new \InvalidArgumentException('Invalid join status.');
+        }
+
+        $row = $this->connection->fetchAssociative(
+            'SELECT id, status FROM tl_psa_meetup_join WHERE pid = ? AND member_id = ?',
             [$meetupId, $memberId],
         );
 
-        if (\is_string($existingId) || is_int($existingId)) {
+        if ($row !== false && (string) ($row['status'] ?? 'join') === $status) {
             $this->connection->executeStatement(
                 'DELETE FROM tl_psa_meetup_join WHERE id = ?',
-                [(int) $existingId],
+                [(int) $row['id']],
             );
 
-            return false;
+            return;
+        }
+
+        $time = time();
+
+        if ($row !== false) {
+            $this->connection->executeStatement(
+                'UPDATE tl_psa_meetup_join SET tstamp = ?, status = ? WHERE id = ?',
+                [$time, $status, (int) $row['id']],
+            );
+
+            return;
         }
 
         $this->connection->executeStatement(
-            'INSERT INTO tl_psa_meetup_join (tstamp, pid, member_id) VALUES (?, ?, ?)',
-            [time(), $meetupId, $memberId],
+            'INSERT INTO tl_psa_meetup_join (tstamp, pid, member_id, status) VALUES (?, ?, ?, ?)',
+            [$time, $meetupId, $memberId, $status],
+        );
+    }
+
+    public function getMemberJoinStatus(int $meetupId, int $memberId): ?string
+    {
+        if ($memberId <= 0) {
+            return null;
+        }
+
+        $status = $this->connection->fetchOne(
+            'SELECT status FROM tl_psa_meetup_join WHERE pid = ? AND member_id = ?',
+            [$meetupId, $memberId],
         );
 
-        return true;
+        if (!\is_string($status) || $status === '') {
+            return null;
+        }
+
+        return $status;
     }
 
     public function isJoined(int $meetupId, int $memberId): bool
     {
-        if ($memberId <= 0) {
-            return false;
-        }
-
-        $id = $this->connection->fetchOne(
-            'SELECT id FROM tl_psa_meetup_join WHERE pid = ? AND member_id = ?',
-            [$meetupId, $memberId],
-        );
-
-        return \is_string($id) || is_int($id);
+        return $this->getMemberJoinStatus($meetupId, $memberId) === 'join';
     }
 
     /**
@@ -245,9 +269,9 @@ final class PsaMeetup
             'SELECT m.nickname, m.firstname, m.lastname, m.username
              FROM tl_psa_meetup_join j
              INNER JOIN tl_member m ON m.id = j.member_id
-             WHERE j.pid = ?
+             WHERE j.pid = ? AND j.status = ?
              ORDER BY j.tstamp ASC',
-            [$meetupId],
+            [$meetupId, 'join'],
         );
 
         return array_map(fn (array $row): string => $this->formatMemberName($row), $rows);
@@ -256,8 +280,51 @@ final class PsaMeetup
     public function getJoinCount(int $meetupId): int
     {
         return (int) $this->connection->fetchOne(
-            'SELECT COUNT(*) FROM tl_psa_meetup_join WHERE pid = ?',
-            [$meetupId],
+            'SELECT COUNT(*) FROM tl_psa_meetup_join WHERE pid = ? AND status = ?',
+            [$meetupId, 'join'],
+        );
+    }
+
+    public function getDeclineCount(int $meetupId): int
+    {
+        return (int) $this->connection->fetchOne(
+            'SELECT COUNT(*) FROM tl_psa_meetup_join WHERE pid = ? AND status = ?',
+            [$meetupId, 'decline'],
+        );
+    }
+
+    public function toggleCommentReaction(int $commentId, int $memberId, string $emoji): void
+    {
+        if (!\in_array($emoji, self::REACTION_EMOJIS, true)) {
+            throw new \InvalidArgumentException('Invalid reaction.');
+        }
+
+        $comment = $this->connection->fetchAssociative(
+            'SELECT id FROM tl_psa_meetup_comment WHERE id = ? AND published = ?',
+            [$commentId, '1'],
+        );
+
+        if ($comment === false) {
+            throw new \InvalidArgumentException('Invalid comment.');
+        }
+
+        $existingId = $this->connection->fetchOne(
+            'SELECT id FROM tl_psa_meetup_comment_reaction WHERE comment_id = ? AND member_id = ? AND emoji = ?',
+            [$commentId, $memberId, $emoji],
+        );
+
+        if (\is_string($existingId) || is_int($existingId)) {
+            $this->connection->executeStatement(
+                'DELETE FROM tl_psa_meetup_comment_reaction WHERE id = ?',
+                [(int) $existingId],
+            );
+
+            return;
+        }
+
+        $this->connection->executeStatement(
+            'INSERT INTO tl_psa_meetup_comment_reaction (tstamp, comment_id, member_id, emoji) VALUES (?, ?, ?, ?)',
+            [time(), $commentId, $memberId, $emoji],
         );
     }
 
@@ -292,6 +359,11 @@ final class PsaMeetup
         }
 
         $this->connection->executeStatement(
+            'DELETE FROM tl_psa_meetup_comment_reaction WHERE comment_id = ?',
+            [$commentId],
+        );
+
+        $this->connection->executeStatement(
             'DELETE FROM tl_psa_meetup_comment WHERE id = ?',
             [$commentId],
         );
@@ -320,6 +392,12 @@ final class PsaMeetup
                 [$meetupId],
             );
             $this->connection->executeStatement(
+                'DELETE r FROM tl_psa_meetup_comment_reaction r
+                 INNER JOIN tl_psa_meetup_comment c ON c.id = r.comment_id
+                 WHERE c.pid = ?',
+                [$meetupId],
+            );
+            $this->connection->executeStatement(
                 'DELETE FROM tl_psa_meetup_comment WHERE pid = ?',
                 [$meetupId],
             );
@@ -339,7 +417,7 @@ final class PsaMeetup
     /**
      * @return list<array<string, mixed>>
      */
-    public function getComments(int $meetupId): array
+    public function getComments(int $meetupId, int $memberId = 0): array
     {
         $rows = $this->connection->fetchAllAssociative(
             'SELECT c.*, m.nickname, m.firstname, m.lastname, m.username, m.avatar
@@ -350,21 +428,66 @@ final class PsaMeetup
             [$meetupId, '1'],
         );
 
+        if ($rows === []) {
+            return [];
+        }
+
+        $commentIds = array_map(static fn (array $row): int => (int) $row['id'], $rows);
+        $reactions = $this->getCommentReactionsForIds($commentIds, $memberId);
+
         $comments = [];
 
         foreach ($rows as $row) {
+            $commentId = (int) $row['id'];
             $comments[] = [
-                'id' => (int) $row['id'],
+                'id' => $commentId,
                 'member_id' => (int) $row['member_id'],
                 'author' => $this->formatMemberName($row),
                 'authorAvatarUrl' => PsaMemberAvatar::resolveFromRow($row) ?? '',
                 'comment' => (string) ($row['comment'] ?? ''),
                 'tstamp' => (int) $row['tstamp'],
                 'datim' => date('d.m.Y H:i', (int) $row['tstamp']),
+                'reactions' => $reactions[$commentId] ?? [],
             ];
         }
 
         return $comments;
+    }
+
+    /**
+     * @param list<int> $commentIds
+     *
+     * @return array<int, list<array{emoji: string, count: int, memberReacted: bool}>>
+     */
+    private function getCommentReactionsForIds(array $commentIds, int $memberId): array
+    {
+        if ($commentIds === [] || !$this->connection->createSchemaManager()->tablesExist(['tl_psa_meetup_comment_reaction'])) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, \count($commentIds), '?'));
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT comment_id, emoji, COUNT(*) AS reaction_count,
+                    SUM(CASE WHEN member_id = ? THEN 1 ELSE 0 END) AS member_reacted
+             FROM tl_psa_meetup_comment_reaction
+             WHERE comment_id IN ('.$placeholders.')
+             GROUP BY comment_id, emoji
+             ORDER BY MIN(tstamp) ASC',
+            array_merge([$memberId], $commentIds),
+        );
+
+        $grouped = [];
+
+        foreach ($rows as $row) {
+            $commentId = (int) $row['comment_id'];
+            $grouped[$commentId][] = [
+                'emoji' => (string) $row['emoji'],
+                'count' => (int) $row['reaction_count'],
+                'memberReacted' => (int) ($row['member_reacted'] ?? 0) > 0,
+            ];
+        }
+
+        return $grouped;
     }
 
     public function getCommentCount(int $meetupId): int
@@ -466,7 +589,7 @@ final class PsaMeetup
      *
      * @return array<string, mixed>
      */
-    private function enrichMeetupRow(array $row, int $id): array
+    private function enrichMeetupRow(array $row, int $id, int $viewerMemberId = 0): array
     {
         $meetupDate = (int) ($row['meetupDate'] ?? 0);
         $postType = (string) ($row['postType'] ?? 'meetup');
@@ -493,8 +616,9 @@ final class PsaMeetup
             'postedAt' => date('d.m.Y H:i', (int) $row['tstamp']),
             'isPublished' => (string) ($row['published'] ?? '') === '1',
             'joinCount' => $postType === 'meetup' ? $this->getJoinCount($id) : 0,
+            'declineCount' => $postType === 'meetup' ? $this->getDeclineCount($id) : 0,
             'joiners' => $postType === 'meetup' ? $this->getJoinerNames($id) : [],
-            'comments' => $this->getComments($id),
+            'comments' => $this->getComments($id, $viewerMemberId),
             'commentCount' => $this->getCommentCount($id),
             'poll' => $this->getPollData($id, $pollQuestion),
         ];
