@@ -9,6 +9,10 @@ use Rostock\CustomElementsBundle\Models\PsaMeetupPollOptionModel;
 use Rostock\CustomElementsBundle\Models\PsaMeetupPollVoteModel;
 use Rostock\CustomElementsBundle\Models\PsaMeetupModel;
 use Rostock\CustomElementsBundle\Models\PsaTeamMemberModel;
+use Rostock\CustomElementsBundle\Models\PsaVoteBallotModel;
+use Rostock\CustomElementsBundle\Models\PsaVoteCampaignModel;
+use Rostock\CustomElementsBundle\Models\PsaVoteCandidateModel;
+use Rostock\CustomElementsBundle\Models\PsaVoteReasonModel;
 use Rostock\CustomElementsBundle\Module\PsaModuleLostPassword;
 use Rostock\CustomElementsBundle\Module\PsaModuleRegistration;
 
@@ -18,11 +22,31 @@ $GLOBALS['BE_MOD']['booking_management']['quickbooker_module'] = [
 ];
 
 $GLOBALS['BE_MOD']['psa_community']['psa_meetups'] = [
-    'tables' => ['tl_psa_meetup'],
+    'tables' => [
+        'tl_psa_meetup',
+        'tl_psa_meetup_comment',
+        'tl_psa_meetup_join',
+        'tl_psa_meetup_poll_option',
+    ],
 ];
 
 $GLOBALS['BE_MOD']['psa_community']['psa_team'] = [
     'tables' => ['tl_psa_team_member'],
+];
+
+$GLOBALS['BE_MOD']['psa_community']['psa_vote_reasons'] = [
+    'tables' => ['tl_psa_vote_reason'],
+];
+
+$GLOBALS['BE_MOD']['psa_community']['psa_vote_campaigns'] = [
+    'tables' => [
+        'tl_psa_vote_campaign',
+        'tl_psa_vote_candidate',
+    ],
+];
+
+$GLOBALS['BE_MOD']['psa_community']['psa_vote_ballots'] = [
+    'tables' => ['tl_psa_vote_ballot'],
 ];
 
 $GLOBALS['BE_MOD']['system']['copyright'] = array(
@@ -41,6 +65,10 @@ $GLOBALS['TL_MODELS']['tl_psa_meetup_comment'] = PsaMeetupCommentModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_option'] = PsaMeetupPollOptionModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_vote'] = PsaMeetupPollVoteModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_team_member'] = PsaTeamMemberModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_vote_reason'] = PsaVoteReasonModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_vote_campaign'] = PsaVoteCampaignModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_vote_candidate'] = PsaVoteCandidateModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_vote_ballot'] = PsaVoteBallotModel::class;
 
 $GLOBALS['TL_CTE']['includes']['files_copyright'] = ContentFilesCopyright::class;
 
@@ -59,5 +87,7 @@ System::loadLanguageFile('psa_meetups', 'de');
 System::loadLanguageFile('psa_meetups', 'en');
 System::loadLanguageFile('psa_team', 'de');
 System::loadLanguageFile('psa_team', 'en');
+System::loadLanguageFile('psa_vote', 'de');
+System::loadLanguageFile('psa_vote', 'en');
 System::loadLanguageFile('psa_errors', 'de');
 System::loadLanguageFile('psa_errors', 'en');

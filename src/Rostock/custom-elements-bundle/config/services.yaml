@@ -30,6 +30,9 @@ services:
     Rostock\CustomElementsBundle\Classes\PsaLookback:
         autowire: true
 
+    Rostock\CustomElementsBundle\Classes\PsaVote:
+        autowire: true
+
     contao.security.frontend_user_provider:
         class: Rostock\CustomElementsBundle\Security\PsaFrontendUserProvider
         arguments:

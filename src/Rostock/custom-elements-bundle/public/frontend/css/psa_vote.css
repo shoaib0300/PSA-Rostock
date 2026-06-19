@@ -1,0 +1,274 @@
+.psa-vote {
+  max-width: 1366px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem 3rem;
+  font-family: "Aspekta", -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+}
+.psa-vote__title {
+  margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: #222f30;
+  text-align: center;
+}
+.psa-vote__empty {
+  margin: 0;
+  text-align: center;
+  color: #4d5757;
+  font-style: italic;
+}
+.psa-vote__campaigns {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3rem);
+}
+
+.psa-vote-campaign {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(34, 47, 48, 0.12);
+  border-radius: 0.75rem;
+  background: #ffffff;
+}
+.psa-vote-campaign--ended {
+  opacity: 0.92;
+}
+.psa-vote-campaign__header {
+  margin-bottom: 1rem;
+}
+.psa-vote-campaign__title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  color: #222f30;
+}
+.psa-vote-campaign__meta, .psa-vote-campaign__hint {
+  margin: 0.35rem 0 0;
+  color: #4d5757;
+  font-size: 0.95rem;
+}
+.psa-vote-campaign__hint {
+  margin-bottom: 1rem;
+  color: #222f30;
+  font-weight: 500;
+}
+.psa-vote-campaign__notice {
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+.psa-vote-campaign__notice--upcoming {
+  background: rgba(34, 47, 48, 0.08);
+  color: #222f30;
+}
+.psa-vote-campaign__description {
+  margin-bottom: 1.25rem;
+  color: #4d5757;
+  line-height: 1.6;
+}
+.psa-vote-campaign__login {
+  margin: 0 0 1rem;
+  color: #222f30;
+}
+.psa-vote-campaign__login-link {
+  margin-left: 0.35rem;
+  color: #222f30;
+  font-weight: 600;
+  text-decoration: none;
+}
+.psa-vote-campaign__login-link:hover {
+  text-decoration: underline;
+}
+.psa-vote-campaign__error {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #fdecec;
+  color: #8a1f1f;
+  font-size: 0.95rem;
+}
+.psa-vote-campaign__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+.psa-vote-campaign__submit {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.75rem;
+  background: #222f30;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 12rem;
+}
+.psa-vote-campaign__submit:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+.psa-vote-campaign__submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.psa-vote-campaign__total {
+  margin: 1rem 0 0;
+  color: #4d5757;
+  font-size: 0.95rem;
+}
+
+.psa-vote-position + .psa-vote-position {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(34, 47, 48, 0.1);
+}
+.psa-vote-position__header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.psa-vote-position__icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.psa-vote-position__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  color: #222f30;
+}
+.psa-vote-position__description, .psa-vote-position__pick {
+  margin: 0;
+  color: #4d5757;
+  font-size: 0.95rem;
+}
+.psa-vote-position__pick {
+  margin-top: 0.35rem;
+  font-weight: 600;
+  color: #222f30;
+}
+
+.psa-vote-candidates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.psa-vote-candidate {
+  position: relative;
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 25rem;
+}
+.psa-vote-candidate__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.psa-vote-candidate__label {
+  display: block;
+  cursor: pointer;
+}
+.psa-vote-candidate__badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: #cef79e;
+  color: #222f30;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.psa-vote-candidate__card {
+  height: 100%;
+  border: 2px solid rgba(34, 47, 48, 0.16);
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+.psa-vote-candidate__label:hover .psa-vote-candidate__card {
+  border-color: #222f30;
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1.25rem rgba(34, 47, 48, 0.08);
+}
+.psa-vote-candidate.is-selected .psa-vote-candidate__card {
+  border-color: #222f30;
+  box-shadow: 0 0 0 3px rgba(206, 247, 158, 0.8);
+  background: rgba(206, 247, 158, 0.18);
+}
+.psa-vote-candidate.is-selected .psa-vote-candidate__badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+.psa-vote-candidate__photo, .psa-vote-candidate__placeholder {
+  width: 100%;
+  height: clamp(16rem, 38vw, 18.5rem);
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+.psa-vote-candidate__placeholder {
+  display: grid;
+  place-items: center;
+  background: rgba(34, 47, 48, 0.1);
+  color: #222f30;
+  font-size: 2rem;
+  font-weight: 700;
+}
+.psa-vote-candidate__body {
+  padding: 1rem 1rem 1.15rem;
+}
+.psa-vote-candidate__name {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  color: #222f30;
+}
+.psa-vote-candidate__pitch {
+  margin: 0;
+  color: #4d5757;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.psa-vote-candidate__result {
+  margin-top: 0.75rem;
+}
+.psa-vote-candidate__votes {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  color: #4d5757;
+}
+.psa-vote-candidate__bar {
+  height: 0.35rem;
+  border-radius: 999px;
+  background: rgba(34, 47, 48, 0.1);
+  overflow: hidden;
+}
+.psa-vote-candidate__fill {
+  display: block;
+  height: 100%;
+  background: #222f30;
+}
+.psa-vote-candidate__choice {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #222f30;
+}
+
+@media (min-width: 640px) {
+  .psa-vote-candidate {
+    flex-basis: calc(50% - 0.5rem);
+    max-width: 25rem;
+  }
+}

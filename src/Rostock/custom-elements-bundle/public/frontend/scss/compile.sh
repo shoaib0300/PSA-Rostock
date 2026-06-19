@@ -12,6 +12,7 @@ sass "$DIR/psa_member_forms.scss" "$DIR/../css/psa_member_forms.css" --style=exp
 sass "$DIR/psa_events.scss" "$DIR/../css/psa_events.css" --style=expanded --no-source-map
 sass "$DIR/psa_meetups.scss" "$DIR/../css/psa_meetups.css" --style=expanded --no-source-map
 sass "$DIR/psa_team.scss" "$DIR/../css/psa_team.css" --style=expanded --no-source-map
+sass "$DIR/psa_vote.scss" "$DIR/../css/psa_vote.css" --style=expanded --no-source-map
 sass "$DIR/psa_lookback.scss" "$DIR/../css/psa_lookback.css" --style=expanded --no-source-map
 sass "$DIR/psa_error.scss" "$DIR/../css/psa_error.css" --style=expanded --no-source-map
 sass "$DIR/ce_text_double.scss" "$DIR/../css/ce_text_double.css" --style=expanded --no-source-map
@@ -20,4 +21,4 @@ sass "$DIR/ce_slider_main.scss" "$DIR/../css/ce_slider_main.css" --style=expande
 ROOT="$(cd "$DIR/../../../../../.." && pwd)"
 sass "$ROOT/files/tpl/scss/main.scss" "$ROOT/files/tpl/css/main.css" --style=expanded --no-source-map --load-path="$ROOT/node_modules"
 
-echo "Compiled psa_fonts.css, psa_button.css, psa_hero.css, psa_site_header.css, psa_site_footer.css, psa_member_forms.css, psa_events.css, psa_meetups.css, psa_team.css, psa_lookback.css, psa_error.css, ce_text_double.css, ce_slider_main.css, main.css"
+echo "Compiled psa_fonts.css, psa_button.css, psa_hero.css, psa_site_header.css, psa_site_footer.css, psa_member_forms.css, psa_events.css, psa_meetups.css, psa_team.css, psa_vote.css, psa_lookback.css, psa_error.css, ce_text_double.css, ce_slider_main.css, main.css"
