@@ -18,7 +18,7 @@ final class PsaHeaderAuth
         ['label' => 'Events', 'href' => '/events'],
         ['label' => 'Meetups', 'href' => '/meetups'],
         ['label' => 'Team', 'href' => '/team'],
-        ['label' => 'Contributors', 'href' => '/contributors'],
+        ['label' => 'Vote', 'href' => '/vote'],
         ['label' => 'About', 'href' => '/about'],
     ];
 

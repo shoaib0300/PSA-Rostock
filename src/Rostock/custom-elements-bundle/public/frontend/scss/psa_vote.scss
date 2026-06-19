@@ -71,6 +71,16 @@
       background: color.adjust($psa-ink, $alpha: -0.92);
       color: $psa-ink;
     }
+
+    &--results-hidden {
+      background: color.adjust($psa-ink, $alpha: -0.94);
+      color: $psa-graphite;
+    }
+  }
+
+  &__meta--ended {
+    font-weight: 600;
+    color: $psa-ink;
   }
 
   &__description {
@@ -179,6 +189,16 @@
     font-weight: 600;
     color: $psa-ink;
   }
+
+  &__winner {
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: color.adjust($psa-lime, $alpha: -0.55);
+    color: $psa-ink;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
 }
 
 .psa-vote-candidates {
@@ -223,6 +243,21 @@
     transition: opacity 0.15s ease, transform 0.15s ease;
   }
 
+  &__winner-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: $psa-ink;
+    color: $psa-paper;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
   &__card {
     height: 100%;
     border: 2px solid color.adjust($psa-ink, $alpha: -0.84);
@@ -247,6 +282,11 @@
   &.is-selected &__badge {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  &.is-winner &__card {
+    border-color: $psa-ink;
+    box-shadow: 0 0 0 3px color.adjust($psa-lime, $alpha: -0.35);
   }
 
   &__photo,

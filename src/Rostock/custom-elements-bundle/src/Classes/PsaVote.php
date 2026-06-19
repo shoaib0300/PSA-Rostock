@@ -189,6 +189,7 @@ final class PsaVote
             'status' => $status,
             'canVote' => $status === 'active',
             'showResults' => $showResults,
+            'showResultsMode' => (string) ($row['showResults'] ?? 'after_vote'),
             'memberVotes' => $memberVotes,
             'hasVoted' => $memberVotes !== [],
             'positions' => $positions,
@@ -204,10 +205,10 @@ final class PsaVote
         $rows = $this->connection->fetchAllAssociative(
             'SELECT c.*, r.title AS reason_title, r.description AS reason_description, r.photo AS reason_photo
              FROM tl_psa_vote_candidate c
-             LEFT JOIN tl_psa_vote_reason r ON r.id = c.reason_id AND r.published = ?
+             LEFT JOIN tl_psa_vote_reason r ON r.id = c.reason_id
              WHERE c.pid = ? AND c.published = ?
              ORDER BY c.sorting ASC, c.name ASC',
-            ['1', $campaignId, '1'],
+            [$campaignId, '1'],
         );
 
         $grouped = [];
@@ -217,11 +218,14 @@ final class PsaVote
             $positionLabel = $this->resolvePositionLabel($row);
 
             if (!isset($grouped[$reasonKey])) {
+                $reasonId = (int) ($row['reason_id'] ?? 0);
+                $reasonMeta = $reasonId > 0 ? $this->loadReasonMeta($reasonId) : null;
+
                 $grouped[$reasonKey] = [
                     'reasonKey' => $reasonKey,
                     'title' => $positionLabel,
-                    'description' => $this->nonEmptyString($row['reason_description'] ?? ''),
-                    'photo' => $this->resolvePhotoPath($row['reason_photo'] ?? null),
+                    'description' => $reasonMeta['description'] ?? $this->nonEmptyString($row['reason_description'] ?? ''),
+                    'photo' => $reasonMeta['photo'] ?? $this->resolvePhotoPath($row['reason_photo'] ?? null),
                     'candidates' => [],
                 ];
             }
@@ -242,13 +246,28 @@ final class PsaVote
         if ($showResults) {
             foreach ($grouped as &$position) {
                 $totalVotes = array_sum(array_column($position['candidates'], 'votes'));
+                $maxVotes = 0;
+
+                foreach ($position['candidates'] as $candidate) {
+                    $maxVotes = max($maxVotes, (int) $candidate['votes']);
+                }
+
+                $winnerNames = [];
 
                 foreach ($position['candidates'] as &$candidate) {
                     $candidate['percent'] = $totalVotes > 0
                         ? (int) round(($candidate['votes'] / $totalVotes) * 100)
                         : 0;
+                    $candidate['isWinner'] = $maxVotes > 0 && (int) $candidate['votes'] === $maxVotes;
+
+                    if ($candidate['isWinner']) {
+                        $winnerNames[] = $candidate['name'];
+                    }
                 }
                 unset($candidate);
+
+                $position['winnerNames'] = $winnerNames;
+                $position['hasWinner'] = $winnerNames !== [];
             }
             unset($position);
         }
@@ -281,15 +300,47 @@ final class PsaVote
      */
     private function resolvePositionLabel(array $row): string
     {
-        $custom = trim((string) ($row['position'] ?? ''));
+        $reasonId = (int) ($row['reason_id'] ?? 0);
 
-        if ($custom !== '') {
-            return $custom;
+        if ($reasonId > 0) {
+            $title = trim((string) ($row['reason_title'] ?? ''));
+
+            if ($title === '') {
+                $fetched = $this->connection->fetchOne(
+                    'SELECT title FROM tl_psa_vote_reason WHERE id = ?',
+                    [$reasonId],
+                );
+                $title = is_string($fetched) ? trim($fetched) : '';
+            }
+
+            if ($title !== '') {
+                return $title;
+            }
         }
 
-        $reasonTitle = trim((string) ($row['reason_title'] ?? ''));
+        $custom = trim((string) ($row['position'] ?? ''));
 
-        return $reasonTitle !== '' ? $reasonTitle : 'General';
+        return $custom !== '' ? $custom : 'General';
+    }
+
+    /**
+     * @return array{description: ?string, photo: ?string}|null
+     */
+    private function loadReasonMeta(int $reasonId): ?array
+    {
+        $row = $this->connection->fetchAssociative(
+            'SELECT title, description, photo FROM tl_psa_vote_reason WHERE id = ?',
+            [$reasonId],
+        );
+
+        if ($row === false) {
+            return null;
+        }
+
+        return [
+            'description' => $this->nonEmptyString($row['description'] ?? ''),
+            'photo' => $this->resolvePhotoPath($row['photo'] ?? null),
+        ];
     }
 
     /**

@@ -47,7 +47,16 @@ $campaigns = is_array($this->campaigns ?? null) ? $this->campaigns : [];
                 ) ?>
               </p>
             <?php elseif ($status === 'ended'): ?>
-              <p class="psa-vote-campaign__meta"><?= $lang['vote_campaign_ended'] ?? 'This campaign has ended.' ?></p>
+              <p class="psa-vote-campaign__meta psa-vote-campaign__meta--ended">
+                <?php if ((string) ($campaign['endDateFormatted'] ?? '') !== ''): ?>
+                  <?= sprintf(
+                      $lang['vote_campaign_ended_on'] ?? 'Voting ended on %s.',
+                      htmlspecialchars((string) $campaign['endDateFormatted'], ENT_QUOTES),
+                  ) ?>
+                <?php else: ?>
+                  <?= $lang['vote_campaign_ended'] ?? 'This campaign has ended.' ?>
+                <?php endif; ?>
+              </p>
             <?php endif; ?>
           </header>
 
@@ -74,6 +83,12 @@ $campaigns = is_array($this->campaigns ?? null) ? $this->campaigns : [];
               <a class="psa-vote-campaign__login-link" href="<?= htmlspecialchars((string) $this->loginUrl, ENT_QUOTES) ?>">
                 <?= $lang['vote_login_cta'] ?? 'Log in to vote' ?>
               </a>
+            </p>
+          <?php endif; ?>
+
+          <?php if ($status === 'ended' && !$showResults): ?>
+            <p class="psa-vote-campaign__notice psa-vote-campaign__notice--results-hidden">
+              <?= $lang['vote_results_hidden'] ?? 'Results will be announced by the organisers.' ?>
             </p>
           <?php endif; ?>
 
@@ -125,12 +140,25 @@ $campaigns = is_array($this->campaigns ?? null) ? $this->campaigns : [];
                   </div>
                 </div>
 
+                <?php if ($showResults && !empty($position['hasWinner'])): ?>
+                  <p class="psa-vote-position__winner">
+                    <?= sprintf(
+                        $lang['vote_winner_for'] ?? 'Winner for %s: %s',
+                        htmlspecialchars((string) $position['title'], ENT_QUOTES),
+                        htmlspecialchars(implode(', ', $position['winnerNames'] ?? []), ENT_QUOTES),
+                    ) ?>
+                  </p>
+                <?php endif; ?>
+
                 <div class="psa-vote-candidates" role="radiogroup" aria-label="<?= htmlspecialchars((string) $position['title'], ENT_QUOTES) ?>">
                   <?php foreach ($candidates as $candidate): ?>
                     <?php
                       $candidateId = (int) $candidate['id'];
                       $isSelected = $selectedId === $candidateId;
-                      $cardClass = 'psa-vote-candidate'.($isSelected ? ' is-selected' : '');
+                      $isWinner = !empty($candidate['isWinner']);
+                      $cardClass = 'psa-vote-candidate'
+                          .($isSelected ? ' is-selected' : '')
+                          .($isWinner ? ' is-winner' : '');
                     ?>
                     <div class="<?= $cardClass ?>" data-candidate-id="<?= $candidateId ?>">
                       <?php if ($canVote): ?>
@@ -145,6 +173,8 @@ $campaigns = is_array($this->campaigns ?? null) ? $this->campaigns : [];
                         >
                         <label class="psa-vote-candidate__label" for="vote-<?= (int) $campaign['id'] ?>-<?= $reasonKey ?>-<?= $candidateId ?>">
                           <span class="psa-vote-candidate__badge" aria-hidden="true"><?= $lang['vote_selected'] ?? 'Selected' ?></span>
+                      <?php elseif ($isWinner && $showResults): ?>
+                        <span class="psa-vote-candidate__winner-badge"><?= $lang['vote_winner'] ?? 'Winner' ?></span>
                       <?php endif; ?>
 
                       <div class="psa-vote-candidate__card">

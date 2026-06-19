@@ -59,6 +59,14 @@
   background: rgba(34, 47, 48, 0.08);
   color: #222f30;
 }
+.psa-vote-campaign__notice--results-hidden {
+  background: rgba(34, 47, 48, 0.06);
+  color: #4d5757;
+}
+.psa-vote-campaign__meta--ended {
+  font-weight: 600;
+  color: #222f30;
+}
 .psa-vote-campaign__description {
   margin-bottom: 1.25rem;
   color: #4d5757;
@@ -148,6 +156,15 @@
   font-weight: 600;
   color: #222f30;
 }
+.psa-vote-position__winner {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(206, 247, 158, 0.45);
+  color: #222f30;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
 
 .psa-vote-candidates {
   display: flex;
@@ -188,6 +205,20 @@
   transform: translateY(-0.25rem);
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
+.psa-vote-candidate__winner-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: #222f30;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 .psa-vote-candidate__card {
   height: 100%;
   border: 2px solid rgba(34, 47, 48, 0.16);
@@ -209,6 +240,10 @@
 .psa-vote-candidate.is-selected .psa-vote-candidate__badge {
   opacity: 1;
   transform: translateY(0);
+}
+.psa-vote-candidate.is-winner .psa-vote-candidate__card {
+  border-color: #222f30;
+  box-shadow: 0 0 0 3px rgba(206, 247, 158, 0.65);
 }
 .psa-vote-candidate__photo, .psa-vote-candidate__placeholder {
   width: 100%;
