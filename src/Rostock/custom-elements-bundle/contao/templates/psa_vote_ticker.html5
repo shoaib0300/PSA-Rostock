@@ -1,0 +1,47 @@
+<?php
+
+$items = is_array($this->items ?? null) ? $this->items : [];
+$votePageUrl = rtrim((string) ($this->votePageUrl ?? '/vote'), '/');
+
+if ($items === []) {
+    return;
+}
+
+?>
+<div
+  class="psa-vote-ticker"
+  data-psa-vote-ticker
+  data-vote-page-url="<?= htmlspecialchars($votePageUrl, ENT_QUOTES) ?>"
+  role="region"
+  aria-label="<?= htmlspecialchars((string) ($this->label ?? 'Live results'), ENT_QUOTES) ?>"
+>
+  <div class="psa-vote-ticker__label" aria-hidden="true">
+    <?= $this->label ?? 'Live results' ?>
+  </div>
+  <div class="psa-vote-ticker__viewport">
+    <div class="psa-vote-ticker__track" data-psa-vote-ticker-track>
+      <?php for ($copy = 0; $copy < 2; ++$copy): ?>
+        <div class="psa-vote-ticker__group"<?= $copy > 0 ? ' aria-hidden="true"' : '' ?>>
+          <?php foreach ($items as $item): ?>
+            <button
+              type="button"
+              class="psa-vote-ticker__item psa-vote-ticker__item--<?= htmlspecialchars((string) ($item['kind'] ?? 'leading'), ENT_QUOTES) ?>"
+              data-psa-vote-ticker-item="<?= (int) ($item['campaignId'] ?? 0) ?>"
+            >
+              <span class="psa-vote-ticker__campaign"><?= htmlspecialchars((string) ($item['campaign'] ?? ''), ENT_QUOTES) ?></span>
+              <span class="psa-vote-ticker__sep" aria-hidden="true">·</span>
+              <span class="psa-vote-ticker__position"><?= htmlspecialchars((string) ($item['position'] ?? ''), ENT_QUOTES) ?></span>
+              <span class="psa-vote-ticker__sep" aria-hidden="true">·</span>
+              <span class="psa-vote-ticker__name"><?= htmlspecialchars((string) ($item['names'] ?? ''), ENT_QUOTES) ?></span>
+              <span class="psa-vote-ticker__badge">
+                <?= ($item['kind'] ?? '') === 'winner'
+                    ? ($this->winnerLabel ?? 'Winner')
+                    : ($this->leadingLabel ?? 'Leading') ?>
+              </span>
+            </button>
+          <?php endforeach; ?>
+        </div>
+      <?php endfor; ?>
+    </div>
+  </div>
+</div>

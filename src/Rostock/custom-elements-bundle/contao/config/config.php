@@ -12,6 +12,7 @@ use Rostock\CustomElementsBundle\Models\PsaTeamMemberModel;
 use Rostock\CustomElementsBundle\Models\PsaVoteBallotModel;
 use Rostock\CustomElementsBundle\Models\PsaVoteCampaignModel;
 use Rostock\CustomElementsBundle\Models\PsaVoteCandidateModel;
+use Rostock\CustomElementsBundle\Models\PsaVoteConfigModel;
 use Rostock\CustomElementsBundle\Models\PsaVoteReasonModel;
 use Rostock\CustomElementsBundle\Module\PsaModuleLostPassword;
 use Rostock\CustomElementsBundle\Module\PsaModuleRegistration;
@@ -32,6 +33,10 @@ $GLOBALS['BE_MOD']['psa_community']['psa_meetups'] = [
 
 $GLOBALS['BE_MOD']['psa_community']['psa_team'] = [
     'tables' => ['tl_psa_team_member'],
+];
+
+$GLOBALS['BE_MOD']['psa_community']['psa_vote_settings'] = [
+    'tables' => ['tl_psa_vote_config'],
 ];
 
 $GLOBALS['BE_MOD']['psa_community']['psa_vote_reasons'] = [
@@ -66,6 +71,7 @@ $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_option'] = PsaMeetupPollOptionModel::c
 $GLOBALS['TL_MODELS']['tl_psa_meetup_poll_vote'] = PsaMeetupPollVoteModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_team_member'] = PsaTeamMemberModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_vote_reason'] = PsaVoteReasonModel::class;
+$GLOBALS['TL_MODELS']['tl_psa_vote_config'] = PsaVoteConfigModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_vote_campaign'] = PsaVoteCampaignModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_vote_candidate'] = PsaVoteCandidateModel::class;
 $GLOBALS['TL_MODELS']['tl_psa_vote_ballot'] = PsaVoteBallotModel::class;

@@ -481,6 +481,154 @@ final class PsaVote
         };
     }
 
+    public function isTickerEnabled(): bool
+    {
+        if (!$this->connection->createSchemaManager()->tablesExist(['tl_psa_vote_config'])) {
+            return true;
+        }
+
+        $value = $this->connection->fetchOne('SELECT showTicker FROM tl_psa_vote_config WHERE id = 1');
+
+        if ($value === false) {
+            return true;
+        }
+
+        return (string) $value === '1';
+    }
+
+    public function shouldShowTickerOnPage(int $pageId): bool
+    {
+        if ($pageId <= 0 || !$this->isTickerEnabled()) {
+            return false;
+        }
+
+        $pageIds = $this->getTickerPageIds();
+
+        if ($pageIds === []) {
+            return true;
+        }
+
+        return $this->isPageOrAncestorSelected($pageId, $pageIds);
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function getTickerPageIds(): array
+    {
+        if (!$this->connection->createSchemaManager()->tablesExist(['tl_psa_vote_config'])) {
+            return [];
+        }
+
+        try {
+            $raw = $this->connection->fetchOne('SELECT tickerPages FROM tl_psa_vote_config WHERE id = 1');
+        } catch (\Throwable) {
+            return [];
+        }
+
+        if ($raw === false || $raw === null || $raw === '') {
+            return [];
+        }
+
+        $ids = \Contao\StringUtil::deserialize($raw, true);
+
+        if (!\is_array($ids)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map(static fn ($id): int => (int) $id, $ids)));
+    }
+
+    /**
+     * @param list<int> $selectedPageIds
+     */
+    private function isPageOrAncestorSelected(int $pageId, array $selectedPageIds): bool
+    {
+        $page = \Contao\PageModel::findByPk($pageId);
+
+        while ($page !== null) {
+            if (\in_array((int) $page->id, $selectedPageIds, true)) {
+                return true;
+            }
+
+            $pid = (int) $page->pid;
+
+            if ($pid <= 0) {
+                break;
+            }
+
+            $page = \Contao\PageModel::findByPk($pid);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return list<array{campaignId: int, campaign: string, position: string, names: string, kind: string}>
+     */
+    public function buildTickerItems(int $memberId = 0): array
+    {
+        $items = [];
+
+        foreach ($this->getVisibleCampaigns($memberId) as $campaign) {
+            if (empty($campaign['showResults'])) {
+                continue;
+            }
+
+            $campaignId = (int) ($campaign['id'] ?? 0);
+            $campaignTitle = trim((string) ($campaign['title'] ?? ''));
+            $status = (string) ($campaign['status'] ?? '');
+            $positions = is_array($campaign['positions'] ?? null) ? $campaign['positions'] : [];
+
+            foreach ($positions as $position) {
+                if ($status === 'ended' && !empty($position['hasWinner'])) {
+                    $items[] = [
+                        'campaignId' => $campaignId,
+                        'campaign' => $campaignTitle,
+                        'position' => trim((string) ($position['title'] ?? '')),
+                        'names' => implode(', ', $position['winnerNames'] ?? []),
+                        'kind' => 'winner',
+                    ];
+                } elseif ($status !== 'ended' && !empty($position['hasLeader'])) {
+                    $items[] = [
+                        'campaignId' => $campaignId,
+                        'campaign' => $campaignTitle,
+                        'position' => trim((string) ($position['title'] ?? '')),
+                        'names' => implode(', ', $position['leaderNames'] ?? []),
+                        'kind' => 'leading',
+                    ];
+                }
+            }
+        }
+
+        return $items;
+    }
+
+    public function resolveVotePageUrl(): string
+    {
+        $pageId = $this->connection->fetchOne(
+            "SELECT p.id FROM tl_page p
+             INNER JOIN tl_article a ON a.pid = p.id
+             INNER JOIN tl_content c ON c.pid = a.id AND c.ptable = 'tl_article' AND c.type = 'module'
+             INNER JOIN tl_module m ON m.id = c.module AND m.type = 'psa_vote'
+             WHERE p.published = '1'
+             ORDER BY p.id ASC
+             LIMIT 1",
+        );
+
+        if (!is_numeric($pageId)) {
+            return '/vote';
+        }
+
+        $page = \Contao\PageModel::findByPk((int) $pageId);
+
+        if ($page === null) {
+            return '/vote';
+        }
+
+        return $page->getFrontendUrl();
+    }
+
     private function nonEmptyString(mixed $value): ?string
     {
         $string = trim((string) $value);

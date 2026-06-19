@@ -45,6 +45,7 @@ $GLOBALS['TL_LANG']['PSA']['vote_selected'] = 'Selected';
 $GLOBALS['TL_LANG']['FMD']['psa_vote'] = ['PSA Voting', 'Shows active voting campaigns for members.'];
 
 $GLOBALS['TL_LANG']['MOD']['psa_vote_reasons'] = ['Vote positions', 'Reusable positions/reasons for campaigns'];
+$GLOBALS['TL_LANG']['MOD']['psa_vote_settings'] = ['Vote settings', 'Global voting display options'];
 $GLOBALS['TL_LANG']['MOD']['psa_vote_campaigns'] = ['Vote campaigns', 'Manage voting campaigns and candidates'];
 $GLOBALS['TL_LANG']['MOD']['psa_vote_ballots'] = ['Vote ballots', 'Submitted member votes'];
 

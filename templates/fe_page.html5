@@ -13,6 +13,7 @@ $this->rootAttributes = $this
 $bodyClasses = array_values(array_filter([
     $this->class,
     !empty($GLOBALS['PSA_HAS_HERO']) ? 'has-psa-hero' : null,
+    \is_array($this->psaVoteTicker ?? null) ? 'has-psa-vote-ticker' : null,
 ]));
 
 $this->bodyAttributes = $this
@@ -163,6 +164,10 @@ $this->bodyAttributes = $this->bodyAttributes
     </div>
 
     <?php $this->sections('bottom'); ?>
+
+    <?php if (\is_array($this->psaVoteTicker ?? null)): ?>
+      <?php $this->insert('psa_vote_ticker', $this->psaVoteTicker); ?>
+    <?php endif; ?>
   <?php $this->endblock(); ?>
 
   <?= $this->mootools ?>
