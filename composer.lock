@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1137057552c912c632418b27b56757d7",
+    "content-hash": "7e093c69be400a7b399d3eaa4159ba5d",
     "packages": [
         {
             "name": "ausi/slug-generator",
@@ -15388,65 +15388,6 @@
                 }
             ],
             "time": "2026-02-04T18:08:13+00:00"
-        },
-        {
-            "name": "think-digital-agency/contao-live-preview",
-            "version": "v2.3.20",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/think-digital-agency/contao-live-preview.git",
-                "reference": "ce5c8786f6113f7ca200f2301b1647d8976737df"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/think-digital-agency/contao-live-preview/zipball/ce5c8786f6113f7ca200f2301b1647d8976737df",
-                "reference": "ce5c8786f6113f7ca200f2301b1647d8976737df",
-                "shasum": ""
-            },
-            "require": {
-                "contao/core-bundle": "^5.3",
-                "php": "^8.2"
-            },
-            "type": "contao-bundle",
-            "extra": {
-                "logo": "docs/app-icon.png",
-                "contao-manager-plugin": "ThinkDigital\\ContaoLivePreview\\ContaoManager\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "ThinkDigital\\ContaoLivePreview\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Think Digital Agency",
-                    "homepage": "https://think-digital.agency"
-                }
-            ],
-            "description": "Live preview sidebar for the Contao 5 backend — articles and content elements hot-refreshed in real time, with hover inspection and one-click edit navigation.",
-            "homepage": "https://github.com/think-digital-agency/contao-live-preview",
-            "keywords": [
-                "backend",
-                "contao",
-                "contao-bundle",
-                "contao-extension",
-                "frontend edit helper",
-                "frontend editor",
-                "frontend helper",
-                "hover",
-                "live preview",
-                "preview",
-                "sidebar"
-            ],
-            "support": {
-                "issues": "https://github.com/think-digital-agency/contao-live-preview/issues",
-                "source": "https://github.com/think-digital-agency/contao-live-preview/tree/v2.3.20"
-            },
-            "time": "2026-06-15T20:10:32+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

@@ -42,7 +42,6 @@
         "oveleon/contao-cookiebar": "^2.3",
         "terminal42/contao-changelanguage": "^3.8",
         "terminal42/notification_center": "^2.7",
-        "think-digital-agency/contao-live-preview": "^2.3",
         "rostock/custom-elements-bundle": "^1.0"
     },
     "autoload": {
