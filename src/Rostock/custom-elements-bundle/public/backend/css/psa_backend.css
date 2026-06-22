@@ -1,0 +1,34 @@
+#home.psa-backend-home {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: auto;
+    min-height: 16px;
+    padding: 8px 12px;
+    background: none;
+}
+
+#home .psa-backend-logo {
+    display: block;
+    height: 26px;
+    width: auto;
+    max-width: min(168px, 38vw);
+}
+
+body.be_login {
+    background-image: url("/bundles/customelements/frontend/images/psa-logo.svg?v=2");
+    background-size: auto 56px;
+    background-position: center 4.5em;
+}
+
+@media (width < 768px) {
+    #home.psa-backend-home {
+        min-width: auto;
+        padding: 8px;
+    }
+
+    #home .psa-backend-logo {
+        height: 22px;
+        max-width: min(120px, 34vw);
+    }
+}

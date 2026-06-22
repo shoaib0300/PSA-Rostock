@@ -1,0 +1,26 @@
+{% extends '@Contao/be_main.html.twig' %}
+
+{% block header %}
+    {% if not renderMainOnly %}
+        <header id="header">
+            <div class="inner">
+                <a href="{{ path('contao_backend') }}" accesskey="h" id="home" class="psa-backend-home" title="{{ home }}" data-contao--tooltips-target="tooltip">
+                    <img
+                        src="/bundles/customelements/frontend/images/psa-logo.svg?v=2"
+                        alt="PSA Rostock"
+                        class="psa-backend-logo"
+                        width="120"
+                        height="28"
+                        decoding="async"
+                    >
+                    {% if badgeTitle|default %}
+                        <span class="badge-title">{{ badgeTitle }}</span>
+                    {% endif %}
+                </a>
+                {{ headerMenu|raw }}
+            </div>
+        </header>
+
+        {{ block('header_outlets') }}
+    {% endif %}
+{% endblock %}
