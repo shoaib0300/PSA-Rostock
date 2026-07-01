@@ -2,13 +2,14 @@
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=3';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=5';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 
 $headerAuth = PsaHeaderAuth::resolve();
 $isLoggedIn = $headerAuth['isLoggedIn'];
 $navItems = $headerAuth['navItems'];
 $additionalLinks = $headerAuth['additionalLinks'];
+$memberStats = $headerAuth['memberStats'];
 
 $siteName = $this->siteName ?? 'PSA Rostock';
 $registerUrl = $this->registerUrl ?? '/register';
@@ -29,6 +30,9 @@ $copyright = $this->copyright ?? ('© ' . date('Y') . ' ' . $siteName);
                         <span class="psa-footer__logo-text"><?= $siteName ?></span>
                     <?php endif; ?>
                 </a>
+                <?php if (($memberStats['inRostock'] ?? 0) > 0): ?>
+                    <p class="psa-footer__members" aria-live="polite"><?= (int) $memberStats['inRostock'] ?> in Rostock</p>
+                <?php endif; ?>
                 <?php if ($tagline): ?>
                     <p class="psa-footer__tagline"><?= $tagline ?></p>
                 <?php endif; ?>

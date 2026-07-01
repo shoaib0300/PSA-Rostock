@@ -159,6 +159,13 @@
   font-weight: 600;
   letter-spacing: -0.02em;
 }
+.psa-footer__members {
+  margin: -0.25rem 0 0;
+  color: #c9cbbe;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
 .psa-footer__tagline {
   margin: 0;
   color: #c9cbbe;

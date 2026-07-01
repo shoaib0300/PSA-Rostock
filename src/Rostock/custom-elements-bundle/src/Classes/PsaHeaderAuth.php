@@ -44,7 +44,8 @@ final class PsaHeaderAuth
      *     loginUrl: string,
      *     logoutUrl: string,
      *     navItems: list<array{label: string, href: string, active: bool}>,
-     *     additionalLinks: array{title: string, items: list<array{label: string, href: string, active: bool}>}
+     *     additionalLinks: array{title: string, items: list<array{label: string, href: string, active: bool}>},
+     *     memberStats: array{active: int, inRostock: int}
      * }
      */
     public static function resolve(?string $currentPath = null): array
@@ -127,6 +128,7 @@ final class PsaHeaderAuth
                 'title' => self::DEFAULT_ADDITIONAL_LINKS['title'],
                 'items' => $additionalItems,
             ],
+            'memberStats' => PsaMemberStats::resolve(),
         ];
     }
 
