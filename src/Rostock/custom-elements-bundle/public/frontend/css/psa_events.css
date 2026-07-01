@@ -80,12 +80,22 @@
   padding: 1.25rem;
 }
 .psa-event-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin: 0;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #4d5757;
+}
+.psa-event-card__copy {
+  flex-shrink: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
 }
 .psa-event-card__title {
   margin: 0;
@@ -160,6 +170,19 @@
 }
 .psa-event-detail__header {
   margin-bottom: 1.5rem;
+}
+.psa-event-detail__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.psa-event-detail__header-main {
+  min-width: 0;
+}
+.psa-event-detail__copy {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
 }
 .psa-event-detail__meta {
   margin: 0 0 0.5rem;
@@ -502,4 +525,25 @@
 }
 .psa-comment__delete-btn:hover, .psa-comment__delete-btn:focus-visible {
   color: #222f30;
+}
+
+.psa-copy-link {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #4d5757;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.psa-copy-link:hover, .psa-copy-link:focus-visible {
+  color: #222f30;
+}
+.psa-copy-link.is-copied {
+  color: #cef79e;
+  text-decoration: none;
 }

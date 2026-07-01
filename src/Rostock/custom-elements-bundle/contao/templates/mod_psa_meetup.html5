@@ -160,10 +160,16 @@ $ajaxLang = [
           <article class="psa-meetup-card<?= !empty($meetup['isPost']) ? ' psa-meetup-card--post' : '' ?>" id="meetup-<?= (int) $meetup['id'] ?>" data-meetup-id="<?= (int) $meetup['id'] ?>">
             <header class="psa-meetup-card__header">
               <div class="psa-meetup-card__header-top">
-                <div class="psa-meetup-card__badges">
-                  <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
-                </div>
+                <span class="psa-meetup-card__badge"><?= !empty($meetup['isPost']) ? ($lang['meetup_badge_post'] ?? 'Post') : ($lang['meetup_badge_meetup'] ?? 'Meetup') ?></span>
                 <div class="psa-meetup-card__header-actions">
+                  <button
+                    type="button"
+                    class="psa-copy-link"
+                    data-psa-copy-link
+                    data-psa-copy-url="<?= htmlspecialchars(rtrim((string) ($this->meetupsShareBase ?? '/meetups'), '/') . '#meetup-' . (int) $meetup['id'], ENT_QUOTES) ?>"
+                    data-default-label="<?= htmlspecialchars((string) ($lang['meetup_copy_link'] ?? 'Copy link'), ENT_QUOTES) ?>"
+                    data-copied-label="<?= htmlspecialchars((string) ($lang['meetup_link_copied'] ?? 'Copied!'), ENT_QUOTES) ?>"
+                  ><?= $lang['meetup_copy_link'] ?? 'Copy link' ?></button>
                   <?php if ($this->isMember && !empty($meetup['isAuthor'])): ?>
                     <form class="psa-meetup-card__delete" method="post" onsubmit="return confirm('<?= htmlspecialchars((string) ($lang['meetup_delete_confirm'] ?? 'Delete this post?'), ENT_QUOTES) ?>')">
                       <input type="hidden" name="FORM_SUBMIT" value="psa_delete_meetup">

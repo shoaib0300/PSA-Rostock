@@ -17,6 +17,8 @@ $GLOBALS['TL_LANG']['PSA']['event_login_required'] = 'Nur Mitglieder können abs
 $GLOBALS['TL_LANG']['PSA']['event_login_rsvp'] = 'Nur Mitglieder können abstimmen und kommentieren. Bitte <a href="%s">melde dich zuerst an</a>, wenn du abstimmen oder kommentieren möchtest.';
 $GLOBALS['TL_LANG']['PSA']['event_login_comment'] = 'Nur Mitglieder können abstimmen und kommentieren. Bitte <a href="%s">melde dich zuerst an</a>, wenn du abstimmen oder kommentieren möchtest.';
 $GLOBALS['TL_LANG']['PSA']['event_view_details'] = 'Details ansehen';
+$GLOBALS['TL_LANG']['PSA']['event_copy_link'] = 'Link kopieren';
+$GLOBALS['TL_LANG']['PSA']['event_link_copied'] = 'Kopiert!';
 $GLOBALS['TL_LANG']['PSA']['lookback_months_label'] = 'Events nach Monat';
 $GLOBALS['TL_LANG']['PSA']['lookback_events'] = 'Events';
 $GLOBALS['TL_LANG']['PSA']['lookback_empty'] = 'Keine Events für diesen Lookback gefunden.';

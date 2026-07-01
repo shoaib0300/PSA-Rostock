@@ -56,6 +56,7 @@ final class MeetupModuleController extends AbstractFrontendModuleController
         $template->set('loginUrl', $auth['loginUrl']);
         $template->set('memberDisplayName', $auth['memberDisplayName']);
         $template->set('meetups', $meetups);
+        $template->set('meetupsShareBase', PsaHeaderAuth::getPageUrl('meetups'));
         $template->set('reactionEmojis', PsaMeetup::REACTION_EMOJIS);
         $template->set('requestToken', $this->csrfTokenManager->getToken($this->csrfTokenName)?->getValue() ?? '');
         $template->set('lang', $GLOBALS['TL_LANG']['PSA'] ?? []);

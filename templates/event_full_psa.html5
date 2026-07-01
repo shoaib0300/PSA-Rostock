@@ -8,6 +8,8 @@
 
   <div class="psa-event-detail__content">
     <header class="psa-event-detail__header">
+      <div class="psa-event-detail__header-row">
+        <div class="psa-event-detail__header-main">
       <p class="psa-event-detail__meta">
         <?php if ($this->recurring): ?>
           <span class="psa-event-detail__recurring"><?= $this->recurring ?></span>
@@ -24,6 +26,15 @@
           <?= $this->location ?><?php if ($this->address): ?>, <?= $this->address ?><?php endif; ?>
         </p>
       <?php endif; ?>
+        </div>
+        <button
+          type="button"
+          class="psa-copy-link psa-event-detail__copy"
+          data-psa-copy-link
+          data-default-label="<?= htmlspecialchars((string) ($GLOBALS['TL_LANG']['PSA']['event_copy_link'] ?? 'Copy link'), ENT_QUOTES) ?>"
+          data-copied-label="<?= htmlspecialchars((string) ($GLOBALS['TL_LANG']['PSA']['event_link_copied'] ?? 'Copied!'), ENT_QUOTES) ?>"
+        ><?= $GLOBALS['TL_LANG']['PSA']['event_copy_link'] ?? 'Copy link' ?></button>
+      </div>
     </header>
 
     <div class="psa-event-detail__body ce_text block">

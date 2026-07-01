@@ -17,6 +17,7 @@ class PsaGlobalAssetsListener
         $GLOBALS['TL_CSS']['psa_events'] = 'bundles/customelements/frontend/css/psa_events.css';
         $GLOBALS['TL_CSS']['psa_meetups'] = 'bundles/customelements/frontend/css/psa_meetups.css';
         $GLOBALS['TL_CSS']['psa_team'] = 'bundles/customelements/frontend/css/psa_team.css';
+        $GLOBALS['TL_BODY']['psa_share_link'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/psa_share_link.js?v=1');
         $GLOBALS['TL_BODY']['psa_events'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/psa_events.js');
         $GLOBALS['TL_BODY']['psa_meetups'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/psa_meetups.js?v=2');
         $GLOBALS['TL_BODY']['psa_team'] = \Contao\FrontendTemplate::generateScriptTag('bundles/customelements/frontend/js/psa_team.js');

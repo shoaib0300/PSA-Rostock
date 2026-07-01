@@ -11,6 +11,14 @@
   <div class="psa-event-card__body">
     <p class="psa-event-card__meta">
       <time datetime="<?= $this->datetime ?>"><?= $this->date ?><?php if ($this->time): ?> · <?= $this->time ?><?php endif; ?></time>
+      <button
+        type="button"
+        class="psa-copy-link psa-event-card__copy"
+        data-psa-copy-link
+        data-psa-copy-url="<?= htmlspecialchars((string) $this->href, ENT_QUOTES) ?>"
+        data-default-label="<?= htmlspecialchars((string) ($GLOBALS['TL_LANG']['PSA']['event_copy_link'] ?? 'Copy link'), ENT_QUOTES) ?>"
+        data-copied-label="<?= htmlspecialchars((string) ($GLOBALS['TL_LANG']['PSA']['event_link_copied'] ?? 'Copied!'), ENT_QUOTES) ?>"
+      ><?= $GLOBALS['TL_LANG']['PSA']['event_copy_link'] ?? 'Copy link' ?></button>
     </p>
 
     <h2 class="psa-event-card__title">

@@ -283,10 +283,6 @@ body.psa-meetups-modal-open {
   background: var(--psa-surface-card, $psa-surface-card);
   color: $psa-ink;
 
-  &__badges {
-    margin-bottom: 0.5rem;
-  }
-
   &__badge {
     display: inline-block;
     padding: 0.2rem 0.55rem;
@@ -301,19 +297,22 @@ body.psa-meetups-modal-open {
 
   &__header-top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
     margin-bottom: 0.75rem;
   }
 
   &__header-actions {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.25rem;
-    flex-shrink: 0;
-    text-align: right;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem 1.25rem;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   &__delete {
@@ -333,6 +332,13 @@ body.psa-meetups-modal-open {
     &:hover {
       color: #842029;
     }
+  }
+
+  &__posted {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $psa-graphite;
+    white-space: nowrap;
   }
 
   &__lead {
@@ -718,5 +724,29 @@ body.psa-meetups-modal-open {
       color: $psa-ink;
       font-weight: 600;
     }
+  }
+}
+
+.psa-copy-link {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $psa-graphite;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    color: $psa-ink;
+  }
+
+  &.is-copied {
+    color: $psa-lime;
+    text-decoration: none;
   }
 }

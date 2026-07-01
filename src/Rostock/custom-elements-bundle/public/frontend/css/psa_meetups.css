@@ -244,9 +244,6 @@ body.psa-meetups-modal-open {
   background: var(--psa-surface-card, #e4e8e0);
   color: #222f30;
 }
-.psa-meetup-card__badges {
-  margin-bottom: 0.5rem;
-}
 .psa-meetup-card__badge {
   display: inline-block;
   padding: 0.2rem 0.55rem;
@@ -260,18 +257,21 @@ body.psa-meetups-modal-open {
 }
 .psa-meetup-card__header-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   margin-bottom: 0.75rem;
 }
 .psa-meetup-card__header-actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.25rem;
-  flex-shrink: 0;
-  text-align: right;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1.25rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .psa-meetup-card__delete {
   margin: 0;
@@ -288,6 +288,12 @@ body.psa-meetups-modal-open {
 }
 .psa-meetup-card__delete-btn:hover {
   color: #842029;
+}
+.psa-meetup-card__posted {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4d5757;
+  white-space: nowrap;
 }
 .psa-meetup-card__lead {
   display: flex;
@@ -612,4 +618,25 @@ body.psa-meetups-modal-open {
 .psa-meetup-card__login a {
   color: #222f30;
   font-weight: 600;
+}
+
+.psa-copy-link {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #4d5757;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.psa-copy-link:hover, .psa-copy-link:focus-visible {
+  color: #222f30;
+}
+.psa-copy-link.is-copied {
+  color: #cef79e;
+  text-decoration: none;
 }
