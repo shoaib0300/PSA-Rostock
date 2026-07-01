@@ -18,6 +18,8 @@ final class PsaMemberFlash
 
     public const TYPE_PASSWORD_CHANGED = 'password_changed';
 
+    public const TYPE_ACCOUNT_DEACTIVATED = 'account_deactivated';
+
     public function __construct(private readonly RequestStack $requestStack)
     {
     }
@@ -46,7 +48,7 @@ final class PsaMemberFlash
         }
 
         return [
-            'type' => str_contains($type, 'error') ? 'error' : 'success',
+            'type' => str_contains($type, 'error') || str_contains($type, 'deactivated') ? 'error' : 'success',
             'message' => $message,
         ];
     }

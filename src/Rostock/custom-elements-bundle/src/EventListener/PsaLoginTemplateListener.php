@@ -29,5 +29,7 @@ class PsaLoginTemplateListener
 
         $template->psaFlashType = $flash['type'];
         $template->psaFlashMessage = $flash['message'];
+        $template->message = '';
+        $template->hasError = false;
     }
 }

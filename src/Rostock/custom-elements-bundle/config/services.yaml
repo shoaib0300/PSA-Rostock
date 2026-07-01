@@ -38,3 +38,8 @@ services:
         arguments:
             - '@contao.framework'
             - 'Contao\FrontendUser'
+
+    contao.security.user_checker:
+        class: Rostock\CustomElementsBundle\Security\PsaUserChecker
+        arguments:
+            - '@contao.framework'

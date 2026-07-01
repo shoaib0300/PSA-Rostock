@@ -5,6 +5,7 @@ $GLOBALS['TL_LANG']['PSA']['member_flash'] = [
     'account_activated' => 'Your account is now active. Welcome to PSA Rostock — you can log in below.',
     'password_reset_sent' => 'If an account exists for that e-mail address, we sent a password reset link. Please check your inbox.',
     'password_changed' => 'Your password has been updated. You can log in with your new password below.',
+    'account_deactivated' => 'Your account has been deactivated. Please contact PSA Rostock if you think this is a mistake.',
 ];
 
 $GLOBALS['TL_LANG']['PSA']['login_identifier'] = 'Username or e-mail';
