@@ -2,12 +2,13 @@
 use Rostock\CustomElementsBundle\Classes\CeHelpers;
 use Rostock\CustomElementsBundle\Classes\PsaHeaderAuth;
 
-$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=2';
+$assetCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_site_footer.css') . '?v=3';
 $assetButtonCss = \Contao\Controller::addAssetsUrlTo('bundles/customelements/frontend/css/psa_button.css') . '?v=1';
 
 $headerAuth = PsaHeaderAuth::resolve();
 $isLoggedIn = $headerAuth['isLoggedIn'];
 $navItems = $headerAuth['navItems'];
+$additionalLinks = $headerAuth['additionalLinks'];
 
 $siteName = $this->siteName ?? 'PSA Rostock';
 $registerUrl = $this->registerUrl ?? '/register';
@@ -46,6 +47,23 @@ $copyright = $this->copyright ?? ('© ' . date('Y') . ' ' . $siteName);
                     <?php endforeach; ?>
                 </ul>
             </nav>
+
+            <?php if (!empty($additionalLinks['items'])): ?>
+            <nav class="psa-footer__additional" aria-label="<?= $additionalLinks['title'] ?>">
+                <p class="psa-footer__additional-title"><?= $additionalLinks['title'] ?></p>
+                <ul class="psa-footer__menu psa-footer__menu--additional">
+                    <?php foreach ($additionalLinks['items'] as $item): ?>
+                        <li class="psa-footer__menu-item">
+                            <a
+                                href="<?= $item['href'] ?>"
+                                class="psa-footer__link<?= !empty($item['active']) ? ' is-active' : '' ?>"
+                                <?= !empty($item['active']) ? 'aria-current="page"' : '' ?>
+                            ><?= $item['label'] ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+            <?php endif; ?>
 
             <?php if (!$isLoggedIn): ?>
             <div class="psa-footer__cta">

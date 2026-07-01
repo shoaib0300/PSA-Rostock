@@ -22,6 +22,19 @@ final class PsaHeaderAuth
         ['label' => 'About', 'href' => '/about'],
     ];
 
+    private const DEFAULT_ADDITIONAL_LINKS = [
+        'title' => 'Arriving in Germany',
+        'items' => [
+            ['label' => 'Overview', 'parent' => 'arrival-in-germany'],
+            ['label' => 'City registration', 'parent' => 'arrival-in-germany', 'alias' => 'city-registration'],
+            ['label' => 'Health insurance', 'parent' => 'arrival-in-germany', 'alias' => 'health-insurance'],
+            ['label' => 'Bank account', 'parent' => 'arrival-in-germany', 'alias' => 'bank-account'],
+            ['label' => 'SIM card', 'parent' => 'arrival-in-germany', 'alias' => 'sim-card'],
+            ['label' => 'Residence permit', 'parent' => 'arrival-in-germany', 'alias' => 'residence-permit'],
+            ['label' => 'Public transport', 'parent' => 'arrival-in-germany', 'alias' => 'public-transport'],
+        ],
+    ];
+
     /**
      * @return array{
      *     isLoggedIn: bool,
@@ -30,7 +43,8 @@ final class PsaHeaderAuth
      *     accountUrl: string,
      *     loginUrl: string,
      *     logoutUrl: string,
-     *     navItems: list<array{label: string, href: string, active: bool}>
+     *     navItems: list<array{label: string, href: string, active: bool}>,
+     *     additionalLinks: array{title: string, items: list<array{label: string, href: string, active: bool}>}
      * }
      */
     public static function resolve(?string $currentPath = null): array
@@ -86,6 +100,21 @@ final class PsaHeaderAuth
             ];
         }
 
+        $additionalItems = [];
+
+        foreach (self::DEFAULT_ADDITIONAL_LINKS['items'] as $item) {
+            $href = self::getNestedPageUrl(
+                (string) $item['parent'],
+                isset($item['alias']) ? (string) $item['alias'] : null,
+            );
+            $hrefPath = rtrim($href, '/') ?: '/';
+            $additionalItems[] = [
+                'label' => $item['label'],
+                'href' => $href,
+                'active' => $hrefPath === $currentPath,
+            ];
+        }
+
         return [
             'isLoggedIn' => $isLoggedIn,
             'memberDisplayName' => $memberDisplayName,
@@ -94,6 +123,10 @@ final class PsaHeaderAuth
             'loginUrl' => $loginUrl,
             'logoutUrl' => $logoutUrl,
             'navItems' => $navItems,
+            'additionalLinks' => [
+                'title' => self::DEFAULT_ADDITIONAL_LINKS['title'],
+                'items' => $additionalItems,
+            ],
         ];
     }
 
@@ -104,13 +137,56 @@ final class PsaHeaderAuth
 
         foreach (PageModel::findBy('alias', $alias) ?? [] as $page) {
             if ((int) $page->pid === $rootId) {
-                /** @var ContentUrlGenerator $urlGenerator */
-                $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
-
-                return $urlGenerator->generate($page);
+                return self::generatePageUrl($page);
             }
         }
 
         return '/'.$alias;
+    }
+
+    public static function getNestedPageUrl(string $parentAlias, ?string $childAlias = null): string
+    {
+        $root = PageModel::findById(1);
+        $rootId = $root?->id ?? 1;
+        $parent = null;
+
+        foreach (PageModel::findBy('alias', $parentAlias) ?? [] as $page) {
+            if ((int) $page->pid === $rootId) {
+                $parent = $page;
+                break;
+            }
+        }
+
+        if ($parent === null) {
+            return '/'.$parentAlias.($childAlias ? '/'.$childAlias : '');
+        }
+
+        if ($childAlias === null) {
+            return self::generatePageUrl($parent);
+        }
+
+        foreach (PageModel::findBy('alias', $childAlias) ?? [] as $page) {
+            if ((int) $page->pid === (int) $parent->id) {
+                return self::generatePageUrl($page);
+            }
+        }
+
+        $folderAlias = $parentAlias.'/'.$childAlias;
+
+        foreach (PageModel::findBy('alias', $folderAlias) ?? [] as $page) {
+            if ((int) $page->pid === (int) $parent->id) {
+                return self::generatePageUrl($page);
+            }
+        }
+
+        return '/'.$parentAlias.'/'.$childAlias;
+    }
+
+    private static function generatePageUrl(PageModel $page): string
+    {
+        /** @var ContentUrlGenerator $urlGenerator */
+        $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
+
+        return $urlGenerator->generate($page);
     }
 }

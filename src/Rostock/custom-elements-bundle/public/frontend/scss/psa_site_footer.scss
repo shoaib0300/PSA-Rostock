@@ -23,9 +23,9 @@
     align-items: start;
 
     @include min-nav {
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto;
-      align-items: center;
-      gap: clamp(1.5rem, 4vw, 3rem);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 1.4fr) auto;
+      align-items: start;
+      gap: clamp(1.5rem, 4vw, 2.5rem);
     }
   }
 
@@ -69,6 +69,25 @@
 
   &__nav {
     min-width: 0;
+  }
+
+  &__additional {
+    min-width: 0;
+  }
+
+  &__additional-title {
+    margin: 0 0 0.75rem;
+    color: $psa-lichen;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  &__menu--additional {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   &__menu {
